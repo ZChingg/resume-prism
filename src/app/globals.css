@@ -20,8 +20,11 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  .input-resume {
+    @apply block w-full p-2 bg-gray-100 rounded mb-6 mt-1 appearance-none outline-none focus:outline-sky-500; /* TODO: outline 寬度設置 */
+  }
+  .title{
+    @apply text-lg font-semibold mb-3;
   }
 }

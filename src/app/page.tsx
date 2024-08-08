@@ -1,11 +1,20 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import ResumeForm from "@/components/ResumeForm";
 import ResumeTemplate from "@/components/ResumeTemplate";
 
 export default function Home() {
-  const [resumeData, setResumeData] = useState({});
+  const [resumeData, setResumeData] = useState({
+    name: "",
+    birthDate: "",
+    email: "",
+    phone: "",
+    website: "",
+    websiteLink: "",
+    profile: "",
+    experience: [], 
+  });
 
   const handleFormChange = (data: any) => {
     setResumeData(data);
