@@ -1,33 +1,38 @@
 "use client";
 
-import { useState } from "react";
-import ResumeForm from "@/components/ResumeForm";
-import ResumeTemplate from "@/components/ResumeTemplate";
+import { useState, useEffect } from "react";
+import { auth } from "../utils/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+
+import SignupPopup from "@/components/SignupPopup";
+import LoginPopup from "@/components/LoginPopup";
+
+import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/hooks";
 
 export default function Home() {
-  const [resumeData, setResumeData] = useState({
-    name: "",
-    birthDate: "",
-    email: "",
-    phone: "",
-    website: "",
-    websiteLink: "",
-    profile: "",
-    experience: [], 
-  });
+  const state = useAppSelector((state) => state.user); // 取得在 redux 定義的 state
+  console.log(state);
 
-  const handleFormChange = (data: any) => {
-    setResumeData(data);
-  };
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  // 監聽登入狀態
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsSignedIn(true);
+      } else {
+        setIsSignedIn(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
-    <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <ResumeForm onChange={handleFormChange} />
+    <>
+      <div className="navigation">
+        <LoginPopup />
+        <SignupPopup />
       </div>
-      <div>
-        <ResumeTemplate data={resumeData} />
-      </div>
-    </div>
+    </>
   );
 }

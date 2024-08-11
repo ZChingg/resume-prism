@@ -60,72 +60,36 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
     onChange({ ...formData, [name]: value }); // 將更新後的數據回傳給父元素
   };
 
-  // 工作經驗
-  const handleAddExperience = () => {
+  // 控制收合表單
+  const handleAddSection = (
+    key: "experience" | "education" | "skill",
+    initialData: any
+  ) => {
     setFormData({
       ...formData,
-      experience: [...formData.experience, initialExperience],
+      [key]: [...formData[key], initialData],
     });
   };
 
-  const handleExperienceChange = (index: number, updatedExperience: any) => {
-    const updatedExperiences = formData.experience.map((exp, i) =>
-      i === index ? updatedExperience : exp
+  const handleChangeSection = (
+    key: "experience" | "education" | "skill",
+    index: number,
+    updatedData: any
+  ) => {
+    const updatedDatas = formData[key].map((data, i) =>
+      i === index ? updatedData : data
     );
-    setFormData({ ...formData, experience: updatedExperiences });
-    onChange({ ...formData, experience: updatedExperiences });
+    setFormData({ ...formData, [key]: updatedDatas });
+    onChange({ ...formData, [key]: updatedDatas });
   };
 
-  const handleDeleteExperience = (index: number) => {
-    const updatedExperiences = formData.experience.filter(
-      (_, i) => i !== index
-    );
-    setFormData({ ...formData, experience: updatedExperiences });
-    onChange({ ...formData, experience: updatedExperiences });
-  };
-
-  // 學歷
-  const handleAddEducation = () => {
-    setFormData({
-      ...formData,
-      education: [...formData.education, initialEducation],
-    });
-  };
-
-  const handleEducationChange = (index: number, updatedEducation: any) => {
-    const updatedEducations = formData.education.map((exp, i) =>
-      i === index ? updatedEducation : exp
-    );
-    setFormData({ ...formData, education: updatedEducations });
-    onChange({ ...formData, education: updatedEducations });
-  };
-
-  const handleDeleteEducation = (index: number) => {
-    const updatedEducations = formData.education.filter((_, i) => i !== index);
-    setFormData({ ...formData, education: updatedEducations });
-    onChange({ ...formData, education: updatedEducations });
-  };
-
-  // 專業技能
-  const handleAddSkill = () => {
-    setFormData({
-      ...formData,
-      skill: [...formData.skill, initialSkill],
-    });
-  };
-
-  const handleSkillChange = (index: number, updatedSkill: any) => {
-    const updatedSkills = formData.skill.map((exp, i) =>
-      i === index ? updatedSkill : exp
-    );
-    setFormData({ ...formData, skill: updatedSkills });
-    onChange({ ...formData, skill: updatedSkills });
-  };
-
-  const handleDeleteSkill = (index: number) => {
-    const updatedSkills = formData.skill.filter((_, i) => i !== index);
-    setFormData({ ...formData, skill: updatedSkills });
-    onChange({ ...formData, skill: updatedSkills });
+  const handleDeleteSection = (
+    key: "experience" | "education" | "skill",
+    index: number
+  ) => {
+    const updatedDatas = formData[key].filter((_, i) => i !== index);
+    setFormData({ ...formData, [key]: updatedDatas });
+    onChange({ ...formData, [key]: updatedDatas });
   };
 
   return (
@@ -208,22 +172,22 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
         <h2 className="title">工作經驗</h2>
         {formData.experience.map(
           (
-            exp,
+            data,
             index // callback 可回傳元素+位置
           ) => (
             <ExperienceSection // 將每個工作經驗渲染為組件
               key={index} // 陣列裡每一個元素都要有 key 屬性
-              experience={exp}
+              experience={data}
               onChange={(updatedExperience) =>
-                handleExperienceChange(index, updatedExperience)
+                handleChangeSection("experience", index, updatedExperience)
               }
-              onDelete={() => handleDeleteExperience(index)}
+              onDelete={() => handleDeleteSection("experience", index)} // 若沒加上箭頭函式會在渲染時立即執行而非點擊刪除時
             />
           )
         )}
         <button
           type="button" // 若不指定 button，預設會 submit
-          onClick={handleAddExperience}
+          onClick={() => handleAddSection("experience", initialExperience)}
           className="text-blue-600 hover:text-blue-700 font-semibold"
         >
           + 工作經驗
@@ -233,22 +197,22 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
         <h2 className="title">學歷</h2>
         {formData.education.map(
           (
-            exp,
+            data,
             index // callback 可回傳元素+位置
           ) => (
             <EducationSection // 將每個工作經驗渲染為組件
               key={index} // 陣列裡每一個元素都要有 key 屬性
-              education={exp}
+              education={data}
               onChange={(updatedEducation) =>
-                handleEducationChange(index, updatedEducation)
+                handleChangeSection("education", index, updatedEducation)
               }
-              onDelete={() => handleDeleteEducation(index)}
+              onDelete={() => handleDeleteSection("education", index)}
             />
           )
         )}
         <button
           type="button" // 若不指定 button，預設會 submit
-          onClick={handleAddEducation}
+          onClick={() => handleAddSection("education", initialEducation)}
           className="text-blue-600 hover:text-blue-700 font-semibold"
         >
           + 學歷
@@ -258,22 +222,22 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
         <h2 className="title">專業技能</h2>
         {formData.skill.map(
           (
-            exp,
+            data,
             index // callback 可回傳元素+位置
           ) => (
             <SkillSection // 將每個工作經驗渲染為組件
               key={index} // 陣列裡每一個元素都要有 key 屬性
-              skill={exp}
+              skill={data}
               onChange={(updatedSkill) =>
-                handleSkillChange(index, updatedSkill)
+                handleChangeSection("skill", index, updatedSkill)
               }
-              onDelete={() => handleDeleteSkill(index)}
+              onDelete={() => handleDeleteSection("skill", index)}
             />
           )
         )}
         <button
           type="button" // 若不指定 button，預設會 submit
-          onClick={handleAddSkill}
+          onClick={() => handleAddSection("skill", initialSkill)}
           className="text-blue-600 hover:text-blue-700 font-semibold"
         >
           + 專業技能

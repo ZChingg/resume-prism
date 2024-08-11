@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] }); // TODO: 字體配置
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main>{children}</main>
+        <StoreProvider>
+          <main>{children}</main>
+        </StoreProvider>
       </body>
     </html>
   );
