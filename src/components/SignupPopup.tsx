@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { auth, db } from "@/utils/firebase";
+import { auth, db } from "@/lib/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/hooks";

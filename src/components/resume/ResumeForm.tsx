@@ -1,56 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import SkillSection from "./SkillSection";
 
 interface ResumeFormProps {
   onChange: (data: any) => void;
+  initialData?: any; // 可選的 initialData，以編輯舊履歷
 }
 
 const initialExperience = {
-  position: "Account Executive",
-  company: "奧美股份有限公司",
-  startDate: "2012/12",
-  endDate: "2023/12",
-  description:
-    "Hardworking College Student seeking employment. Bringing forth a motivated attitude and a variety of powerful skills. Adept in various social media platforms and office technology programs. Committed to utilizing my skills to further the mission of a company.",
+  position: "",
+  company: "",
+  startDate: "",
+  endDate: "",
+  description: "",
 };
 
 const initialEducation = {
-  school: "國立政治大學",
-  major: "廣告學系",
-  degree: "學士",
-  startDate: "2012/12",
-  endDate: "2023/12",
-  description:
-    "Hardworking College Student seeking employment. Bringing forth a motivated attitude and a variety of powerful skills. Adept in various social media platforms and office technology programs. Committed to utilizing my skills to further the mission of a company.",
+  school: "",
+  major: "",
+  degree: "",
+  startDate: "",
+  endDate: "",
+  description: "",
 };
 
 const initialSkill = {
-  name: "photoshop",
-  level: "初階",
-  description:
-    "Hardworking College Student seeking employment. Bringing forth a motivated attitude and a variety of powerful skills. Adept in various social media platforms and office technology programs. Committed to utilizing my skills to further the mission of a company.",
+  name: "",
+  level: "",
+  description: "",
 };
 
-export default function ResumeForm({ onChange }: ResumeFormProps) {
+export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   // 解構賦值來取用 Props 中資料: setResume(data)
   const [formData, setFormData] = useState({
-    name: "王小明",
-    birthDate: "1999/02/12",
-    email: "123@123.com",
-    phone: "0963799212",
-    website: "作品集",
-    websiteLink: "http://localhost:3000/",
-    profile:
-      "Hardworking College Student seeking employment. Bringing forth a motivated attitude and a variety of powerful skills. Adept in various social media platforms and office technology programs. Committed to utilizing my skills to further the mission of a company.",
+    name: "",
+    birthDate: "",
+    email: "",
+    phone: "",
+    website: "",
+    websiteLink: "",
+    profile: "",
     experience: [initialExperience], // 若初始無資料就刪除 // 陣列中裝好幾筆工作資料
     education: [initialEducation],
     skill: [initialSkill],
   });
   // console.log(onChange);
+
+  // 使用 useEffect 在組件初始化時檢查是否有 initialData
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData); // 如果有 initialData，使用它來初始化表單
+    }
+  }, [initialData]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -165,6 +169,7 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
           value={formData.profile}
           onChange={handleChange}
           className="input-resume mt-0"
+          placeholder="簡潔帶到你的「人格特質」、「職務背景與重要能力」、「職涯目標」等"
           rows={4}
         />
       </label>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { auth } from "@/utils/firebase";
+import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/hooks";
 import { setLogin } from "@/lib/features/userSlice";
@@ -45,7 +45,7 @@ export default function LoginPopup() {
     <>
       <button
         onClick={togglePopup}
-        className="ml-auto hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10"
+        className="hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10"
       >
         登入
       </button>

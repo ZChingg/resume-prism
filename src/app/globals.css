@@ -22,10 +22,10 @@ body {
 
 @layer components {
   .navigation{
-    @apply flex sticky h-16	bg-white shadow-md items-center px-14 z-10 top-0;
+    @apply flex sticky h-16	bg-white shadow-md items-center px-14 z-10 top-0 justify-end;
   }
   .input-resume {
-    @apply block w-full p-2 bg-gray-100 rounded mb-6 mt-1 appearance-none outline-none focus:outline-sky-500; /* TODO: outline 寬度設置 */
+    @apply block w-full p-3 bg-gray-100 rounded mb-6 mt-1 appearance-none outline-none focus:ring-1 focus:ring-sky-500; /* TODO: outline 寬度設置 */
   }
   .title{
     @apply text-lg font-semibold mb-3;

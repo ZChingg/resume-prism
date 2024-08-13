@@ -36,6 +36,13 @@ export default function EducationSection({
     onChange({ ...education, [name]: value });
   };
 
+  // 判斷所有欄位是否為空
+  const isEmpty =
+    !education.school &&
+    !education.major &&
+    !education.startDate &&
+    !education.endDate;
+
   return (
     <div className="border rounded mb-3 hover:border-gray-800">
       <div
@@ -43,11 +50,21 @@ export default function EducationSection({
         onClick={handleToggleExpand}
       >
         <div className="flex items-center space-x-3">
-          <h3 className="text-lg font-semibold">{education.school}</h3>
-          <p>{education.major}</p>
+          {isEmpty ? (
+            <p className="text-gray-400">尚未輸入欄位</p>
+          ) : (
+            <>
+              <h3 className="text-lg font-semibold">{education.school}</h3>
+              <p>{education.major}</p>
+            </>
+          )}
         </div>
         <div className="flex items-center space-x-3">
-          <p className="text-gray-400">{`${education.startDate} ~ ${education.endDate}`}</p>
+          {isEmpty ? (
+            <></>
+          ) : (
+            <p className="text-gray-400">{`${education.startDate} ~ ${education.endDate}`}</p>
+          )}
           <button onClick={onDelete}>
             <FaTrashAlt />
           </button>
