@@ -51,20 +51,20 @@ export default function EducationSection({
       >
         <div className="flex items-center space-x-3">
           {isEmpty ? (
-            <p className="text-gray-400">尚未輸入欄位</p>
+            <p className="text-gray-400 text-sm">尚未輸入欄位</p>
           ) : (
             <>
               <h3 className="text-lg font-semibold">{education.school}</h3>
-              <p>{education.major}</p>
+              <p className="text-sm">{education.major}</p>
             </>
           )}
         </div>
         <div className="flex items-center space-x-3">
-          {isEmpty ? (
-            <></>
-          ) : (
-            <p className="text-gray-400">{`${education.startDate} ~ ${education.endDate}`}</p>
-          )}
+          <p className="text-gray-400 text-sm">
+            {education.startDate && <span>{education.startDate}</span>}
+            {(education.startDate || education.endDate) && " ~ "}
+            {education.endDate && <span>{education.endDate}</span>}
+          </p>
           <button onClick={onDelete}>
             <FaTrashAlt />
           </button>

@@ -2,10 +2,16 @@
 
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { auth } from "@/lib/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "@/lib/firebase";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/hooks";
 import { setLogin } from "@/lib/features/userSlice";
+import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,13 +39,51 @@ export default function LoginPopup() {
       );
       const user = userCredential.user;
       dispatch(
-        setLogin({ name: user.displayName!, email: user.email!, login: true })
+        setLogin({
+          name: user.displayName!,
+          email: user.email!,
+          uid: user.uid,
+          photoURL: null,
+          login: true,
+        })
       );
       setIsOpen(false);
     } catch (error) {
       console.error("Login failed", error);
     }
   };
+
+  // Google 登入
+  async function onGoogleSignUp() {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          photoURL: user.photoURL,
+          createdAt: Timestamp.now(),
+        });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error during Google sign up:", error.message);
+      } else {
+        // 沒有辦法印出 error.message (unknown)
+        console.error(
+          "An unknown error occurred during Google sign up:",
+          error
+        );
+      }
+    }
+  }
 
   return (
     <>
@@ -61,6 +105,18 @@ export default function LoginPopup() {
               className="absolute top-4 right-4 h-7 w-7 p-1  text-gray-600 rounded cursor-pointer hover:bg-gray-100"
             />
             <h2 className="text-lg font-bold mb-4 text-center">歡迎回來！</h2>
+            <button
+              className="w-full p-2 rounded text-sm text-gray-500 border border-gray-300 flex items-center justify-center relative  hover:bg-gray-50"
+              onClick={onGoogleSignUp}
+            >
+              <FcGoogle className="absolute left-2 h-5 w-5" />
+              <p>使用 Google 帳戶登入</p>
+            </button>
+            <div className="flex items-center my-5">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="mx-4 text-gray-500 text-sm">或</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
             <form onSubmit={handleLogin}>
               <div className="mb-4">
                 <input

@@ -33,6 +33,9 @@ export default function SkillSection({
     onChange({ ...skill, [name]: value });
   };
 
+  // 判斷所有欄位是否為空 // FIXME: skill name 無法及時渲染
+  const isEmpty = !skill.name && !skill.level;
+
   return (
     <div className="border rounded mb-3 hover:border-gray-800">
       <div
@@ -40,8 +43,14 @@ export default function SkillSection({
         onClick={handleToggleExpand}
       >
         <div className="flex items-center space-x-3">
-          <h3 className="text-lg font-semibold">{skill.name}</h3>
-          <p>{skill.level}</p>
+          {isEmpty ? (
+            <p className="text-gray-400 text-sm">尚未輸入欄位</p>
+          ) : (
+            <>
+              <h3 className="text-lg font-semibold">{skill.name}</h3>
+              <p className="text-sm">{skill.level}</p>
+            </>
+          )}
         </div>
         <div className="flex items-center space-x-3">
           <button onClick={onDelete}>
@@ -59,7 +68,7 @@ export default function SkillSection({
                 名稱
                 <input
                   type="text"
-                  name="skill"
+                  name="name"
                   value={skill.name}
                   onChange={handleChange}
                   className="input-resume"
@@ -68,7 +77,7 @@ export default function SkillSection({
               <label className="flex-1">
                 熟練度
                 <select
-                  name="degree"
+                  name="level"
                   value={skill.level}
                   onChange={handleChange}
                   className="input-resume"

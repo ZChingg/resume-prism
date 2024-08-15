@@ -4,6 +4,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface UserProfile {
   name: string;
   email: string;
+  uid: string;
+  photoURL: string|null;
   login: boolean;
 }
 
@@ -15,6 +17,8 @@ const initialState: UserState = {
   profile: {
     name: "",
     email: "",
+    uid: "",
+    photoURL: null,
     login: false,
   },
 };

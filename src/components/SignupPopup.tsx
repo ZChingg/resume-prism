@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { auth, db } from "@/lib/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/hooks";
 import { setLogin } from "@/lib/features/userSlice";
+import { FcGoogle } from "react-icons/fc";
 
 export default function SignupPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,14 +49,22 @@ export default function SignupPopup() {
 
       // Redux 管理登入狀態
       dispatch(
-        setLogin({ name: user.displayName!, email: user.email!, login: true })
+        setLogin({
+          name: user.displayName!,
+          email: user.email!,
+          uid: user.uid,
+          photoURL: null,
+          login: true,
+        })
       );
 
       // FireStore 儲存使用者資訊
       await setDoc(doc(db, "users", user.uid), {
+        name: user.displayName,
         email: user.email,
         uid: user.uid,
-        name: user.displayName,
+        photoURL: null,
+        createdAt: Timestamp.now(),
       });
 
       setIsOpen(false);
@@ -58,6 +72,39 @@ export default function SignupPopup() {
       console.error("Signup failed", error);
     }
   };
+
+  // Google 註冊
+  async function onGoogleSignUp() {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log(user.photoURL);
+
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          photoURL: user.photoURL,
+          createdAt: Timestamp.now(),
+        });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error during Google sign up:", error.message);
+      } else {
+        // 沒有辦法印出 error.message (unknown)
+        console.error(
+          "An unknown error occurred during Google sign up:",
+          error
+        );
+      }
+    }
+  }
 
   return (
     <>
@@ -79,6 +126,18 @@ export default function SignupPopup() {
               className="absolute top-4 right-4 h-7 w-7 p-1  text-gray-600 rounded cursor-pointer hover:bg-gray-100"
             />
             <h2 className="text-lg font-bold mb-4 text-center">歡迎加入！</h2>
+            <button
+              className="w-full p-2 rounded text-sm text-gray-500 border border-gray-300 flex items-center justify-center relative  hover:bg-gray-50"
+              onClick={onGoogleSignUp}
+            >
+              <FcGoogle className="absolute left-2 h-5 w-5" />
+              <p>使用 Google 帳戶註冊</p>
+            </button>
+            <div className="flex items-center my-5">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="mx-4 text-gray-500 text-sm">或</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
             <form onSubmit={handleSignup}>
               <div className="mb-4">
                 <input

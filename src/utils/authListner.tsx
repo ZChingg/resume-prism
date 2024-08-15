@@ -19,6 +19,8 @@ export default function AuthListener() {
           setLogin({
             name: user.displayName!,
             email: user.email!,
+            uid: user.uid,
+            photoURL: user.photoURL!,
             login: true,
           })
         );

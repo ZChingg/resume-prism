@@ -47,9 +47,8 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     education: [initialEducation],
     skill: [initialSkill],
   });
-  // console.log(onChange);
 
-  // 使用 useEffect 在組件初始化時檢查是否有 initialData
+  // 在組件初始化時檢查是否有 initialData
   useEffect(() => {
     if (initialData) {
       setFormData(initialData); // 如果有 initialData，使用它來初始化表單
@@ -65,6 +64,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   };
 
   // 控制收合表單
+  // 增加區塊
   const handleAddSection = (
     key: "experience" | "education" | "skill",
     initialData: any
@@ -75,6 +75,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     });
   };
 
+  // 修改區塊
   const handleChangeSection = (
     key: "experience" | "education" | "skill",
     index: number,
@@ -87,6 +88,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     onChange({ ...formData, [key]: updatedDatas });
   };
 
+  // 刪除區塊
   const handleDeleteSection = (
     key: "experience" | "education" | "skill",
     index: number
@@ -118,7 +120,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
           className="input-resume"
         />
       </label>
-      <div className="flex space-x-4">
+      <div className="flex space-x-6">
         <label className="flex-1">
           電話
           <input
@@ -140,7 +142,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
           />
         </label>
       </div>
-      <div className="flex space-x-4">
+      <div className="flex space-x-6">
         <label className="flex-1">
           個人網站
           <input

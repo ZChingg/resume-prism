@@ -35,6 +35,13 @@ export default function ExperienceSection({
     onChange({ ...experience, [name]: value });
   };
 
+  // 判斷所有欄位是否為空
+  const isEmpty =
+    !experience.position &&
+    !experience.company &&
+    !experience.startDate &&
+    !experience.endDate;
+
   return (
     <div className="border rounded mb-3 hover:border-gray-800">
       <div
@@ -42,11 +49,21 @@ export default function ExperienceSection({
         onClick={handleToggleExpand}
       >
         <div className="flex items-center space-x-3">
-          <h3 className="text-lg font-semibold">{experience.position}</h3>
-          <p>{experience.company}</p>
+          {isEmpty ? (
+            <p className="text-gray-400 text-sm">尚未輸入欄位</p>
+          ) : (
+            <>
+              <h3 className="text-lg font-semibold">{experience.position}</h3>
+              <p className="text-sm">{experience.company}</p>
+            </>
+          )}
         </div>
         <div className="flex items-center space-x-3">
-          <p className="text-gray-400">{`${experience.startDate} ~ ${experience.endDate}`}</p>
+          <p className="text-gray-400 text-sm">
+            {experience.startDate && <span>{experience.startDate}</span>}
+            {(experience.startDate || experience.endDate) && " ~ "}
+            {experience.endDate && <span>{experience.endDate}</span>}
+          </p>
           <button onClick={onDelete}>
             <FaTrashAlt />
           </button>
