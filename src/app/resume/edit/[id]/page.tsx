@@ -99,24 +99,8 @@ export default function EditResume() {
         </button>
       </div>
       <div className="flex h-screen overflow-hidden bg-gray-500">
-        {/* 左側區塊：可滾動的表單 */}
-        <div className="bg-white w-1/2 pt-6 p-16 overflow-y-scroll">
-          <ResumeForm onChange={handleFormChange} initialData={resumeData} />
-        </div>
-
-        {/* 右側區塊：固定的履歷預覽 */}
-        <div className="w-1/2 bg-gray-500 flex justify-center overflow-y-auto items-start">
-          <div
-            className="bg-white mt-8 m-10 p-7 shadow-lg border justify-center"
-            style={{
-              maxWidth: "595px",
-              minHeight: "842px",
-              height: "auto",
-            }}
-          >
-            <ResumeTemplate data={resumeData} />
-          </div>
-        </div>
+        <ResumeForm onChange={handleFormChange} initialData={resumeData} />
+        <ResumeTemplate data={resumeData} />
       </div>
     </>
   );

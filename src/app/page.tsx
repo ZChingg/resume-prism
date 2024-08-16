@@ -1,8 +1,6 @@
 "use client";
 
-import SignupPopup from "@/components/SignupPopup";
-import LoginPopup from "@/components/LoginPopup";
-import DashBoard from "@/components/DashBoard";
+import Navigation from "@/components/Navigation";
 import { useAppSelector } from "@/lib/hooks";
 
 export default function Home() {
@@ -11,16 +9,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="navigation">
-        {state.profile.login ? (
-          <DashBoard />
-        ) : (
-          <>
-            <LoginPopup />
-            <SignupPopup />
-          </>
-        )}
-      </div>
+      <Navigation />
     </>
   );
 }

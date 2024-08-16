@@ -7,6 +7,7 @@ import { collection, getDocs, addDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { setLogout } from "@/lib/features/userSlice";
+import Navigation from "@/components/Navigation";
 
 export default function ResumePage() {
   const [resumes, setResumes] = useState<any[]>([]);
@@ -24,7 +25,7 @@ export default function ResumePage() {
           const user = auth.currentUser;
           if (user) {
             const querySnapshot = await getDocs(
-              collection(db, "users", user.uid, "resumes"),
+              collection(db, "users", user.uid, "resumes")
             );
             console.log(querySnapshot.docs);
             const resumesData = querySnapshot.docs.map((doc) => ({
@@ -83,14 +84,7 @@ export default function ResumePage() {
 
   return (
     <>
-      <div className="navigation">
-        <button
-          className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded h-10"
-          onClick={handleLogout}
-        >
-          登出系統
-        </button>
-      </div>
+      <Navigation />
       <div className="p-10">
         <h1 className="text-2xl mb-4">Your Resumes</h1>
         {resumes.length === 0 ? (
