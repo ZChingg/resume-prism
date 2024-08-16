@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^2.2.7",
     "firebase": "^10.12.5",
     "html2canvas": "^1.4.1",

@@ -65,7 +65,7 @@ export default function ResumePage() {
             skill: [],
           }
         );
-        router.push(`/resume/edit/${docRef.id}`);
+        router.push(`/resume/${docRef.id}/edit/`);
       }
     } catch (error) {
       console.error("Error creating resume:", error);
@@ -93,7 +93,7 @@ export default function ResumePage() {
           <ul>
             {resumes.map((resume) => (
               <li key={resume.id} className="mb-2">
-                <Link href={`/resume/edit/${resume.id}`}>
+                <Link href={`/resume/${resume.id}/edit`}>
                   <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
                     Edit Resume {resume.id}
                   </button>
