@@ -100,7 +100,7 @@ export default function Navigation() {
               </>
             ) : (
               <Image
-                src="https://lh3.googleusercontent.com/a/ACg8ocIbmV3HvZAK1qSB8bNNL71ZKi8QtsEyT6srIshBKEJ4DvIe=s96-c"
+                src={user.photoURL}
                 alt="User Avatar"
                 width={36}
                 height={36}

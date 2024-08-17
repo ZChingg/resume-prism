@@ -35,7 +35,8 @@ export default function ResumePage() {
               collection(db, "users", user.uid, "resumes")
             );
             console.log(querySnapshot.docs);
-            let resumesData: any[] = querySnapshot.docs.map((doc) => ({ // FIXME: 不該使用 any
+            let resumesData: any[] = querySnapshot.docs.map((doc) => ({
+              // FIXME: 不該使用 any
               id: doc.id,
               ...doc.data(),
             }));
@@ -106,20 +107,11 @@ export default function ResumePage() {
   // 處理日期格式
   function formatDate(isoString: string) {
     const date = new Date(isoString);
-    const options: Intl.DateTimeFormatOptions = { month: "short" };
-    const month = new Intl.DateTimeFormat("en-US", options).format(date);
-    const day = date.getDate();
     const year = date.getFullYear();
-    const dayWithSuffix =
-      day +
-      (day % 10 === 1 && day !== 11
-        ? "st"
-        : day % 10 === 2 && day !== 12
-        ? "nd"
-        : day % 10 === 3 && day !== 13
-        ? "rd"
-        : "th");
-    return `${month} ${dayWithSuffix}, ${year}`;
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 月份从0开始，所以要加1
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
   }
 
   if (loading) {
