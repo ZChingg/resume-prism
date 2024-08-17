@@ -69,7 +69,7 @@ export default function Navigation() {
           <>
             <Link href="/resume">
               <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded h-10">
-                我的履歷
+                My Resumes
               </button>
             </Link>
           </>
@@ -117,13 +117,13 @@ export default function Navigation() {
               </div>
               <hr className="my-2" />
               <Link href="/resume" className="block hover:bg-gray-100 p-2">
-                我的履歷
+                My Resumes
               </Link>
               <button
                 onClick={handleLogout}
                 className="block w-full text-left hover:bg-gray-100 p-2"
               >
-                登出
+                Log Out
               </button>
             </div>
           )}

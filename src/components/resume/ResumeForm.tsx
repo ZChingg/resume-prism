@@ -102,7 +102,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     <div className="bg-white w-1/2 pt-6 p-16 overflow-y-scroll">
       <form>
         <label>
-          姓名
+          Name
           <input
             type="text"
             name="name"
@@ -112,18 +112,19 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
           />
         </label>
         <label>
-          生日
+          Date of birth
           <input
             type="date"
             name="birthDate"
             value={formData.birthDate}
             onChange={handleChange}
             className="input-resume"
+            placeholder="YYYY/MM/DD"
           />
         </label>
         <div className="flex space-x-6">
           <label className="flex-1">
-            電話
+            Phone
             <input
               type="tel"
               name="phone"
@@ -133,7 +134,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
             />
           </label>
           <label className="flex-1">
-            聯絡信箱
+            Email
             <input
               type="email"
               name="email"
@@ -145,7 +146,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
         </div>
         <div className="flex space-x-6">
           <label className="flex-1">
-            個人網站
+            Blog
             <input
               type="text"
               name="website"
@@ -155,7 +156,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
             />
           </label>
           <label className="flex-1">
-            個人網站連結
+            Link of Blog
             <input
               type="text"
               name="websiteLink"
@@ -166,18 +167,18 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
           </label>
         </div>
         <label>
-          <h2 className="title">簡歷</h2>
+          <h2 className="title">Professional Summary</h2>
           <textarea
             name="profile"
             value={formData.profile}
             onChange={handleChange}
             className="input-resume mt-0"
-            placeholder="簡潔帶到你的「人格特質」、「職務背景與重要能力」、「職涯目標」等"
+            placeholder="Summarize your Personal Traits, Experience, Skills, and Career Goals"
             rows={4}
           />
         </label>
         <div className="mb-6">
-          <h2 className="title">工作經驗</h2>
+          <h2 className="title">Job History</h2>
           {formData.experience.map(
             (
               data,
@@ -198,11 +199,11 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
             onClick={() => handleAddSection("experience", initialExperience)}
             className="text-blue-600 hover:text-blue-700 font-semibold"
           >
-            + 工作經驗
+            + Job History
           </button>
         </div>
         <div className="mb-6">
-          <h2 className="title">學歷</h2>
+          <h2 className="title">Education</h2>
           {formData.education.map(
             (
               data,
@@ -223,11 +224,11 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
             onClick={() => handleAddSection("education", initialEducation)}
             className="text-blue-600 hover:text-blue-700 font-semibold"
           >
-            + 學歷
+            + Education
           </button>
         </div>
         <div className="mb-6">
-          <h2 className="title">專業技能</h2>
+          <h2 className="title">Skills</h2>
           {formData.skill.map(
             (
               data,
@@ -248,7 +249,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
             onClick={() => handleAddSection("skill", initialSkill)}
             className="text-blue-600 hover:text-blue-700 font-semibold"
           >
-            + 專業技能
+            + Skill
           </button>
         </div>
       </form>

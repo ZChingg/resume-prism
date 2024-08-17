@@ -33,7 +33,7 @@ export default function SkillSection({
     onChange({ ...skill, [name]: value });
   };
 
-  // 判斷所有欄位是否為空 // FIXME: skill name 無法及時渲染
+  // 判斷所有欄位是否為空
   const isEmpty = !skill.name && !skill.level;
 
   return (
@@ -44,7 +44,7 @@ export default function SkillSection({
       >
         <div className="flex items-center space-x-3">
           {isEmpty ? (
-            <p className="text-gray-400 text-sm">尚未輸入欄位</p>
+            <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
               <h3 className="text-lg font-semibold">{skill.name}</h3>
@@ -65,7 +65,7 @@ export default function SkillSection({
           <div className="p-4">
             <div className="flex space-x-4">
               <label className="flex-1">
-                名稱
+                Skill
                 <input
                   type="text"
                   name="name"
@@ -75,26 +75,27 @@ export default function SkillSection({
                 />
               </label>
               <label className="flex-1">
-                熟練度
+                Proficiency
                 <select
                   name="level"
                   value={skill.level}
                   onChange={handleChange}
                   className="input-resume"
                 >
-                  <option>初階</option>
-                  <option>中階</option>
-                  <option>精通</option>
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Expert</option>
                 </select>
               </label>
             </div>
             <label>
-              內容描述
+              Description
               <textarea
                 name="description"
                 value={skill.description}
                 onChange={handleChange}
                 className="input-resume"
+                placeholder="Please use the common terminology to describe your experience"
                 rows={4}
               />
             </label>

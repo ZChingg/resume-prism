@@ -50,7 +50,7 @@ export default function ExperienceSection({
       >
         <div className="flex items-center space-x-3">
           {isEmpty ? (
-            <p className="text-gray-400 text-sm">尚未輸入欄位</p>
+            <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
               <h3 className="text-lg font-semibold">{experience.position}</h3>
@@ -76,7 +76,7 @@ export default function ExperienceSection({
           <div className="p-4">
             <div className="flex space-x-4">
               <label className="flex-1">
-                職稱
+                Title
                 <input
                   type="text"
                   name="position"
@@ -86,7 +86,7 @@ export default function ExperienceSection({
                 />
               </label>
               <label className="flex-1">
-                公司名稱
+                Company Name
                 <input
                   type="text"
                   name="company"
@@ -98,7 +98,7 @@ export default function ExperienceSection({
             </div>
             <div className="flex space-x-4">
               <label className="flex-1">
-                開始時間
+                Start
                 <input
                   type="month"
                   name="startDate"
@@ -108,7 +108,7 @@ export default function ExperienceSection({
                 />
               </label>
               <label className="flex-1">
-                結束時間
+                End
                 <input
                   type="month"
                   name="endDate"
@@ -119,12 +119,13 @@ export default function ExperienceSection({
               </label>
             </div>
             <label>
-              內容描述
+              Description
               <textarea
                 name="description"
                 value={experience.description}
                 onChange={handleChange}
                 className="input-resume"
+                placeholder="List relevant experience and quantify primary achievements"
                 rows={4}
               />
             </label>

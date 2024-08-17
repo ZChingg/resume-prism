@@ -51,7 +51,7 @@ export default function EducationSection({
       >
         <div className="flex items-center space-x-3">
           {isEmpty ? (
-            <p className="text-gray-400 text-sm">尚未輸入欄位</p>
+            <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
               <h3 className="text-lg font-semibold">{education.school}</h3>
@@ -76,7 +76,7 @@ export default function EducationSection({
           <hr className="mx-4" />
           <div className="p-4">
             <label>
-              學校名稱
+              School Name
               <input
                 type="text"
                 name="school"
@@ -87,7 +87,7 @@ export default function EducationSection({
             </label>
             <div className="flex space-x-4">
               <label className="flex-1">
-                系所
+                Depart
                 <input
                   type="text"
                   name="major"
@@ -97,26 +97,26 @@ export default function EducationSection({
                 />
               </label>
               <label className="flex-1">
-                學位
+                Degree
                 <select
                   name="degree"
                   value={education.degree}
                   onChange={handleChange}
                   className="input-resume"
                 >
-                  <option>高中職以下</option>
-                  <option>高中職</option>
-                  <option>專科</option>
-                  <option>學士</option>
-                  <option>碩士</option>
-                  <option>博士</option>
-                  <option>肄業</option>
+                  <option>Elementary/Middle School</option>
+                  <option>High school/Vocational School</option>
+                  <option>Junior College</option>
+                  <option>Bachelor</option>
+                  <option>Master</option>
+                  <option>PhD</option>
+                  <option>Incomplete</option>
                 </select>
               </label>
             </div>
             <div className="flex space-x-4">
               <label className="flex-1">
-                入學時間
+                Start
                 <input
                   type="month"
                   name="startDate"
@@ -126,7 +126,7 @@ export default function EducationSection({
                 />
               </label>
               <label className="flex-1">
-                畢業時間
+                End
                 <input
                   type="month"
                   name="endDate"
@@ -137,12 +137,13 @@ export default function EducationSection({
               </label>
             </div>
             <label>
-              在校經歷
+              Experience
               <textarea
                 name="description"
                 value={education.description}
                 onChange={handleChange}
                 className="input-resume"
+                placeholder="Describe the class you take and what you have achieved"
                 rows={4}
               />
             </label>

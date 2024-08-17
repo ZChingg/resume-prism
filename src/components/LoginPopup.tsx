@@ -91,7 +91,7 @@ export default function LoginPopup() {
         onClick={togglePopup}
         className="hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10"
       >
-        登入
+        Log In
       </button>
 
       {isOpen && (
@@ -104,24 +104,26 @@ export default function LoginPopup() {
               onClick={togglePopup}
               className="absolute top-4 right-4 h-7 w-7 p-1  text-gray-600 rounded cursor-pointer hover:bg-gray-100"
             />
-            <h2 className="text-lg font-bold mb-4 text-center">歡迎回來！</h2>
+            <h2 className="text-lg font-bold mb-4 text-center">
+              We are happy to see you back!
+            </h2>
             <button
               className="w-full p-2 rounded text-sm text-gray-500 border border-gray-300 flex items-center justify-center relative  hover:bg-gray-50"
               onClick={onGoogleSignUp}
             >
               <FcGoogle className="absolute left-2 h-5 w-5" />
-              <p>使用 Google 帳戶登入</p>
+              <p>Log in with Google</p>
             </button>
             <div className="flex items-center my-5">
               <div className="flex-grow border-t border-gray-300"></div>
-              <span className="mx-4 text-gray-500 text-sm">或</span>
+              <span className="mx-4 text-gray-500 text-sm">or</span>
               <div className="flex-grow border-t border-gray-300"></div>
             </div>
             <form onSubmit={handleLogin}>
               <div className="mb-4">
                 <input
                   type="email"
-                  placeholder="電子郵件"
+                  placeholder="Email"
                   className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-green-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -130,7 +132,7 @@ export default function LoginPopup() {
               <div className="mb-4">
                 <input
                   type="password"
-                  placeholder="密碼"
+                  placeholder="Password"
                   className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-green-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -140,14 +142,14 @@ export default function LoginPopup() {
                 type="submit"
                 className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
               >
-                登入
+                Log In
               </button>
             </form>
             <p className="text-center text-sm mt-4">
-              還沒有帳號嗎？
+              Don’t have an account?
               <a href="#" className="text-green-500 hover:underline">
                 {" "}
-                註冊
+                Sign Up
               </a>
             </p>
           </div>

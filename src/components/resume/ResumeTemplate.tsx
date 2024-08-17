@@ -23,12 +23,12 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
             <div className="w-3/4">
               {/* 簡歷 */}
               <div className="mt-2 text-xs">
-                <h2 className="font-bold text-base mb-1">簡歷</h2>
+                <h2 className="font-bold text-base mb-1">Profile</h2>
                 <p>{data.profile}</p>
               </div>
               {/* 學歷 */}
               <div className="mt-4 text-xs">
-                <h2 className="font-bold text-base mb-1">學歷</h2>
+                <h2 className="font-bold text-base mb-1">Education</h2>
                 {data.education.map((data: any, index: number) => (
                   <div key={index} className="mt-1">
                     <h3 className="font-bold">
@@ -42,7 +42,7 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
               </div>
               {/* 工作經驗 */}
               <div className="mt-4 text-xs">
-                <h2 className="font-bold text-base mb-1">工作經驗</h2>
+                <h2 className="font-bold text-base mb-1">Job History</h2>
                 {data.experience.map((data: any, index: number) => (
                   <div key={index} className="mt-2">
                     <h3 className="font-bold">
@@ -74,7 +74,7 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
               </p>
               {/* 專業技能 */}
               <div className="mt-6 text-xs">
-                <h2 className="font-bold mb-1">專業技能</h2>
+                <h2 className="font-bold mb-1">Skills</h2>
                 {data.skill.map((data: any, index: number) => (
                   <p key={index} className="flex justify-between ">
                     <p>{data.name}</p>
