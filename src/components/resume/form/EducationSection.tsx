@@ -104,6 +104,9 @@ export default function EducationSection({
                   onChange={handleChange}
                   className="input-resume"
                 >
+                  <option value="" disabled hidden>
+                    Select
+                  </option>
                   <option>Elementary/Middle School</option>
                   <option>High school/Vocational School</option>
                   <option>Junior College</option>

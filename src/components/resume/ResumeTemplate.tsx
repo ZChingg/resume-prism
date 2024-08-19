@@ -22,46 +22,52 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
             {/* 主內容 */}
             <div className="w-3/4">
               {/* 簡歷 */}
-              <div className="mt-2 text-xs">
-                <h2 className="font-bold text-base mb-1">Profile</h2>
-                <p>{data.profile}</p>
-              </div>
+              {data.profile && (
+                <div className="mt-2 text-xs">
+                  <h2 className="font-bold text-base mb-1">Profile</h2>
+                  <p>{data.profile}</p>
+                </div>
+              )}
               {/* 學歷 */}
-              <div className="mt-4 text-xs">
-                <h2 className="font-bold text-base mb-1">Education</h2>
-                {data.education.map((data: any, index: number) => (
-                  <div key={index} className="mt-1">
-                    <h3 className="font-bold">
-                      {data.school},<span className="ml-5">{data.major}</span>
-                      <span className="ml-3">{data.degree}</span>
-                    </h3>
-                    <p className="text-xs text-gray-400">{`${data.startDate} ~ ${data.endDate}`}</p>
-                    <p>{data.description}</p>
-                  </div>
-                ))}
-              </div>
+              {data.education && data.education.length > 0 && (
+                <div className="mt-4 text-xs">
+                  <h2 className="font-bold text-base mb-1">Education</h2>
+                  {data.education.map((data: any, index: number) => (
+                    <div key={index} className="mt-1">
+                      <h3 className="font-bold">
+                        {data.school},<span className="ml-5">{data.major}</span>
+                        <span className="ml-3">{data.degree}</span>
+                      </h3>
+                      <p className="text-2xs text-gray-400 font-bold">{`${data.startDate} ~ ${data.endDate}`}</p>
+                      <p>{data.description}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
               {/* 工作經驗 */}
-              <div className="mt-4 text-xs">
-                <h2 className="font-bold text-base mb-1">Job History</h2>
-                {data.experience.map((data: any, index: number) => (
-                  <div key={index} className="mt-2">
-                    <h3 className="font-bold">
-                      {data.position},
-                      <span className="ml-5">{data.company}</span>
-                    </h3>
-                    <p className="text-xs text-gray-400">{`${data.startDate} ~ ${data.endDate}`}</p>
-                    <p>{data.description}</p>
-                  </div>
-                ))}
-              </div>
+              {data.experience && data.experience.length > 0 && (
+                <div className="mt-4 text-xs">
+                  <h2 className="font-bold text-base mb-1">Job History</h2>
+                  {data.experience.map((data: any, index: number) => (
+                    <div key={index} className="mt-2">
+                      <h3 className="font-bold">
+                        {data.position},
+                        <span className="ml-5">{data.company}</span>
+                      </h3>
+                      <p className="text-2xs text-gray-400 font-bold">{`${data.startDate} ~ ${data.endDate}`}</p>
+                      <p>{data.description}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="mb-5"></div>
             </div>
             {/* 側邊欄 */}
             <div className="w-1/4 pl-5 mt-9">
               <p className="text-xs">{data.birthDate}</p>
               <p className="text-xs">{data.phone}</p>
-              <p className="text-xs">{data.email}</p>
-              <p className="text-xs">
+              <p className="text-xs break-words">{data.email}</p>
+              {/*<p className="text-xs break-words">
                 <a
                   href={data.websiteLink}
                   target="_blank"
@@ -71,17 +77,24 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
                   <span>{data.website}</span>
                   <IoLinkOutline />
                 </a>
-              </p>
+              </p>*/}
               {/* 專業技能 */}
-              <div className="mt-6 text-xs">
-                <h2 className="font-bold mb-1">Skills</h2>
-                {data.skill.map((data: any, index: number) => (
-                  <p key={index} className="flex justify-between ">
-                    <p>{data.name}</p>
-                    <p>{data.level}</p>
-                  </p>
-                ))}
-              </div>
+              {data.skill && data.skill.length > 0 && (
+                <div className="mt-6 text-xs">
+                  <h2 className="font-bold mb-1">Skills</h2>
+                  {data.skill.map((data: any, index: number) => (
+                    <>
+                      <p key={index} className="flex justify-between ">
+                        <p className="break-words">{data.name}</p>
+                        <p className="text-2xs break-words">{data.level}</p>
+                      </p>
+                      <p className="text-2xs text-gray-400 break-words mb-1">
+                        {data.description}
+                      </p>
+                    </>
+                  ))}
+                </div>
+              )}
               <div className="mb-5"></div>
             </div>
           </div>

@@ -53,7 +53,7 @@ export default function SkillSection({
           )}
         </div>
         <div className="flex items-center space-x-3">
-          <button onClick={onDelete}>
+          <button type="button" onClick={onDelete}>
             <FaTrashAlt />
           </button>
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
@@ -82,6 +82,9 @@ export default function SkillSection({
                   onChange={handleChange}
                   className="input-resume"
                 >
+                  <option value="" disabled hidden>
+                    Select
+                  </option>
                   <option>Beginner</option>
                   <option>Intermediate</option>
                   <option>Expert</option>

@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ExperienceSection from "./ExperienceSection";
-import EducationSection from "./EducationSection";
-import SkillSection from "./SkillSection";
+import ExperienceSection from "./form/ExperienceSection";
+import EducationSection from "./form/EducationSection";
+import SkillSection from "./form/SkillSection";
+import AddSection from "./form/AddSection";
+import CustomSection from "./form/CustomSection";
 
 interface ResumeFormProps {
   onChange: (data: any) => void;
@@ -46,14 +48,48 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     experience: [initialExperience], // 若初始無資料就刪除 // 陣列中裝好幾筆工作資料
     education: [initialEducation],
     skill: [initialSkill],
+    customSection: [],
+    courses: [],
+    internships: [],
+    hobbies: [],
+    languages: [],
+    references: [],
   });
+
+  const [addedBlocks, setAddedBlocks] = useState<string[]>([]);
 
   // 在組件初始化時檢查是否有 initialData
   useEffect(() => {
     if (initialData) {
       setFormData(initialData); // 如果有 initialData，使用它來初始化表單
+
+      // 如果某个区块有数据（即使是空数据），将其添加到 addedBlocks 中
+      // const blocksToAdd: string[] = [];
+      // Object.keys(initialData).forEach((key) => {
+      //   if (Array.isArray(initialData[key]) && initialData[key].length > 0) {
+      //     blocksToAdd.push(key);
+      //   }
+      // });
+      // setAddedBlocks(blocksToAdd);
     }
   }, [initialData]);
+
+  // 增加大區塊
+  // 首先說明 block 參數是 formData 中的某個 key
+  type FormDataKeys = keyof typeof formData;
+  const handleAddBlock = (block: FormDataKeys) => {
+    // 如果 block 对应的是 formData 中的某个数组字段，则向其中添加新项
+    if (Array.isArray(formData[block])) {
+      setFormData({
+        ...formData,
+        [block]: [...(formData[block] as any[]), {}],
+      });
+    }
+    // 如果这个 block 还没有被添加到页面中（通过 addedBlocks 进行跟踪）
+    if (!addedBlocks.includes(block)) {
+      setAddedBlocks([...addedBlocks, block]);
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -63,8 +99,8 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     onChange({ ...formData, [name]: value }); // 將更新後的數據回傳給父元素
   };
 
-  // 控制收合表單
-  // 增加區塊
+  // 控制區塊內細項收合表單
+  // 增加細項
   const handleAddSection = (
     key: "experience" | "education" | "skill",
     initialData: any
@@ -75,7 +111,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     });
   };
 
-  // 修改區塊
+  // 修改細項
   const handleChangeSection = (
     key: "experience" | "education" | "skill",
     index: number,
@@ -88,7 +124,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     onChange({ ...formData, [key]: updatedDatas });
   };
 
-  // 刪除區塊
+  // 刪除細項
   const handleDeleteSection = (
     key: "experience" | "education" | "skill",
     index: number
@@ -144,7 +180,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
             />
           </label>
         </div>
-        <div className="flex space-x-6">
+        {/*<div className="flex space-x-6">
           <label className="flex-1">
             Blog
             <input
@@ -165,7 +201,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
               className="input-resume"
             />
           </label>
-        </div>
+  </div>*/}
         <label>
           <h2 className="title">Professional Summary</h2>
           <textarea
@@ -253,6 +289,10 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
           </button>
         </div>
       </form>
+      {/*
+      {addedBlocks.includes("customSection") && <CustomSection />}
+      {/* 在表单底部显示 "Add Section" 部分 }
+        <AddSection onAddBlock={handleAddBlock} /> */}
     </div>
   );
 }

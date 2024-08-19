@@ -20,13 +20,15 @@ export default function Navigation() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
-  if (user.photoURL) {
-    const src = user.photoURL;
-  } else {
-    const src = "";
-  }
+  // 控制註冊與登入popup狀態
+  const [activePopup, setActivePopup] = useState<"login" | "signup" | null>(
+    null
+  );
+  const togglePopup = (popup: "login" | "signup" | null) => {
+    setActivePopup(popup);
+  };
 
-  // 控制收合表單狀態
+  // 控制收合會員表單狀態
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -58,10 +60,11 @@ export default function Navigation() {
   const handleLogout = () => {
     dispatch(setLogout());
     auth.signOut();
+    setIsDropdownOpen(false);
   };
 
   // 不同頁面的 navigation
-  // 登入註冊
+  // Home 頁
   const renderButtons = () => {
     if (pathname === "/") {
       if (user.login) {
@@ -77,15 +80,25 @@ export default function Navigation() {
       } else {
         return (
           <>
-            <LoginPopup />
-            <SignupPopup />
+            <button
+              onClick={() => togglePopup("login")}
+              className="hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10"
+            >
+              Log In
+            </button>
+            <button
+              onClick={() => togglePopup("signup")}
+              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded h-10 ml-3"
+            >
+              Sign Up
+            </button>
           </>
         );
       }
     }
   };
 
-  // 會員表單
+  // 會員下拉表
   const userProfile = () => {
     if (user.login) {
       return (
@@ -143,6 +156,18 @@ export default function Navigation() {
         {renderButtons()}
         {userProfile()}
       </div>
+      {activePopup === "login" && (
+        <LoginPopup
+          onSignupClick={() => togglePopup("signup")}
+          onClose={() => togglePopup(null)}
+        />
+      )}
+      {activePopup === "signup" && (
+        <SignupPopup
+          onLoginClick={() => togglePopup("login")}
+          onClose={() => togglePopup(null)}
+        />
+      )}
     </div>
   );
 }
