@@ -79,7 +79,7 @@ export default function ResumePage() {
             website: "",
             websiteLink: "",
             profile: "",
-            experience: [],
+            job: [],
             education: [],
             skill: [],
           }

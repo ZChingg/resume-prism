@@ -13,7 +13,7 @@ interface SkillSectionProps {
   onDelete: () => void;
 }
 
-export default function SkillSection({
+export default function SkillItems({
   // 物件的解構賦值是以名字來取用的，故順序不重要
   skill,
   onChange,

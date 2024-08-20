@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 
-interface Experience {
+interface Job {
   position: string;
   company: string;
   startDate: string;
@@ -9,18 +9,18 @@ interface Experience {
   description: string;
 }
 
-interface ExperienceSectionProps {
-  experience: Experience;
-  onChange: (updatedExperience: Experience) => void;
+interface JobItemsProps {
+  job: Job;
+  onChange: (updatedJob: Job) => void;
   onDelete: () => void;
 }
 
-export default function ExperienceSection({
+export default function JobItems({
   // 物件的解構賦值是以名字來取用的，故順序不重要
-  experience,
+  job,
   onChange,
   onDelete,
-}: ExperienceSectionProps) {
+}: JobItemsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // 偵測使用者是否點擊開合
@@ -32,18 +32,15 @@ export default function ExperienceSection({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    onChange({ ...experience, [name]: value });
+    onChange({ ...job, [name]: value });
   };
 
   // 判斷所有欄位是否為空
   const isEmpty =
-    !experience.position &&
-    !experience.company &&
-    !experience.startDate &&
-    !experience.endDate;
+    !job.position && !job.company && !job.startDate && !job.endDate;
 
   return (
-    <div className="border rounded mb-3 hover:border-gray-800">
+    <div className="border rounded mb-3 bg-white hover:border-gray-800">
       <div
         className="flex justify-between items-center p-4 border-gray-100 cursor-pointer"
         onClick={handleToggleExpand}
@@ -53,16 +50,16 @@ export default function ExperienceSection({
             <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
-              <h3 className="text-lg font-semibold">{experience.position}</h3>
-              <p className="text-sm">{experience.company}</p>
+              <h3 className="text-lg font-semibold">{job.position}</h3>
+              <p className="text-sm">{job.company}</p>
             </>
           )}
         </div>
         <div className="flex items-center space-x-3">
           <p className="text-gray-400 text-sm">
-            {experience.startDate && <span>{experience.startDate}</span>}
-            {(experience.startDate || experience.endDate) && " ~ "}
-            {experience.endDate && <span>{experience.endDate}</span>}
+            {job.startDate && <span>{job.startDate}</span>}
+            {(job.startDate || job.endDate) && " ~ "}
+            {job.endDate && <span>{job.endDate}</span>}
           </p>
           <button onClick={onDelete}>
             <FaTrashAlt />
@@ -80,7 +77,7 @@ export default function ExperienceSection({
                 <input
                   type="text"
                   name="position"
-                  value={experience.position}
+                  value={job.position}
                   onChange={handleChange}
                   className="input-resume"
                 />
@@ -90,7 +87,7 @@ export default function ExperienceSection({
                 <input
                   type="text"
                   name="company"
-                  value={experience.company}
+                  value={job.company}
                   onChange={handleChange}
                   className="input-resume"
                 />
@@ -102,7 +99,7 @@ export default function ExperienceSection({
                 <input
                   type="month"
                   name="startDate"
-                  value={experience.startDate}
+                  value={job.startDate}
                   onChange={handleChange}
                   className="input-resume"
                 />
@@ -112,7 +109,7 @@ export default function ExperienceSection({
                 <input
                   type="month"
                   name="endDate"
-                  value={experience.endDate}
+                  value={job.endDate}
                   onChange={handleChange}
                   className="input-resume"
                 />
@@ -122,7 +119,7 @@ export default function ExperienceSection({
               Description
               <textarea
                 name="description"
-                value={experience.description}
+                value={job.description}
                 onChange={handleChange}
                 className="input-resume"
                 placeholder="List relevant experience and quantify primary achievements"

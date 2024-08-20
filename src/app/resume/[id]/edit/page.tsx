@@ -12,10 +12,12 @@ import { RiFileDownloadLine } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useAppSelector } from "@/lib/hooks";
 
 export default function EditResume() {
   const router = useRouter();
   const { id } = useParams();
+  const user = useAppSelector((state) => state.user).profile;
   const [resumeData, setResumeData] = useState<any>({
     resumeName: "New Resume",
     name: "",
@@ -25,7 +27,7 @@ export default function EditResume() {
     website: "",
     websiteLink: "",
     profile: "",
-    experience: [],
+    job: [],
     education: [],
     skill: [],
   });
@@ -33,21 +35,29 @@ export default function EditResume() {
   // 從 Firestore 獲取對應的履歷資料
   useEffect(() => {
     const fetchResumeData = async () => {
-      if (id) {
-        const user = auth.currentUser;
-        if (user) {
-          const docRef = doc(db, "users", user.uid, "resumes", id as string);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            setResumeData(docSnap.data());
+      try {
+        if (id && user.login) {
+          const user = auth.currentUser;
+          if (user) {
+            const docRef = doc(db, "users", user.uid, "resumes", id as string);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              setResumeData(docSnap.data());
+            } else {
+              router.push("/");
+            }
+          } else {
+            console.log("No authenticated user found.");
           }
         }
+      } catch (error) {
+        console.error("Error fetching resume data:", error);
       }
     };
     fetchResumeData();
-  }, [id]);
+  }, [id, user, router]);
 
-  // 更改履歷
+  // 更改履歷內容
   const handleFormChange = (data: any) => {
     setResumeData(data);
   };

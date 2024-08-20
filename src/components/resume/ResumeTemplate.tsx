@@ -45,10 +45,10 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
                 </div>
               )}
               {/* 工作經驗 */}
-              {data.experience && data.experience.length > 0 && (
+              {data.job && data.job.length > 0 && (
                 <div className="mt-4 text-xs">
                   <h2 className="font-bold text-base mb-1">Job History</h2>
-                  {data.experience.map((data: any, index: number) => (
+                  {data.job.map((data: any, index: number) => (
                     <div key={index} className="mt-2">
                       <h3 className="font-bold">
                         {data.position},
