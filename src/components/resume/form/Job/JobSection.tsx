@@ -64,7 +64,11 @@ export default function JobSection({ job = [], onChange }: JobSectionProps) {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      className="mb-3"
+                      className={`mb-3 ${
+                        snapshot.isDragging
+                          ? "opacity-60	drop-shadow-lg"
+                          : "opacity-100"
+                      }`}
                     >
                       <JobItems
                         job={data}
@@ -72,6 +76,7 @@ export default function JobSection({ job = [], onChange }: JobSectionProps) {
                           handleChangeItem(index, updatedJob)
                         }
                         onDelete={() => handleDeleteItem(index)}
+                        isDragging={snapshot.isDragging}
                       />
                     </div>
                   )}

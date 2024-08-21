@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
+import { RiDraggable } from "react-icons/ri";
 
 interface Skill {
   name: string;
@@ -11,6 +12,7 @@ interface SkillSectionProps {
   skill: Skill;
   onChange: (updatedSkill: Skill) => void;
   onDelete: () => void;
+  isDragging: boolean;
 }
 
 export default function SkillItems({
@@ -18,6 +20,7 @@ export default function SkillItems({
   skill,
   onChange,
   onDelete,
+  isDragging,
 }: SkillSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -26,9 +29,11 @@ export default function SkillItems({
     setIsExpanded(!isExpanded);
   };
 
-  const handleChange = (e: any) => {
-    // 原是 e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     onChange({ ...skill, [name]: value });
   };
@@ -37,7 +42,21 @@ export default function SkillItems({
   const isEmpty = !skill.name && !skill.level;
 
   return (
-    <div className="border rounded mb-3 hover:border-gray-800">
+    <div className="border rounded mb-3 hover:border-gray-800 relative group">
+      <div className="absolute left-[-30px] top-[16px]">
+        <RiDraggable
+          className={`h-7 w-7 p-1 ${
+            isDragging ? "text-gray-800" : "text-white"
+          } group-hover:text-gray-800`}
+        />
+      </div>
+      <button onClick={onDelete} className="absolute right-[-40px] top-[10px]">
+        <FaTrashAlt
+          className={`m-3 ${
+            isDragging ? "text-gray-800" : "text-white"
+          } group-hover:text-gray-800`}
+        />
+      </button>
       <div
         className="flex justify-between items-center p-4 border-gray-100 cursor-pointer"
         onClick={handleToggleExpand}
@@ -53,9 +72,6 @@ export default function SkillItems({
           )}
         </div>
         <div className="flex items-center space-x-3">
-          <button type="button" onClick={onDelete}>
-            <FaTrashAlt />
-          </button>
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
         </div>
       </div>

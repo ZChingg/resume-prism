@@ -1,5 +1,4 @@
 import { forwardRef } from "react";
-import { IoLinkOutline } from "react-icons/io5";
 
 const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
   ({ data }, ref) => {
@@ -82,16 +81,20 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
               {data.skill && data.skill.length > 0 && (
                 <div className="mt-6 text-xs">
                   <h2 className="font-bold mb-1">Skills</h2>
-                  {data.skill.map((data: any, index: number) => (
-                    <>
-                      <p key={index} className="flex justify-between ">
-                        <p className="break-words">{data.name}</p>
-                        <p className="text-2xs break-words">{data.level}</p>
-                      </p>
-                      <p className="text-2xs text-gray-400 break-words mb-1">
-                        {data.description}
-                      </p>
-                    </>
+                  {data.skill.map((skill: any, index: number) => (
+                    <div key={index}>
+                      <div className="flex justify-between">
+                        <span className="break-words">{skill.name}</span>
+                        <span className="text-2xs break-words">
+                          {skill.level}
+                        </span>
+                      </div>
+                      {skill.description && (
+                        <div className="text-2xs text-gray-400 break-words mb-1">
+                          {skill.description}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               )}

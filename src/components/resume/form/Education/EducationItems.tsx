@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
+import { RiDraggable } from "react-icons/ri";
 
 interface Education {
   school: string;
@@ -14,6 +15,7 @@ interface EducationSectionProps {
   education: Education;
   onChange: (updatedEducation: Education) => void;
   onDelete: () => void;
+  isDragging: boolean;
 }
 
 export default function EducationSection({
@@ -21,6 +23,7 @@ export default function EducationSection({
   education,
   onChange,
   onDelete,
+  isDragging,
 }: EducationSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -29,9 +32,11 @@ export default function EducationSection({
     setIsExpanded(!isExpanded);
   };
 
-  const handleChange = (e: any) => {
-    // 原是 e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     onChange({ ...education, [name]: value });
   };
@@ -44,7 +49,21 @@ export default function EducationSection({
     !education.endDate;
 
   return (
-    <div className="border rounded mb-3 hover:border-gray-800">
+    <div className="border rounded mb-3 hover:border-gray-800 relative group">
+      <div className="absolute left-[-30px] top-[16px]">
+        <RiDraggable
+          className={`h-7 w-7 p-1 ${
+            isDragging ? "text-gray-800" : "text-white"
+          } group-hover:text-gray-800`}
+        />
+      </div>
+      <button onClick={onDelete} className="absolute right-[-40px] top-[10px]">
+        <FaTrashAlt
+          className={`m-3 ${
+            isDragging ? "text-gray-800" : "text-white"
+          } group-hover:text-gray-800`}
+        />
+      </button>
       <div
         className="flex justify-between items-center p-4 border-gray-100 cursor-pointer"
         onClick={handleToggleExpand}
@@ -65,9 +84,6 @@ export default function EducationSection({
             {(education.startDate || education.endDate) && " ~ "}
             {education.endDate && <span>{education.endDate}</span>}
           </p>
-          <button onClick={onDelete}>
-            <FaTrashAlt />
-          </button>
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
         </div>
       </div>
