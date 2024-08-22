@@ -13,6 +13,7 @@ interface SkillSectionProps {
   onChange: (updatedSkill: Skill) => void;
   onDelete: () => void;
   isDragging: boolean;
+  dragHandleProps: any;
 }
 
 export default function SkillItems({
@@ -21,6 +22,7 @@ export default function SkillItems({
   onChange,
   onDelete,
   isDragging,
+  dragHandleProps,
 }: SkillSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -42,19 +44,19 @@ export default function SkillItems({
   const isEmpty = !skill.name && !skill.level;
 
   return (
-    <div className="border rounded mb-3 hover:border-gray-800 relative group">
-      <div className="absolute left-[-30px] top-[16px]">
+    <div className="border rounded mb-3 bg-white hover:border-gray-800 relative group/item">
+      <div className="absolute left-[-27px] top-[16px]" {...dragHandleProps}>
         <RiDraggable
           className={`h-7 w-7 p-1 ${
             isDragging ? "text-gray-800" : "text-white"
-          } group-hover:text-gray-800`}
+          } group-hover/item:text-gray-800`}
         />
       </div>
-      <button onClick={onDelete} className="absolute right-[-40px] top-[10px]">
+      <button onClick={onDelete} className="absolute right-[-38px] top-[10px]">
         <FaTrashAlt
           className={`m-3 ${
             isDragging ? "text-gray-800" : "text-white"
-          } group-hover:text-gray-800`}
+          } group-hover/item:text-gray-800`}
         />
       </button>
       <div

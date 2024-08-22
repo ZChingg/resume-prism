@@ -30,6 +30,7 @@ export default function EditResume() {
     job: [],
     education: [],
     skill: [],
+    sectionOrder: ["job", "education", "skill"],
   });
 
   // 從 Firestore 獲取對應的履歷資料
@@ -137,43 +138,48 @@ export default function EditResume() {
       <style jsx global>{`
         body {
           overflow: hidden;
+          height: 100vh;
+          touch-action: none;
+          overscroll-behavior: none;
         }
       `}</style>
-      <div className="navigation">
-        <Link href="/resume">
-          <button className="hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10 flex items-center mr-1">
-            <FiArrowLeft className="h-5 w-5 mr-1" />
-            Back
+      <div className="flex flex-col z-50 inset-0 fixed">
+        <div className="relative flex h-16	bg-white shadow-md items-center px-16 z-10 top-0 justify-end;">
+          <Link href="/resume">
+            <button className="hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10 flex items-center mr-1">
+              <FiArrowLeft className="h-5 w-5 mr-1" />
+              Back
+            </button>
+          </Link>
+          <input
+            type="text"
+            value={resumeData.resumeName}
+            ref={inputRef}
+            onChange={handleNameChange}
+            className="font-bold border-b-2 focus:outline-none focus:border-blue-500 "
+          />
+          <FaEdit
+            onClick={handleIconClick}
+            className="ml-2 cursor-pointer text-gray-400 hover:text-blue-500"
+          />
+          <button
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded ml-auto h-10"
+            onClick={handleSave}
+          >
+            Finish
           </button>
-        </Link>
-        <input
-          type="text"
-          value={resumeData.resumeName}
-          ref={inputRef}
-          onChange={handleNameChange}
-          className="font-bold border-b-2 focus:outline-none focus:border-blue-500 "
-        />
-        <FaEdit
-          onClick={handleIconClick}
-          className="ml-2 cursor-pointer text-gray-400 hover:text-blue-500"
-        />
-        <button
-          className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded ml-auto h-10"
-          onClick={handleSave}
-        >
-          Finish
-        </button>
-        <button
-          className="text-gray-400 hover:text-blue-500 rounded ml-4"
-          onClick={exportPDF}
-        >
-          <RiFileDownloadLine className="h-5 w-5" />
-          <p className="font-medium text-xs">PDF</p>
-        </button>
-      </div>
-      <div className="flex h-screen overflow-hidden bg-gray-500">
-        <ResumeForm onChange={handleFormChange} initialData={resumeData} />
-        <ResumeTemplate ref={resumeRef} data={resumeData} />
+          <button
+            className="text-gray-400 hover:text-blue-500 rounded ml-4"
+            onClick={exportPDF}
+          >
+            <RiFileDownloadLine className="h-5 w-5" />
+            <p className="font-medium text-xs">PDF</p>
+          </button>
+        </div>
+        <div className="flex flex-1 h-full relative overflow-hidden outline-none flex-row left-0 right-0 ">
+          <ResumeForm onChange={handleFormChange} initialData={resumeData} />
+          <ResumeTemplate ref={resumeRef} data={resumeData} />
+        </div>
       </div>
     </>
   );

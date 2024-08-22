@@ -1,9 +1,12 @@
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import EducationItems from "./EducationItems";
+import { RiDraggable } from "react-icons/ri";
 
 interface EducationSectionProps {
   education: any[];
   onChange: (updatedData: any) => void;
+  isDragging: boolean;
+  dragHandleProps: any;
 }
 
 const initialEducation = {
@@ -18,6 +21,8 @@ const initialEducation = {
 export default function EducationSection({
   education = [],
   onChange,
+  isDragging,
+  dragHandleProps,
 }: EducationSectionProps) {
   // 增加細項
   const handleAddItem = (initialData: any) => {
@@ -52,8 +57,16 @@ export default function EducationSection({
   };
 
   return (
-    <div className="mb-6">
-      <h2 className="title">Education</h2>
+    <div className="px-7 py-3 relative">
+      <h2 className="title peer">Education</h2>
+      <div
+        className="absolute top-3 left-[2px] text-white peer-hover:text-gray-800 hover:text-gray-800"
+        {...dragHandleProps}
+      >
+        <RiDraggable
+          className={`h-7 w-7 p-1 ${isDragging ? "text-gray-800" : ""}`}
+        />
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="EducationItems">
           {(provided) => (
@@ -68,7 +81,6 @@ export default function EducationSection({
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                       className={`mb-3 ${
                         snapshot.isDragging
                           ? "opacity-60	drop-shadow-lg"
@@ -82,6 +94,7 @@ export default function EducationSection({
                         }
                         onDelete={() => handleDeleteItem(index)}
                         isDragging={snapshot.isDragging}
+                        dragHandleProps={provided.dragHandleProps}
                       />
                     </div>
                   )}

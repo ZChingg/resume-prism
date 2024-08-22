@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
   ({ data }, ref) => {
     return (
-      <div className="w-1/2 bg-gray-500 flex justify-center overflow-y-auto items-start">
+      <div className="w-1/2 bg-gray-500 flex justify-center overflow-auto h-full items-start">
         <div
           ref={ref}
           className="bg-white mt-8 m-10 p-7 shadow-lg justify-center"

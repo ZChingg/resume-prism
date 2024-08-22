@@ -1,9 +1,12 @@
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import SkillItems from "./SkillItems";
+import { RiDraggable } from "react-icons/ri";
 
 interface SkillSectionProps {
   skill: any[];
   onChange: (updatedData: any) => void;
+  isDragging: boolean;
+  dragHandleProps: any;
 }
 
 const initialSkill = {
@@ -15,6 +18,8 @@ const initialSkill = {
 export default function SkillSection({
   skill = [],
   onChange,
+  isDragging,
+  dragHandleProps,
 }: SkillSectionProps) {
   // 增加細項
   const handleAddItem = (initialData: any) => {
@@ -49,8 +54,18 @@ export default function SkillSection({
   };
 
   return (
-    <div className="mb-6">
-      <h2 className="title">Skills</h2>
+    <div className="px-7 py-3 relative">
+      <h2 className="title peer">
+        Skills
+      </h2>
+      <div
+        className="absolute top-3 left-[2px] text-white peer-hover:text-gray-800 hover:text-gray-800"
+        {...dragHandleProps}
+      >
+        <RiDraggable
+          className={`h-7 w-7 p-1 ${isDragging ? "text-gray-800" : ""}`}
+        />
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="skillItems">
           {(provided) => (
@@ -65,7 +80,6 @@ export default function SkillSection({
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                       className={`mb-3 ${
                         snapshot.isDragging
                           ? "opacity-60	drop-shadow-lg"
@@ -79,6 +93,7 @@ export default function SkillSection({
                         }
                         onDelete={() => handleDeleteItem(index)}
                         isDragging={snapshot.isDragging}
+                        dragHandleProps={provided.dragHandleProps}
                       />
                     </div>
                   )}

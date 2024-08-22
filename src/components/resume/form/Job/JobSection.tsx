@@ -1,10 +1,13 @@
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import JobItems from "./JobItems";
+import { RiDraggable } from "react-icons/ri";
 
 interface JobSectionProps {
   // FIXME: 看是否需定義不用 any
   job: any[];
   onChange: (updatedData: any) => void;
+  isDragging: boolean;
+  dragHandleProps: any;
 }
 
 const initialJob = {
@@ -15,7 +18,12 @@ const initialJob = {
   description: "",
 };
 
-export default function JobSection({ job = [], onChange }: JobSectionProps) {
+export default function JobSection({
+  job = [],
+  onChange,
+  isDragging,
+  dragHandleProps,
+}: JobSectionProps) {
   // 增加細項
   const handleAddItem = (initialData: any) => {
     const newJob = [...job, initialData];
@@ -47,8 +55,16 @@ export default function JobSection({ job = [], onChange }: JobSectionProps) {
   };
 
   return (
-    <div className="mb-6">
-      <h2 className="title">Job History</h2>
+    <div className="px-7 py-3 relative">
+      <h2 className="title peer">Job History</h2>
+      <div
+        className="absolute top-3 left-[2px] text-white peer-hover:text-gray-800 hover:text-gray-800"
+        {...dragHandleProps}
+      >
+        <RiDraggable
+          className={`h-7 w-7 p-1 ${isDragging ? "text-gray-800" : ""}`}
+        />
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="jobItems">
           {(provided) => (
@@ -63,7 +79,6 @@ export default function JobSection({ job = [], onChange }: JobSectionProps) {
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                       className={`mb-3 ${
                         snapshot.isDragging
                           ? "opacity-60	drop-shadow-lg"
@@ -77,6 +92,7 @@ export default function JobSection({ job = [], onChange }: JobSectionProps) {
                         }
                         onDelete={() => handleDeleteItem(index)}
                         isDragging={snapshot.isDragging}
+                        dragHandleProps={provided.dragHandleProps}
                       />
                     </div>
                   )}

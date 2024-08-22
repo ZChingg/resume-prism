@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import JobSection from "./form/Job/JobSection";
 import EducationSection from "./form/Education/EducationSection";
 import SkillSection from "./form/Skill/SkillSection";
@@ -24,18 +24,21 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     job: [],
     education: [],
     skill: [],
-    customSection: [],
-    courses: [],
-    internships: [],
-    hobbies: [],
-    languages: [],
-    references: [],
+    sectionOrder: ["job", "education", "skill"],
   });
+
+  // 初始化 sectionOrder 的 state
+  const [sectionOrder, setSectionOrder] = useState<
+    Array<"job" | "education" | "skill">
+  >(["job", "education", "skill"]);
 
   // 在組件初始化時檢查是否有 initialData
   useEffect(() => {
     if (initialData) {
       setFormData(initialData); // 如果有 initialData，使用它來初始化表單
+      if (initialData.sectionOrder) {
+        setSectionOrder(initialData.sectionOrder);
+      }
     }
   }, [initialData]);
 
@@ -44,7 +47,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value }); // 包含舊的 formdata 與更新資料
-    onChange({ ...formData, [name]: value }); // 將更新後的數據回傳給父元素
+    onChange({ ...formData, [name]: value, sectionOrder }); // 將更新後的數據回傳給父元素
   };
 
   // 處理區塊
@@ -56,91 +59,140 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     onChange({ ...formData, [key]: updatedData });
   };
 
-  const handleDragEnd = (event: any) => {
-    const { source, destination } = event; // source, destination: 被拖曳的卡片原先, 最終的 DroppableId 與順序
+  // 拖曳效果
+  const onDragEnd = (result: any) => {
+    const { source, destination } = result; // source, destination: 被拖曳的卡片原先, 最終的 DroppableId 與順序
     if (!destination) return;
 
     // 用 splice 處理拖曳後資料, 組合出新的 items
-    const newItems = Array.from(formData.job); // 拷貝新的 items (來自 state)
-    const [remove] = newItems.splice(source.index, 1); // 從 source.index 剪下被拖曳的元素
-    newItems.splice(destination.index, 0, remove); // 在 destination.index 位置貼上被拖曳的元素
-    setFormData({ ...formData, job: newItems }); // 設定新 items
-    onChange({ ...formData, job: newItems });
+    const newSections = Array.from(sectionOrder); // 拷貝新的 items (來自 state)
+    const [remove] = newSections.splice(source.index, 1); // 從 source.index 剪下被拖曳的元素
+    newSections.splice(destination.index, 0, remove); // 在 destination.index 位置貼上被拖曳的元素
+
+    setSectionOrder(newSections);
+
+    // 更新 formData 中的 sections 顺序
+    const updatedFormData = { ...formData }; // 淺拷貝，避免直接修改原始 formData
+    newSections.forEach((section) => {
+      updatedFormData[section] = formData[section]; // 將原 formData 中每個 section 的數據按新順序重新賦值到 updatedFormData
+    });
+
+    setFormData({ ...updatedFormData, sectionOrder: newSections }); // 保存新的表单数据
+    onChange({ ...updatedFormData, sectionOrder: newSections });
   };
 
   return (
-    <div className="bg-white w-1/2 pt-6 p-16 overflow-y-scroll">
-      <form>
-        <label>
-          Name
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="input-resume"
-          />
-        </label>
-        <label>
-          Date of birth
-          <input
-            type="date"
-            name="birthDate"
-            value={formData.birthDate}
-            onChange={handleChange}
-            className="input-resume"
-            placeholder="YYYY/MM/DD"
-          />
-        </label>
-        <div className="flex space-x-6">
-          <label className="flex-1">
-            Phone
+    <div className="bg-white w-1/2 outline-none h-full overflow-auto">
+      <form className="pt-6 p-4">
+        <div className="px-7">
+          <label>
+            Name
             <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
+              type="text"
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               className="input-resume"
             />
           </label>
-          <label className="flex-1">
-            Email
+          <label>
+            Date of birth
             <input
-              type="email"
-              name="email"
-              value={formData.email}
+              type="date"
+              name="birthDate"
+              value={formData.birthDate}
               onChange={handleChange}
               className="input-resume"
+              placeholder="YYYY/MM/DD"
+            />
+          </label>
+          <div className="flex space-x-6">
+            <label className="flex-1">
+              Phone
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="input-resume"
+              />
+            </label>
+            <label className="flex-1">
+              Email
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input-resume"
+              />
+            </label>
+          </div>
+          <label>
+            <h2 className="title">Professional Summary</h2>
+            <textarea
+              name="profile"
+              value={formData.profile}
+              onChange={handleChange}
+              className="input-resume mt-0"
+              placeholder="Summarize your Personal Traits, Experience, Skills, and Career Goals"
+              rows={4}
             />
           </label>
         </div>
-        <label>
-          <h2 className="title">Professional Summary</h2>
-          <textarea
-            name="profile"
-            value={formData.profile}
-            onChange={handleChange}
-            className="input-resume mt-0"
-            placeholder="Summarize your Personal Traits, Experience, Skills, and Career Goals"
-            rows={4}
-          />
-        </label>
-        <JobSection
-          job={formData.job}
-          onChange={(
-            updatedJob // 傳遞由 JobSection 產生的 updatedJob
-          ) => handleItemChange("job", updatedJob)}
-        />
-        <EducationSection
-          education={formData.education}
-          onChange={(updatedEducation) =>
-            handleItemChange("education", updatedEducation)
-          }
-        />
-        <SkillSection
-          skill={formData.skill}
-          onChange={(updatedSkill) => handleItemChange("skill", updatedSkill)}
-        />
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="resumeSections">
+            {(provided) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {sectionOrder.map((section, index) => (
+                  <Draggable key={section} draggableId={section} index={index}>
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        className={`bg-white mb-2 ${
+                          snapshot.isDragging ? "opacity-60	drop-shadow-lg" : ""
+                        }`}
+                      >
+                        {section === "job" && (
+                          <JobSection
+                            job={formData.job}
+                            onChange={(updatedJob) =>
+                              handleItemChange("job", updatedJob)
+                            }
+                            isDragging={snapshot.isDragging}
+                            dragHandleProps={provided.dragHandleProps}
+                          />
+                        )}
+                        {section === "education" && (
+                          <EducationSection
+                            education={formData.education}
+                            onChange={(updatedEducation) =>
+                              handleItemChange("education", updatedEducation)
+                            }
+                            isDragging={snapshot.isDragging}
+                            dragHandleProps={provided.dragHandleProps}
+                          />
+                        )}
+                        {section === "skill" && (
+                          <SkillSection
+                            skill={formData.skill}
+                            onChange={(updatedSkill) =>
+                              handleItemChange("skill", updatedSkill)
+                            }
+                            isDragging={snapshot.isDragging}
+                            dragHandleProps={provided.dragHandleProps}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </form>
       {/*
       {addedBlocks.includes("customSection") && <CustomSection />}
