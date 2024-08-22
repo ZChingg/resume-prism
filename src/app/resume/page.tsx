@@ -82,6 +82,7 @@ export default function ResumePage() {
             job: [],
             education: [],
             skill: [],
+            sectionOrder: ["education", "job", "skill"],
           }
         );
         router.push(`/resume/${docRef.id}/edit/`);

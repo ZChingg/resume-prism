@@ -28,37 +28,52 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
                 </div>
               )}
               {/* 學歷 */}
-              {data.education && data.education.length > 0 && (
-                <div className="mt-4 text-xs">
-                  <h2 className="font-bold text-base mb-1">Education</h2>
-                  {data.education.map((data: any, index: number) => (
-                    <div key={index} className="mt-1">
-                      <h3 className="font-bold">
-                        {data.school},<span className="ml-5">{data.major}</span>
-                        <span className="ml-3">{data.degree}</span>
-                      </h3>
-                      <p className="text-2xs text-gray-400 font-bold">{`${data.startDate} ~ ${data.endDate}`}</p>
-                      <p>{data.description}</p>
+              {data.sectionOrder?.map((section: string) => (
+                <div key={section}>
+                  {section === "education" && data.education.length > 0 && (
+                    <div className="mt-4 text-xs">
+                      <h2 className="font-bold text-base mb-1">Education</h2>
+                      {data.education.map((data: any, index: number) => (
+                        <div key={index} className="mt-1">
+                          <h3 className="font-bold">
+                            {data.school}
+                            {(data.major || data.degree) && ","}
+                            <span className="ml-5">{data.major}</span>
+                            <span className="ml-3">{data.degree}</span>
+                          </h3>
+                          <p className="text-2xs text-gray-400 font-bold">
+                            {data.startDate && <span>{data.startDate}</span>}
+                            {(data.startDate || data.endDate) && " ~ "}
+                            {data.endDate && <span>{data.endDate}</span>}
+                          </p>
+                          <p>{data.description}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              )}
-              {/* 工作經驗 */}
-              {data.job && data.job.length > 0 && (
-                <div className="mt-4 text-xs">
-                  <h2 className="font-bold text-base mb-1">Job History</h2>
-                  {data.job.map((data: any, index: number) => (
-                    <div key={index} className="mt-2">
-                      <h3 className="font-bold">
-                        {data.position},
-                        <span className="ml-5">{data.company}</span>
-                      </h3>
-                      <p className="text-2xs text-gray-400 font-bold">{`${data.startDate} ~ ${data.endDate}`}</p>
-                      <p>{data.description}</p>
+                  )}
+                  {/* 工作經驗 */}
+                  {section === "job" && data.job.length > 0 && (
+                    <div className="mt-4 text-xs">
+                      <h2 className="font-bold text-base mb-1">Job History</h2>
+                      {data.job.map((data: any, index: number) => (
+                        <div key={index} className="mt-1">
+                          <h3 className="font-bold">
+                            {data.position}
+                            {data.company && ","}
+                            <span className="ml-5">{data.company}</span>
+                          </h3>
+                          <p className="text-2xs text-gray-400 font-bold">
+                            {data.startDate && <span>{data.startDate}</span>}
+                            {(data.startDate || data.endDate) && " ~ "}
+                            {data.endDate && <span>{data.endDate}</span>}
+                          </p>
+                          <p>{data.description}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              )}
+              ))}
               <div className="mb-5"></div>
             </div>
             {/* 側邊欄 */}

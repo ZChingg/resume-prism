@@ -18,20 +18,7 @@ export default function EditResume() {
   const router = useRouter();
   const { id } = useParams();
   const user = useAppSelector((state) => state.user).profile;
-  const [resumeData, setResumeData] = useState<any>({
-    resumeName: "New Resume",
-    name: "",
-    birthDate: "",
-    email: "",
-    phone: "",
-    website: "",
-    websiteLink: "",
-    profile: "",
-    job: [],
-    education: [],
-    skill: [],
-    sectionOrder: ["job", "education", "skill"],
-  });
+  const [resumeData, setResumeData] = useState<any>({});
 
   // 從 Firestore 獲取對應的履歷資料
   useEffect(() => {

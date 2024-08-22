@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import JobSection from "./form/Job/JobSection";
 import EducationSection from "./form/Education/EducationSection";
 import SkillSection from "./form/Skill/SkillSection";
+import PhotoUpload from "./PhotoUpload";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 interface ResumeFormProps {
@@ -24,13 +25,14 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     job: [],
     education: [],
     skill: [],
-    sectionOrder: ["job", "education", "skill"],
+    photoURL: "",
+    sectionOrder: ["education", "job", "skill"],
   });
 
   // 初始化 sectionOrder 的 state
   const [sectionOrder, setSectionOrder] = useState<
-    Array<"job" | "education" | "skill">
-  >(["job", "education", "skill"]);
+    Array<"education" | "job" | "skill">
+  >(["education", "job", "skill"]);
 
   // 在組件初始化時檢查是否有 initialData
   useEffect(() => {
@@ -47,12 +49,18 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value }); // 包含舊的 formdata 與更新資料
-    onChange({ ...formData, [name]: value, sectionOrder }); // 將更新後的數據回傳給父元素
+    onChange({ ...formData, [name]: value }); // 將更新後的數據回傳給父元素
   };
 
-  // 處理區塊
+  // 處理上傳照片改變
+  const handlePhotoUpload = (url: string) => {
+    setFormData({ ...formData, photoURL: url });
+    onChange({ ...formData, photoURL: url });
+  };
+
+  // 處理區塊拖移改變
   const handleItemChange = (
-    key: "job" | "education" | "skill",
+    key: "education" | "job" | "skill",
     updatedData: any
   ) => {
     setFormData({ ...formData, [key]: updatedData });
@@ -77,7 +85,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
       updatedFormData[section] = formData[section]; // 將原 formData 中每個 section 的數據按新順序重新賦值到 updatedFormData
     });
 
-    setFormData({ ...updatedFormData, sectionOrder: newSections }); // 保存新的表单数据
+    setFormData({ ...updatedFormData, sectionOrder: newSections });
     onChange({ ...updatedFormData, sectionOrder: newSections });
   };
 
@@ -85,16 +93,22 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     <div className="bg-white w-1/2 outline-none h-full overflow-auto">
       <form className="pt-6 p-4">
         <div className="px-7">
-          <label>
-            Name
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="input-resume"
+          <div className="flex space-x-6">
+            <label className="flex-1">
+              Name
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="input-resume"
+              />
+            </label>
+            <PhotoUpload
+              photoURL={formData.photoURL}
+              onChange={handlePhotoUpload}
             />
-          </label>
+          </div>
           <label>
             Date of birth
             <input
