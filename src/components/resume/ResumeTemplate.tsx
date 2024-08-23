@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import Image from "next/image";
 
 const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
   ({ data }, ref) => {
@@ -6,16 +7,26 @@ const ResumeTemplate = forwardRef<HTMLDivElement, { data: any }>(
       <div className="w-1/2 bg-gray-500 flex justify-center overflow-auto h-full items-start">
         <div
           ref={ref}
-          className="bg-white mt-8 m-10 p-7 shadow-lg justify-center"
+          className="bg-white mt-8 m-10 p-7 shadow-lg justify-center rounded"
           style={{
             width: "595px",
             minHeight: "842px",
             height: "auto",
           }}
         >
-          <div className="flex items-center space-x-8">
-            <p className="font-bold text-2xl mb-4">{data.name}</p>
-            {/* <div className="bg-purple-500 text-white text-2xl w-16 h-16 rounded-full flex items-center justify-center mb-4"></div> */}
+          <div className="flex items-center space-x-4 mb-3">
+            {data.photoURL && (
+              <div className="w-14 h-14">
+                <Image
+                  src={data.photoURL}
+                  alt="Profile"
+                  width={500}
+                  height={500}
+                  className="w-full h-full object-cover rounded"
+                />
+              </div>
+            )}
+            <p className="font-bold text-2xl">{data.name}</p>
           </div>
           <div className="flex">
             {/* 主內容 */}
