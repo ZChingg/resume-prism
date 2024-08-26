@@ -7,6 +7,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import ResumeForm from "@/components/resume/ResumeForm";
 import ResumeTemplate from "@/components/resume/ResumeTemplate";
+import Sidebar from "@/components/resume/Sidebar"; // 导入新的 Sidebar 组件
 import { FiArrowLeft } from "react-icons/fi";
 import { RiFileDownloadLine } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
@@ -73,6 +74,11 @@ export default function EditResume() {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleIconClick = () => {
     inputRef.current?.select();
+  };
+
+  // 更換模板
+  const handleTemplateChange = (templateId: string) => {
+    setResumeData({ ...resumeData, selectedTemplate: templateId });
   };
 
   // 匯出 PDF // html2canvas 將 HTML 轉為圖像，jspdf 導出為 pdf 檔
@@ -164,6 +170,7 @@ export default function EditResume() {
           </button>
         </div>
         <div className="flex flex-1 h-full relative overflow-hidden outline-none flex-row left-0 right-0 ">
+          <Sidebar onChange={handleTemplateChange} />
           <ResumeForm onChange={handleFormChange} initialData={resumeData} />
           <ResumeTemplate ref={resumeRef} data={resumeData} />
         </div>

@@ -151,7 +151,7 @@ export default function Navigation() {
       <Link href="/" className="flex items-center space-x-2">
         <IoPrism className="h-8 w-8" />
         <span className="text-lg font-bold">ResumePrism</span>
-      </Link>{" "}
+      </Link>
       <div className="ml-auto flex relative">
         {renderButtons()}
         {userProfile()}

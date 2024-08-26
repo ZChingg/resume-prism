@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import JobSection from "./form/Job/JobSection";
 import EducationSection from "./form/Education/EducationSection";
 import SkillSection from "./form/Skill/SkillSection";
-import PhotoUpload from "./PhotoUpload";
+import PhotoUpload from "./form/PhotoUpload";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 interface ResumeFormProps {

@@ -13,13 +13,16 @@ import {
 import { auth, db } from "@/lib/firebase";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import Navigation from "@/components/Navigation";
+import TemplateModal from "@/components/resume/TemplateModal";
 import { GoPlus } from "react-icons/go";
-import { FaEdit } from "react-icons/fa";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { SiGoogledocs } from "react-icons/si";
+import { RiSparkling2Line } from "react-icons/ri";
 
 export default function ResumePage() {
   const [resumes, setResumes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const state = useAppSelector((state) => state.user);
 
@@ -62,8 +65,13 @@ export default function ResumePage() {
     }
   }, [state.profile.login]);
 
+  // 選擇模板
+  const handleSelectTemplate = () => {
+    setIsModalOpen(true);
+  };
+
   // 建立新履歷
-  const handleCreateResume = async () => {
+  const handleCreateResume = async (templateId: string) => {
     try {
       const user = auth.currentUser;
       if (user) {
@@ -83,6 +91,7 @@ export default function ResumePage() {
             education: [],
             skill: [],
             sectionOrder: ["education", "job", "skill"],
+            selectedTemplate: templateId,
           }
         );
         router.push(`/resume/${docRef.id}/edit/`);
@@ -123,7 +132,7 @@ export default function ResumePage() {
     <>
       <style jsx global>{`
         body {
-          background-color: rgb(249 250 251);
+          background-color: #f8f8f8;
         }
       `}</style>
       <Navigation />
@@ -131,7 +140,7 @@ export default function ResumePage() {
         <div className="flex items-center justify-between mt-5">
           <h1 className="text-2xl font-bold">My Resumes</h1>
           <button
-            onClick={handleCreateResume}
+            onClick={handleSelectTemplate}
             className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-4 rounded flex items-center"
           >
             <GoPlus className="h-5 w-5 mr-1" />
@@ -140,7 +149,21 @@ export default function ResumePage() {
         </div>
         <hr className="border mt-6 mb-6"></hr>
         {resumes.length === 0 ? (
-          <p>No resumes found. Create a new resume to get started!</p>
+          <div className="h-40 border border-gray-100 bg-white shadow-md shadow-gray-200 p-4 rounded flex flex-col items-center justify-center">
+            <RiSparkling2Line className="h-5 w-5 text-blue-600 opacity-30" />
+            <SiGoogledocs className="h-10 w-10 text-blue-600 opacity-30" />
+            <p className="mt-1">You don’t have a resume yet.</p>
+            <p className="text-sm text-gray-500">
+              Create a new resume to get started!
+            </p>
+            <button
+              onClick={handleSelectTemplate}
+              className=" hover:bg-gray-100 text-blue-600 py-1 px-4 rounded flex items-center mt-2"
+            >
+              <GoPlus className="h-5 w-5 mr-1" />
+              Create resume
+            </button>
+          </div>
         ) : (
           <ul className="grid grid-cols-2 gap-x-5 gap-y-5 mb-5">
             {resumes.map((resume) => (
@@ -175,6 +198,11 @@ export default function ResumePage() {
           </ul>
         )}
       </div>
+      <TemplateModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSelectTemplate={handleCreateResume}
+      />
     </>
   );
 }
