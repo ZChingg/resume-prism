@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
-import { Skill } from "@/components/editPage/types";
+import { Skill } from "@/components/types";
 
 interface SkillSectionProps {
   skill: Skill;
