@@ -5,9 +5,9 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
-import ResumeForm from "@/components/resume/ResumeForm";
-import ResumeTemplate from "@/components/resume/ResumeTemplate";
-import Sidebar from "@/components/resume/Sidebar"; // 导入新的 Sidebar 组件
+import ResumeForm from "@/components/editPage/ResumeForm";
+import ResumeTemplate from "@/components/editPage/ResumeTemplate";
+import Sidebar from "@/components/editPage/Sidebar"; // 导入新的 Sidebar 组件
 import { FiArrowLeft } from "react-icons/fi";
 import { RiFileDownloadLine } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";

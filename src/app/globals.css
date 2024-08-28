@@ -30,4 +30,10 @@ body {
   .title{
     @apply text-lg font-semibold mb-3 cursor-default;
   }
+  ul{
+    @apply list-disc list-inside	
+  }
+  ol{
+    @apply list-decimal list-inside	
+  }
 }

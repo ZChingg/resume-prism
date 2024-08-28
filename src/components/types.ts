@@ -11,11 +11,15 @@ export interface ResumeData {
   profile: string;  
   education: Education[];
   job: Job[];
-  skill: Skill[];
-  language: Language[];
-  certification:Certification[];
+  skill: Skill[];  
   photoURL: string;
   sectionOrder: string[];
+
+  language?: Language[];
+  certification?: Certification[];
+  hobby?: Hobby[];
+  award?: Award[]; 
+  [key: string]: any;
 }
 
 export interface Education {
@@ -49,4 +53,14 @@ export interface Language {
 export interface Certification {
   name: string;
   date: string;
+}
+
+export interface Hobby {
+  name: string;
+}
+
+export interface Award {
+  name: string;
+  date: string;
+  description: string;
 }

@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
-import { Education } from "@/components/resume/types";
+import { Education } from "@/components/types";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+
+// 動態加載 react-quill 以支持 SSR
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 interface EducationSectionProps {
   education: Education;
@@ -33,6 +38,11 @@ export default function EducationSection({
   ) => {
     const { name, value } = e.target;
     onChange({ ...education, [name]: value });
+  };
+
+  // 处理富文本编辑器的内容更改
+  const handleDescriptionChange = (value: string) => {
+    onChange({ ...education, description: value });
   };
 
   // 判斷所有欄位是否為空
@@ -151,13 +161,11 @@ export default function EducationSection({
             </div>
             <label>
               Experience
-              <textarea
-                name="description"
+              <ReactQuill
                 value={education.description}
-                onChange={handleChange}
+                onChange={handleDescriptionChange}
                 className="input-resume mb-0"
                 placeholder="Describe the class you take and what you have achieved"
-                rows={4}
               />
             </label>
           </div>

@@ -13,7 +13,7 @@ import {
 import { auth, db } from "@/lib/firebase";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import Navigation from "@/components/Navigation";
-import TemplateModal from "@/components/resume/TemplateModal";
+import TemplateModal from "@/components/listPage/TemplateModal";
 import { GoPlus } from "react-icons/go";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { SiGoogledocs } from "react-icons/si";
@@ -88,7 +88,6 @@ export default function ResumePage() {
             education: [],
             job: [],
             skill: [],
-            language: [],
             sectionOrder: ["education", "job", "skill"],
             selectedTemplate: templateId,
           }
@@ -166,9 +165,9 @@ export default function ResumePage() {
             </button>
           </div>
         ) : (
-          <ul className="grid grid-cols-2 gap-x-5 gap-y-5 mb-5">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-5 mb-5">
             {resumes.map((resume) => (
-              <li key={resume.id}>
+              <div key={resume.id}>
                 <div className="h-40 border border-gray-100 bg-white shadow-md shadow-gray-200 p-4 rounded flex flex-col justify-between">
                   <div>
                     <p className="font-bold">{resume.resumeName}</p>
@@ -203,9 +202,9 @@ export default function ResumePage() {
                     </button>
                   </div>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
       <TemplateModal

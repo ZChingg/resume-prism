@@ -8,8 +8,10 @@ import SkillSection from "./form/Skill/SkillSection";
 import AddSection from "./form/AddSection"; // 新增的 AddSection 組件
 import LanguageSection from "./form/Language/LanguageSection";
 import CertificationSection from "./form/Certification/CertificationSection";
+import HobbySection from "./form/Hobby/HobbySection";
+import AwardSection from "./form/Award/AwardSection";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { ResumeData } from "@/components/resume/types";
+import { ResumeData } from "@/components/types";
 
 interface ResumeFormProps {
   onChange: (data: ResumeData) => void;
@@ -27,8 +29,6 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     education: [],
     job: [],
     skill: [],
-    language: [],
-    certification: [],
     photoURL: "",
     sectionOrder: ["education", "job", "skill"],
   });
@@ -59,6 +59,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     const updatedSectionOrder = [...formData.sectionOrder, section];
     const updatedFormData = {
       ...formData,
+      [section]: [],
       sectionOrder: updatedSectionOrder,
     };
     setFormData(updatedFormData);
@@ -67,14 +68,13 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   };
   // 處理刪除區塊
   const handleDeleteSection = (section: string) => {
+    const updatedFormData = { ...formData };
+    delete updatedFormData[section];
+
     const updatedSectionOrder = formData.sectionOrder.filter(
       (s) => s !== section
     );
-    const updatedFormData = {
-      ...formData,
-      [section]: [],
-      sectionOrder: updatedSectionOrder,
-    };
+    updatedFormData.sectionOrder = updatedSectionOrder;
 
     setFormData(updatedFormData);
     onChange(updatedFormData);
@@ -83,12 +83,18 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
 
   // 處理拖移區塊改變
   const handleItemChange = (
-    key: "education" | "job" | "skill" | "language" | "certification",
+    key:
+      | "education"
+      | "job"
+      | "skill"
+      | "language"
+      | "certification"
+      | "hobby"
+      | "award",
     updatedData: any
   ) => {
     setFormData({ ...formData, [key]: updatedData });
     onChange({ ...formData, [key]: updatedData });
-    console.log(formData);
   };
 
   // 拖移效果
@@ -245,6 +251,28 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
                               onDelete={() =>
                                 handleDeleteSection("certification")
                               }
+                              isDragging={snapshot.isDragging}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          )}
+                          {section === "hobby" && (
+                            <HobbySection
+                              hobby={formData.hobby || []}
+                              onChange={(updatedHobby) =>
+                                handleItemChange("hobby", updatedHobby)
+                              }
+                              onDelete={() => handleDeleteSection("hobby")}
+                              isDragging={snapshot.isDragging}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          )}
+                          {section === "award" && (
+                            <AwardSection
+                              award={formData.award || []}
+                              onChange={(updatedAward) =>
+                                handleItemChange("award", updatedAward)
+                              }
+                              onDelete={() => handleDeleteSection("award")}
                               isDragging={snapshot.isDragging}
                               dragHandleProps={provided.dragHandleProps}
                             />

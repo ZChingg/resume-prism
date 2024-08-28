@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
-import { Skill } from "@/components/resume/types";
+import { Award } from "@/components/types";
 
-interface SkillSectionProps {
-  skill: Skill;
-  onChange: (updatedSkill: Skill) => void;
+interface AwardSectionProps {
+  award: Award;
+  onChange: (updatedAward: Award) => void;
   onDelete: () => void;
   isDragging: boolean;
   dragHandleProps: any;
 }
 
-export default function SkillItems({
+export default function AwardItems({
   // 物件的解構賦值是以名字來取用的，故順序不重要
-  skill,
+  award,
   onChange,
   onDelete,
   isDragging,
   dragHandleProps,
-}: SkillSectionProps) {
+}: AwardSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // 偵測使用者是否點擊開合
@@ -32,11 +32,11 @@ export default function SkillItems({
     >
   ) => {
     const { name, value } = e.target;
-    onChange({ ...skill, [name]: value });
+    onChange({ ...award, [name]: value });
   };
 
   // 判斷所有欄位是否為空
-  const isEmpty = !skill.name && !skill.level;
+  const isEmpty = !award.name && !award.date;
 
   return (
     <div className="border rounded mb-3 bg-white hover:border-gray-800 relative group/item">
@@ -63,12 +63,12 @@ export default function SkillItems({
             <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
-              <h3 className="text-lg font-semibold">{skill.name}</h3>
-              <p className="text-sm">{skill.level}</p>
+              <h3 className="text-lg font-semibold">{award.name}</h3>
             </>
           )}
         </div>
         <div className="flex items-center space-x-3">
+          <p className="text-gray-400 text-sm">{award.date}</p>
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
         </div>
       </div>
@@ -78,40 +78,34 @@ export default function SkillItems({
           <div className="p-4">
             <div className="flex space-x-4">
               <label className="flex-1">
-                Skill
+                Award
                 <input
                   type="text"
                   name="name"
-                  value={skill.name}
+                  value={award.name}
                   onChange={handleChange}
-                  className="input-resume"
+                  className="input-resume mb-0"
                 />
               </label>
               <label className="flex-1">
-                Proficiency
-                <select
-                  name="level"
-                  value={skill.level}
+                Award
+                <input
+                  type="month"
+                  name="date"
+                  value={award.date}
                   onChange={handleChange}
-                  className="input-resume"
-                >
-                  <option value="" disabled hidden>
-                    Select
-                  </option>
-                  <option>Beginner</option>
-                  <option>Intermediate</option>
-                  <option>Expert</option>
-                </select>
+                  className="input-resume mb-0"
+                />
               </label>
             </div>
             <label>
               Description
               <textarea
                 name="description"
-                value={skill.description}
+                value={award.description}
                 onChange={handleChange}
                 className="input-resume mb-0"
-                placeholder="Please use the common terminology to describe your experience"
+                placeholder="Enter"
                 rows={4}
               />
             </label>

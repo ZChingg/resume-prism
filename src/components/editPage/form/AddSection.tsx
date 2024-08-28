@@ -14,34 +14,16 @@ export default function AddSection({ onAddBlock }: AddSectionProps) {
           Certifications
         </button>
         <button
-          onClick={() => onAddBlock("extraCurricular")}
+          onClick={() => onAddBlock("award")}
           className="text-blue-600 hover:text-blue-700 font-semibold"
         >
-          Extra-curricular Activities
+          Awards
         </button>
         <button
-          onClick={() => onAddBlock("hobbies")}
+          onClick={() => onAddBlock("hobby")}
           className="text-blue-600 hover:text-blue-700 font-semibold"
         >
           Hobbies
-        </button>
-        <button
-          onClick={() => onAddBlock("references")}
-          className="text-blue-600 hover:text-blue-700 font-semibold"
-        >
-          References
-        </button>
-        <button
-          onClick={() => onAddBlock("courses")}
-          className="text-blue-600 hover:text-blue-700 font-semibold"
-        >
-          Courses
-        </button>
-        <button
-          onClick={() => onAddBlock("internships")}
-          className="text-blue-600 hover:text-blue-700 font-semibold"
-        >
-          Internships
         </button>
         <button
           onClick={() => onAddBlock("language")}

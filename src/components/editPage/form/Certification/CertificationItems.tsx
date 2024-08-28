@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
-import { Certification } from "@/components/resume/types";
+import { Certification } from "@/components/types";
 
 interface CertificationSectionProps {
   certification: Certification;
@@ -64,11 +64,11 @@ export default function CertificationItems({
           ) : (
             <>
               <h3 className="text-lg font-semibold">{certification.name}</h3>
-              <p className="text-sm">{certification.date}</p>
             </>
           )}
         </div>
         <div className="flex items-center space-x-3">
+          <p className="text-gray-400 text-sm">{certification.date}</p>
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
         </div>
       </div>

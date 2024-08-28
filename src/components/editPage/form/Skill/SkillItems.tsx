@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
-import { Job } from "@/components/resume/types";
+import { Skill } from "@/components/editPage/types";
 
-interface JobItemsProps {
-  job: Job;
-  onChange: (updatedJob: Job) => void;
+interface SkillSectionProps {
+  skill: Skill;
+  onChange: (updatedSkill: Skill) => void;
   onDelete: () => void;
   isDragging: boolean;
   dragHandleProps: any;
 }
 
-export default function JobItems({
+export default function SkillItems({
   // 物件的解構賦值是以名字來取用的，故順序不重要
-  job,
+  skill,
   onChange,
   onDelete,
   isDragging,
   dragHandleProps,
-}: JobItemsProps) {
+}: SkillSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // 偵測使用者是否點擊開合
@@ -27,15 +27,16 @@ export default function JobItems({
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
-    onChange({ ...job, [name]: value });
+    onChange({ ...skill, [name]: value });
   };
 
   // 判斷所有欄位是否為空
-  const isEmpty =
-    !job.position && !job.company && !job.startDate && !job.endDate;
+  const isEmpty = !skill.name && !skill.level;
 
   return (
     <div className="border rounded mb-3 bg-white hover:border-gray-800 relative group/item">
@@ -62,17 +63,12 @@ export default function JobItems({
             <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
-              <h3 className="text-lg font-semibold">{job.position}</h3>
-              <p className="text-sm">{job.company}</p>
+              <h3 className="text-lg font-semibold">{skill.name}</h3>
+              <p className="text-sm">{skill.level}</p>
             </>
           )}
         </div>
         <div className="flex items-center space-x-3">
-          <p className="text-gray-400 text-sm">
-            {job.startDate && <span>{job.startDate}</span>}
-            {(job.startDate || job.endDate) && " ~ "}
-            {job.endDate && <span>{job.endDate}</span>}
-          </p>
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
         </div>
       </div>
@@ -82,56 +78,40 @@ export default function JobItems({
           <div className="p-4">
             <div className="flex space-x-4">
               <label className="flex-1">
-                Title
+                Skill
                 <input
                   type="text"
-                  name="position"
-                  value={job.position}
+                  name="name"
+                  value={skill.name}
                   onChange={handleChange}
                   className="input-resume"
                 />
               </label>
               <label className="flex-1">
-                Company Name
-                <input
-                  type="text"
-                  name="company"
-                  value={job.company}
+                Proficiency
+                <select
+                  name="level"
+                  value={skill.level}
                   onChange={handleChange}
                   className="input-resume"
-                />
-              </label>
-            </div>
-            <div className="flex space-x-4">
-              <label className="flex-1">
-                Start
-                <input
-                  type="month"
-                  name="startDate"
-                  value={job.startDate}
-                  onChange={handleChange}
-                  className="input-resume"
-                />
-              </label>
-              <label className="flex-1">
-                End
-                <input
-                  type="month"
-                  name="endDate"
-                  value={job.endDate}
-                  onChange={handleChange}
-                  className="input-resume"
-                />
+                >
+                  <option value="" disabled hidden>
+                    Select
+                  </option>
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Expert</option>
+                </select>
               </label>
             </div>
             <label>
               Description
               <textarea
                 name="description"
-                value={job.description}
+                value={skill.description}
                 onChange={handleChange}
                 className="input-resume mb-0"
-                placeholder="List relevant experience and quantify primary achievements"
+                placeholder="Please use the common terminology to describe your experience"
                 rows={4}
               />
             </label>

@@ -36,6 +36,7 @@ export default function EducationSection({
       i === index ? updatedData : data
     );
     onChange(updatedEducation);
+    console.log(updatedEducation);
   };
 
   // 刪除細項

@@ -2,7 +2,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import CertificationItems from "./CertificationItems";
 import { RiDraggable } from "react-icons/ri";
 import { FaTrashAlt } from "react-icons/fa";
-import { Certification } from "@/components/resume/types";
+import { Certification } from "@/components/types";
 
 interface CertificationSectionProps {
   certification: Certification[];

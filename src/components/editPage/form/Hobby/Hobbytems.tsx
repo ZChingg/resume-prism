@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
-import { Language } from "@/components/resume/types";
+import { Hobby } from "@/components/types";
 
-interface LanguageSectionProps {
-  language: Language;
-  onChange: (updatedLanguage: Language) => void;
+interface HobbySectionProps {
+  hobby: Hobby;
+  onChange: (updatedHobby: Hobby) => void;
   onDelete: () => void;
   isDragging: boolean;
   dragHandleProps: any;
 }
 
-export default function LanguageItems({
+export default function HobbyItems({
   // 物件的解構賦值是以名字來取用的，故順序不重要
-  language,
+  hobby,
   onChange,
   onDelete,
   isDragging,
   dragHandleProps,
-}: LanguageSectionProps) {
+}: HobbySectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // 偵測使用者是否點擊開合
@@ -32,11 +32,11 @@ export default function LanguageItems({
     >
   ) => {
     const { name, value } = e.target;
-    onChange({ ...language, [name]: value });
+    onChange({ ...hobby, [name]: value });
   };
 
   // 判斷所有欄位是否為空
-  const isEmpty = !language.name && !language.level;
+  const isEmpty = !hobby.name;
 
   return (
     <div className="border rounded mb-3 bg-white hover:border-gray-800 relative group/item">
@@ -63,8 +63,7 @@ export default function LanguageItems({
             <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
-              <h3 className="text-lg font-semibold">{language.name}</h3>
-              <p className="text-sm">{language.level}</p>
+              <h3 className="text-lg font-semibold">{hobby.name}</h3>
             </>
           )}
         </div>
@@ -78,32 +77,14 @@ export default function LanguageItems({
           <div className="p-4">
             <div className="flex space-x-4">
               <label className="flex-1">
-                Language
+                Hobby
                 <input
                   type="text"
                   name="name"
-                  value={language.name || ""}
+                  value={hobby.name}
                   onChange={handleChange}
                   className="input-resume mb-0"
                 />
-              </label>
-              <label className="flex-1">
-                Proficiency
-                <select
-                  name="level"
-                  value={language.level || ""}
-                  onChange={handleChange}
-                  className="input-resume mb-0"
-                >
-                  <option value="" disabled hidden>
-                    Select
-                  </option>
-                  <option>Beginner</option>
-                  <option>Basic</option>
-                  <option>Professional proficiency</option>
-                  <option>Proficiency</option>
-                  <option>Native Language</option>
-                </select>
               </label>
             </div>
           </div>
