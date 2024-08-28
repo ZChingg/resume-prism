@@ -1,46 +1,42 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import JobSection from "./form/Job/JobSection";
-import EducationSection from "./form/Education/EducationSection";
-import SkillSection from "./form/Skill/SkillSection";
+import { useState, useEffect } from "react";
 import PhotoUpload from "./form/PhotoUpload";
+import EducationSection from "./form/Education/EducationSection";
+import JobSection from "./form/Job/JobSection";
+import SkillSection from "./form/Skill/SkillSection";
+import AddSection from "./form/AddSection"; // 新增的 AddSection 組件
+import LanguageSection from "./form/Language/LanguageSection";
+import CertificationSection from "./form/Certification/CertificationSection";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { ResumeData } from "@/components/resume/types";
 
 interface ResumeFormProps {
-  onChange: (data: any) => void;
-  initialData?: any; // 可選的 initialData，以編輯舊履歷
+  onChange: (data: ResumeData) => void;
+  initialData?: ResumeData; // 可選的 initialData，以編輯舊履歷
 }
 
 export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   // 解構賦值來取用 Props 中資料: setResume(data)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ResumeData>({
     name: "",
     birthDate: "",
     email: "",
     phone: "",
-    website: "",
-    websiteLink: "",
     profile: "",
-    job: [],
     education: [],
+    job: [],
     skill: [],
+    language: [],
+    certification: [],
     photoURL: "",
     sectionOrder: ["education", "job", "skill"],
   });
-
-  // 初始化 sectionOrder 的 state
-  const [sectionOrder, setSectionOrder] = useState<
-    Array<"education" | "job" | "skill">
-  >(["education", "job", "skill"]);
 
   // 在組件初始化時檢查是否有 initialData
   useEffect(() => {
     if (initialData) {
       setFormData(initialData); // 如果有 initialData，使用它來初始化表單
-      if (initialData.sectionOrder) {
-        setSectionOrder(initialData.sectionOrder);
-      }
     }
   }, [initialData]);
 
@@ -58,40 +54,61 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     onChange({ ...formData, photoURL: url });
   };
 
-  // 處理區塊拖移改變
+  // 處理新增區塊
+  const handleAddBlock = (section: string) => {
+    const updatedSectionOrder = [...formData.sectionOrder, section];
+    const updatedFormData = {
+      ...formData,
+      sectionOrder: updatedSectionOrder,
+    };
+    setFormData(updatedFormData);
+    onChange(updatedFormData);
+    console.log(updatedFormData);
+  };
+  // 處理刪除區塊
+  const handleDeleteSection = (section: string) => {
+    const updatedSectionOrder = formData.sectionOrder.filter(
+      (s) => s !== section
+    );
+    const updatedFormData = {
+      ...formData,
+      [section]: [],
+      sectionOrder: updatedSectionOrder,
+    };
+
+    setFormData(updatedFormData);
+    onChange(updatedFormData);
+    console.log(updatedFormData);
+  };
+
+  // 處理拖移區塊改變
   const handleItemChange = (
-    key: "education" | "job" | "skill",
+    key: "education" | "job" | "skill" | "language" | "certification",
     updatedData: any
   ) => {
     setFormData({ ...formData, [key]: updatedData });
     onChange({ ...formData, [key]: updatedData });
+    console.log(formData);
   };
 
-  // 拖曳效果
+  // 拖移效果
   const onDragEnd = (result: any) => {
     const { source, destination } = result; // source, destination: 被拖曳的卡片原先, 最終的 DroppableId 與順序
     if (!destination) return;
 
     // 用 splice 處理拖曳後資料, 組合出新的 items
-    const newSections = Array.from(sectionOrder); // 拷貝新的 items (來自 state)
+    const newSections = Array.from(formData.sectionOrder); // 拷貝新的 items (來自 state)
     const [remove] = newSections.splice(source.index, 1); // 從 source.index 剪下被拖曳的元素
     newSections.splice(destination.index, 0, remove); // 在 destination.index 位置貼上被拖曳的元素
 
-    setSectionOrder(newSections);
-
     // 更新 formData 中的 sections 顺序
-    const updatedFormData = { ...formData }; // 淺拷貝，避免直接修改原始 formData
-    newSections.forEach((section) => {
-      updatedFormData[section] = formData[section]; // 將原 formData 中每個 section 的數據按新順序重新賦值到 updatedFormData
-    });
-
-    setFormData({ ...updatedFormData, sectionOrder: newSections });
-    onChange({ ...updatedFormData, sectionOrder: newSections });
+    setFormData({ ...formData, sectionOrder: newSections });
+    onChange({ ...formData, sectionOrder: newSections });
   };
 
   return (
-    <div className="bg-white w-1/2 outline-none h-full overflow-auto">
-      <form className="pt-6 p-4">
+    <div className="bg-white w-1/2 outline-none h-full overflow-auto py-6 px-4">
+      <form>
         <div className="px-7">
           <div className="flex space-x-6">
             <label className="flex-1">
@@ -158,60 +175,91 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
           <Droppable droppableId="resumeSections">
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
-                {sectionOrder.map((section, index) => (
-                  <Draggable key={section} draggableId={section} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        className={`bg-white mb-2 ${
-                          snapshot.isDragging ? "opacity-60	drop-shadow-lg" : ""
-                        }`}
-                      >
-                        {section === "job" && (
-                          <JobSection
-                            job={formData.job}
-                            onChange={(updatedJob) =>
-                              handleItemChange("job", updatedJob)
-                            }
-                            isDragging={snapshot.isDragging}
-                            dragHandleProps={provided.dragHandleProps}
-                          />
-                        )}
-                        {section === "education" && (
-                          <EducationSection
-                            education={formData.education}
-                            onChange={(updatedEducation) =>
-                              handleItemChange("education", updatedEducation)
-                            }
-                            isDragging={snapshot.isDragging}
-                            dragHandleProps={provided.dragHandleProps}
-                          />
-                        )}
-                        {section === "skill" && (
-                          <SkillSection
-                            skill={formData.skill}
-                            onChange={(updatedSkill) =>
-                              handleItemChange("skill", updatedSkill)
-                            }
-                            isDragging={snapshot.isDragging}
-                            dragHandleProps={provided.dragHandleProps}
-                          />
-                        )}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+                {formData.sectionOrder &&
+                  formData.sectionOrder.map((section, index) => (
+                    <Draggable
+                      key={section}
+                      draggableId={section}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          className={`bg-white mb-2 ${
+                            snapshot.isDragging
+                              ? "opacity-60	drop-shadow-lg"
+                              : ""
+                          }`}
+                        >
+                          {section === "job" && (
+                            <JobSection
+                              job={formData.job}
+                              onChange={(updatedJob) =>
+                                handleItemChange("job", updatedJob)
+                              }
+                              isDragging={snapshot.isDragging}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          )}
+                          {section === "education" && (
+                            <EducationSection
+                              education={formData.education}
+                              onChange={(updatedEducation) =>
+                                handleItemChange("education", updatedEducation)
+                              }
+                              isDragging={snapshot.isDragging}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          )}
+                          {section === "skill" && (
+                            <SkillSection
+                              skill={formData.skill}
+                              onChange={(updatedSkill) =>
+                                handleItemChange("skill", updatedSkill)
+                              }
+                              isDragging={snapshot.isDragging}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          )}
+                          {section === "language" && (
+                            <LanguageSection
+                              language={formData.language || []}
+                              onChange={(updatedLanguage) =>
+                                handleItemChange("language", updatedLanguage)
+                              }
+                              onDelete={() => handleDeleteSection("language")}
+                              isDragging={snapshot.isDragging}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          )}
+                          {section === "certification" && (
+                            <CertificationSection
+                              certification={formData.certification || []}
+                              onChange={(updatedCertification) =>
+                                handleItemChange(
+                                  "certification",
+                                  updatedCertification
+                                )
+                              }
+                              onDelete={() =>
+                                handleDeleteSection("certification")
+                              }
+                              isDragging={snapshot.isDragging}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          )}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
                 {provided.placeholder}
               </div>
             )}
           </Droppable>
         </DragDropContext>
       </form>
-      {/*
-      {addedBlocks.includes("customSection") && <CustomSection />}
-      {/* 在表单底部显示 "Add Section" 部分 }
-        <AddSection onAddBlock={handleAddBlock} /> */}
+      <AddSection onAddBlock={handleAddBlock} />
     </div>
   );
 }

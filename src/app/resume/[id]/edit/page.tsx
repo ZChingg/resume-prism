@@ -55,6 +55,11 @@ export default function EditResume() {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setResumeData({ ...resumeData, resumeName: e.target.value });
   };
+  // 點擊 icon 全選履歷名字
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleIconClick = () => {
+    inputRef.current?.select();
+  };
 
   // 儲存履歷
   const handleSave = async () => {
@@ -68,12 +73,6 @@ export default function EditResume() {
         router.push("/resume");
       }
     }
-  };
-
-  // 點擊 icon 修改履歷名
-  const inputRef = useRef<HTMLInputElement>(null);
-  const handleIconClick = () => {
-    inputRef.current?.select();
   };
 
   // 更換模板

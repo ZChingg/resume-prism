@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
-
-interface Skill {
-  name: string;
-  level: string;
-  description: string;
-}
+import { Skill } from "@/components/resume/types";
 
 interface SkillSectionProps {
   skill: Skill;
@@ -115,7 +110,7 @@ export default function SkillItems({
                 name="description"
                 value={skill.description}
                 onChange={handleChange}
-                className="input-resume"
+                className="input-resume mb-0"
                 placeholder="Please use the common terminology to describe your experience"
                 rows={4}
               />

@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
-
-interface Education {
-  school: string;
-  major: string;
-  degree: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-}
+import { Education } from "@/components/resume/types";
 
 interface EducationSectionProps {
   education: Education;
@@ -163,7 +155,7 @@ export default function EducationSection({
                 name="description"
                 value={education.description}
                 onChange={handleChange}
-                className="input-resume"
+                className="input-resume mb-0"
                 placeholder="Describe the class you take and what you have achieved"
                 rows={4}
               />

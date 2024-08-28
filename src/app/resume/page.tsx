@@ -84,12 +84,11 @@ export default function ResumePage() {
             birthDate: "",
             email: "",
             phone: "",
-            website: "",
-            websiteLink: "",
             profile: "",
-            job: [],
             education: [],
+            job: [],
             skill: [],
+            language: [],
             sectionOrder: ["education", "job", "skill"],
             selectedTemplate: templateId,
           }
@@ -149,16 +148,18 @@ export default function ResumePage() {
         </div>
         <hr className="border mt-6 mb-6"></hr>
         {resumes.length === 0 ? (
-          <div className="h-40 border border-gray-100 bg-white shadow-md shadow-gray-200 p-4 rounded flex flex-col items-center justify-center">
-            <RiSparkling2Line className="h-5 w-5 text-blue-600 opacity-30" />
-            <SiGoogledocs className="h-10 w-10 text-blue-600 opacity-30" />
+          <div className="border border-gray-100 bg-white shadow-md shadow-gray-200 p-4 rounded flex flex-col items-center justify-center">
+            <RiSparkling2Line className="h-4 w-4 text-blue-600 opacity-30" />
+            <SiGoogledocs className="h-7 w-7 text-blue-600 opacity-30" />
             <p className="mt-1">You don’t have a resume yet.</p>
-            <p className="text-sm text-gray-500">
-              Create a new resume to get started!
+            <p className="text-sm text-gray-500 text-center mt-1">
+              Custom-built, amazing resumes.
+              <br />
+              Empower your job search in just a few clicks!
             </p>
             <button
               onClick={handleSelectTemplate}
-              className=" hover:bg-gray-100 text-blue-600 py-1 px-4 rounded flex items-center mt-2"
+              className=" hover:bg-gray-100 text-blue-600 py-1 px-4 rounded flex items-center mt-3"
             >
               <GoPlus className="h-5 w-5 mr-1" />
               Create resume
@@ -172,8 +173,17 @@ export default function ResumePage() {
                   <div>
                     <p className="font-bold">{resume.resumeName}</p>
                     <p className="text-sm text-gray-500">
-                      Last edited at&ensp;
-                      {formatDate(resume.lastEdited)}
+                      {resume.lastEdited ? (
+                        <>
+                          Last edited at&ensp;
+                          {formatDate(resume.lastEdited)}
+                        </>
+                      ) : (
+                        <>
+                          Last edited at&ensp;
+                          {formatDate(resume.createAt)}
+                        </>
+                      )}
                       ・Create on&ensp;
                       {formatDate(resume.createAt)}
                     </p>
