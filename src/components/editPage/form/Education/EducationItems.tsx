@@ -2,11 +2,7 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
 import { Education } from "@/components/types";
-import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
-
-// 動態加載 react-quill 以支持 SSR
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import QuillEditor from "@/utils/QuillEditor";
 
 interface EducationSectionProps {
   education: Education;
@@ -32,15 +28,13 @@ export default function EducationSection({
   };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     onChange({ ...education, [name]: value });
   };
 
-  // 处理富文本编辑器的内容更改
+  // 處理富文本編輯器更改
   const handleDescriptionChange = (value: string) => {
     onChange({ ...education, description: value });
   };
@@ -159,15 +153,14 @@ export default function EducationSection({
                 />
               </label>
             </div>
-            <label>
-              Experience
-              <ReactQuill
+            <div>
+              <p className="mb-1">Experience</p>
+              <QuillEditor
                 value={education.description}
                 onChange={handleDescriptionChange}
-                className="input-resume mb-0"
                 placeholder="Describe the class you take and what you have achieved"
               />
-            </label>
+            </div>
           </div>
         </>
       )}

@@ -31,9 +31,50 @@ body {
     @apply text-lg font-semibold mb-3 cursor-default;
   }
   ul{
-    @apply list-disc list-inside	
+    @apply list-disc pl-6
   }
   ol{
-    @apply list-decimal list-inside	
+    @apply list-decimal	pl-6
   }
+}  
+
+
+.quill {
+  position: relative;
+}
+.quill > * {
+  background-color: rgb(243 244 246);
+}
+.quill > .ql-toolbar.ql-snow {
+  border-style: none;
+  border-radius: 4px 4px 0 0;
+  padding: 8px 8px 0 8px;
+}
+.quill > .ql-container.ql-snow {
+  border-style: none;
+  border-radius: 4px;
+}
+.quill > .ql-container > .ql-editor {
+  padding: 8px 15px 12px 15px;
+  min-height: 150px;
+  font-size: 16px;
+}
+.hobby-quill > .quill > .ql-container > .ql-editor {
+  max-height: 100px;
+  min-height: 100px;
+  overflow-y: scroll;
+}
+.quill > .ql-container > .ql-editor.ql-blank::before {
+  font-style: normal;
+  color: #a9a9a9;
+}
+.quill > .ql-container > .ql-editor ul {
+  padding: 0;
+}
+.quill > .ql-container > .ql-editor ol {
+  padding: 0;
+}
+.quill:focus-within {
+  box-shadow: 0 0 0 1px rgb(14 165 233);
+  border-radius: 4px;
 }

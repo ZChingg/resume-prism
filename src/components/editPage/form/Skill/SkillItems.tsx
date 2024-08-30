@@ -84,7 +84,7 @@ export default function SkillItems({
                   name="name"
                   value={skill.name}
                   onChange={handleChange}
-                  className="input-resume"
+                  className="input-resume mb-0"
                 />
               </label>
               <label className="flex-1">
@@ -93,7 +93,7 @@ export default function SkillItems({
                   name="level"
                   value={skill.level}
                   onChange={handleChange}
-                  className="input-resume"
+                  className="input-resume mb-0"
                 >
                   <option value="" disabled hidden>
                     Select
@@ -104,17 +104,6 @@ export default function SkillItems({
                 </select>
               </label>
             </div>
-            <label>
-              Description
-              <textarea
-                name="description"
-                value={skill.description}
-                onChange={handleChange}
-                className="input-resume mb-0"
-                placeholder="Please use the common terminology to describe your experience"
-                rows={4}
-              />
-            </label>
           </div>
         </>
       )}

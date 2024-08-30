@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
 import { Award } from "@/components/types";
+import QuillEditor from "@/utils/QuillEditor";
 
 interface AwardSectionProps {
   award: Award;
@@ -27,12 +28,15 @@ export default function AwardItems({
   };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     onChange({ ...award, [name]: value });
+  };
+
+  // 處理富文本編輯器更改
+  const handleDescriptionChange = (value: string) => {
+    onChange({ ...award, description: value });
   };
 
   // 判斷所有欄位是否為空
@@ -84,31 +88,28 @@ export default function AwardItems({
                   name="name"
                   value={award.name}
                   onChange={handleChange}
-                  className="input-resume mb-0"
+                  className="input-resume"
                 />
               </label>
               <label className="flex-1">
-                Award
+                Awarded
                 <input
                   type="month"
                   name="date"
                   value={award.date}
                   onChange={handleChange}
-                  className="input-resume mb-0"
+                  className="input-resume"
                 />
               </label>
             </div>
-            <label>
-              Description
-              <textarea
-                name="description"
+            <div>
+              <p className="mb-1">Description</p>
+              <QuillEditor
                 value={award.description}
-                onChange={handleChange}
-                className="input-resume mb-0"
-                placeholder="Enter"
-                rows={4}
+                onChange={handleDescriptionChange}
+                placeholder="Describe any awards or recognitions received and their significance"
               />
-            </label>
+            </div>
           </div>
         </>
       )}

@@ -58,13 +58,19 @@ export default function LanguageItems({
         className="flex justify-between items-center p-4 border-gray-100 cursor-pointer"
         onClick={handleToggleExpand}
       >
-        <div className="flex items-center space-x-3">
+        <div>
           {isEmpty ? (
             <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
-              <h3 className="text-lg font-semibold">{language.name}</h3>
-              <p className="text-sm">{language.level}</p>
+              <div className="flex items-center space-x-3">
+                <h3 className="text-lg font-semibold">{language.name}</h3>
+                <p className="text-sm">{language.proficiency}</p>
+              </div>
+              <div className="text-sm flex items-center space-x-1 text-gray-400">
+                <p>{language.certificate}</p>
+                <p>{language.level}</p>
+              </div>
             </>
           )}
         </div>
@@ -84,16 +90,16 @@ export default function LanguageItems({
                   name="name"
                   value={language.name || ""}
                   onChange={handleChange}
-                  className="input-resume mb-0"
+                  className="input-resume"
                 />
               </label>
               <label className="flex-1">
                 Proficiency
                 <select
-                  name="level"
-                  value={language.level || ""}
+                  name="proficiency"
+                  value={language.proficiency || ""}
                   onChange={handleChange}
-                  className="input-resume mb-0"
+                  className="input-resume"
                 >
                   <option value="" disabled hidden>
                     Select
@@ -104,6 +110,28 @@ export default function LanguageItems({
                   <option>Proficiency</option>
                   <option>Native Language</option>
                 </select>
+              </label>
+            </div>
+            <div className="flex space-x-4">
+              <label className="flex-1">
+                Certificate
+                <input
+                  type="text"
+                  name="certificate"
+                  value={language.certificate || ""}
+                  onChange={handleChange}
+                  className="input-resume mb-0"
+                />
+              </label>
+              <label className="flex-1">
+                Level
+                <input
+                  type="text"
+                  name="level"
+                  value={language.level || ""}
+                  onChange={handleChange}
+                  className="input-resume mb-0"
+                />
               </label>
             </div>
           </div>

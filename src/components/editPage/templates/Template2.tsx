@@ -116,11 +116,6 @@ const Template2 = forwardRef<HTMLDivElement, { data: any }>(({ data }, ref) => {
                             {skill.level}
                           </span>
                         </div>
-                        {skill.description && (
-                          <div className="text-2xs text-gray-400 break-words mb-1">
-                            {skill.description}
-                          </div>
-                        )}
                       </div>
                     ))}
                   </div>

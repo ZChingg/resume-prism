@@ -16,6 +16,9 @@ const config: Config = {
       fontSize: {
         "2xs": "0.625rem", // 10px
       },
+      lineHeight: {
+        "2xs": "0.75rem",
+      },
     },
   },
   plugins: [],

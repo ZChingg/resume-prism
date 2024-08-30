@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PhotoUpload from "./form/PhotoUpload";
 import EducationSection from "./form/Education/EducationSection";
 import JobSection from "./form/Job/JobSection";
@@ -12,6 +12,7 @@ import HobbySection from "./form/Hobby/HobbySection";
 import AwardSection from "./form/Award/AwardSection";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { ResumeData } from "@/components/types";
+import QuillEditor from "@/utils/QuillEditor";
 
 interface ResumeFormProps {
   onChange: (data: ResumeData) => void;
@@ -37,6 +38,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   useEffect(() => {
     if (initialData) {
       setFormData(initialData); // 如果有 initialData，使用它來初始化表單
+      profileRef.current = initialData.profile;
     }
   }, [initialData]);
 
@@ -112,6 +114,15 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     onChange({ ...formData, sectionOrder: newSections });
   };
 
+  // 使用 useRef 保存 profile 内容
+  const profileRef = useRef<string>("");
+
+  const handleDescriptionChangeT = (value: string) => {
+    profileRef.current = value;
+    setFormData({ ...formData, profile: value });
+    onChange({ ...formData, profile: value });
+  };
+
   return (
     <div className="bg-white w-1/2 outline-none h-full overflow-auto py-6 px-4">
       <form>
@@ -165,17 +176,14 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
               />
             </label>
           </div>
-          <label>
+          <div className="mb-5">
             <h2 className="title">Professional Summary</h2>
-            <textarea
-              name="profile"
-              value={formData.profile}
-              onChange={handleChange}
-              className="input-resume mt-0"
+            <QuillEditor
+              value={profileRef.current}
+              onChange={handleDescriptionChangeT}
               placeholder="Summarize your Personal Traits, Experience, Skills, and Career Goals"
-              rows={4}
             />
-          </label>
+          </div>
         </div>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="resumeSections">

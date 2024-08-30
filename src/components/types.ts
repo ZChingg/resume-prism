@@ -17,7 +17,7 @@ export interface ResumeData {
 
   language?: Language[];
   certification?: Certification[];
-  hobby?: Hobby[];
+  hobby?: string[] | string;
   award?: Award[]; 
   [key: string]: any;
 }
@@ -47,6 +47,8 @@ export interface Skill {
 
 export interface Language {
   name: string;
+  proficiency: string;
+  certificate: string;
   level: string;
 }
 

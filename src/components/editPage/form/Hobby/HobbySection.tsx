@@ -1,58 +1,26 @@
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import HobbyItems from "./Hobbytems";
 import { RiDraggable } from "react-icons/ri";
 import { FaTrashAlt } from "react-icons/fa";
-import { Hobby } from "@/components/types";
+import QuillEditor from "@/utils/QuillEditor";
 
 interface HobbySectionProps {
-  hobby: Hobby[];
+  hobby: string[] | string;
   onChange: (updatedData: any) => void;
   onDelete: () => void; // 新增的 onDelete 回调
   isDragging: boolean;
   dragHandleProps: any;
 }
 
-const initialHobby = {
-  name: "",
-};
-
 export default function HobbySection({
-  hobby = [],
+  hobby,
   onChange,
   onDelete,
   isDragging,
   dragHandleProps,
 }: HobbySectionProps) {
-  // 增加細項
-  const handleAddItem = (initialData: any) => {
-    const newHobby = [...hobby, initialData];
-    onChange(newHobby);
-  };
+  const modules = { toolbar: false };
 
-  // 修改細項
-  const handleChangeItem = (index: number, updatedData: any) => {
-    const updatedHobby = hobby.map((data, i) =>
-      i === index ? updatedData : data
-    );
-    onChange(updatedHobby);
-  };
-
-  // 刪除細項
-  const handleDeleteItem = (index: number) => {
-    const updatedHobby = hobby.filter((_, i) => i !== index);
-    onChange(updatedHobby);
-  };
-
-  // 拖曳功能
-  const onDragEnd = (result: any) => {
-    const { source, destination } = result;
-    if (!destination) return;
-
-    const newHobby = Array.from(hobby);
-    const [reorderedItem] = newHobby.splice(source.index, 1);
-    newHobby.splice(destination.index, 0, reorderedItem);
-
-    onChange(newHobby);
+  const handleChange = (value: string) => {
+    onChange(value);
   };
 
   return (
@@ -74,51 +42,14 @@ export default function HobbySection({
           />
         </div>
       </div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="hobbyItems">
-          {(provided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
-              {hobby.map((data, index) => (
-                <Draggable
-                  key={`hobby-${index}`}
-                  draggableId={`hobby-${index}`}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      className={`mb-3 ${
-                        snapshot.isDragging
-                          ? "opacity-60	drop-shadow-lg"
-                          : "opacity-100"
-                      }`}
-                    >
-                      <HobbyItems
-                        hobby={data}
-                        onChange={(updatedHobby) =>
-                          handleChangeItem(index, updatedHobby)
-                        }
-                        onDelete={() => handleDeleteItem(index)}
-                        isDragging={snapshot.isDragging}
-                        dragHandleProps={provided.dragHandleProps}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <button
-        type="button"
-        onClick={() => handleAddItem(initialHobby)}
-        className="text-blue-600 hover:text-blue-700 font-semibold"
-      >
-        + Hobby
-      </button>
+      <div className="hobby-quill">
+        <QuillEditor
+          value={hobby || ""}
+          onChange={handleChange}
+          placeholder="What do you like"
+          modules={modules}
+        />
+      </div>
     </div>
   );
 }

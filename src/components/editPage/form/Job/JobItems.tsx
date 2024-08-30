@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 import { RiDraggable } from "react-icons/ri";
 import { Job } from "@/components/types";
+import QuillEditor from "@/utils/QuillEditor";
 
 interface JobItemsProps {
   job: Job;
@@ -26,11 +27,14 @@ export default function JobItems({
     setIsExpanded(!isExpanded);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     onChange({ ...job, [name]: value });
+  };
+
+  // 處理富文本編輯器更改
+  const handleDescriptionChange = (value: string) => {
+    onChange({ ...job, description: value });
   };
 
   // 判斷所有欄位是否為空
@@ -124,17 +128,14 @@ export default function JobItems({
                 />
               </label>
             </div>
-            <label>
-              Description
-              <textarea
-                name="description"
+            <div>
+              <p className="mb-1">Description</p>
+              <QuillEditor
                 value={job.description}
-                onChange={handleChange}
-                className="input-resume mb-0"
+                onChange={handleDescriptionChange}
                 placeholder="List relevant experience and quantify primary achievements"
-                rows={4}
               />
-            </label>
+            </div>
           </div>
         </>
       )}

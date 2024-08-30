@@ -88,7 +88,7 @@ export default function CertificationItems({
                 />
               </label>
               <label className="flex-1">
-                Certification
+                Issued
                 <input
                   type="month"
                   name="date"

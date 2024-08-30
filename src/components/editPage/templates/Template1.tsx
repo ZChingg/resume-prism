@@ -4,7 +4,7 @@ import { ResumeData } from "@/components/types";
 
 const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
   ({ data }, ref) => {
-    console.log(data.profile);
+    console.log(data);
     return (
       <div className="w-1/2 bg-gray-500 flex justify-center overflow-auto h-full items-start">
         <div
@@ -34,10 +34,14 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
             {/* 主內容 */}
             <div className="w-3/4">
               {/* 簡歷 */}
-              {data.profile && (
+              {data.profile && data.profile !== "<p><br></p>" && (
                 <div className="mt-2 text-xs">
                   <h2 className="font-bold text-base mb-1">Profile</h2>
-                  <p>{data.profile}</p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: data.profile,
+                    }}
+                  />
                 </div>
               )}
               {/* 學歷 */}
@@ -63,7 +67,6 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                             dangerouslySetInnerHTML={{
                               __html: data.description,
                             }}
-                            className="list-inside"
                           />
                         </div>
                       ))}
@@ -85,14 +88,41 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                             {(data.startDate || data.endDate) && " ~ "}
                             {data.endDate && <span>{data.endDate}</span>}
                           </p>
-                          <p>{data.description}</p>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: data.description,
+                            }}
+                          />
                         </div>
                       ))}
                     </div>
                   )}
+                  {/* 競賽 */}
+                  {section === "award" &&
+                    data.award &&
+                    data.award.length > 0 && (
+                      <div className="mt-4 text-xs">
+                        <h2 className="font-bold text-base mb-1">Awards</h2>
+                        {data.award.map((data: any, index: number) => (
+                          <div key={index} className="mt-1">
+                            <h3 className="font-bold">
+                              {data.name}
+                              <span className="ml-5">{data.company}</span>
+                            </h3>
+                            <p className="text-2xs text-gray-400 font-bold">
+                              {data.date}
+                            </p>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: data.description,
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
                 </div>
               ))}
-              <div className="mb-5"></div>
             </div>
             {/* 側邊欄 */}
             <div className="w-1/4 pl-5 mt-9">
@@ -110,28 +140,66 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                   <IoLinkOutline />
                 </a>
               </p>*/}
+
               {/* 專業技能 */}
-              {data.skill && data.skill.length > 0 && (
-                <div className="mt-6 text-xs">
-                  <h2 className="font-bold mb-1">Skills</h2>
-                  {data.skill.map((skill: any, index: number) => (
-                    <div key={index}>
-                      <div className="flex justify-between">
-                        <span className="break-words">{skill.name}</span>
-                        <span className="text-2xs break-words">
-                          {skill.level}
-                        </span>
+              {data.sectionOrder?.map((section: string) => (
+                <div key={section}>
+                  {section === "skill" &&
+                    data.skill &&
+                    data.skill.length > 0 && (
+                      <div className="mt-6 text-xs">
+                        <h2 className="font-bold mb-1">Skills</h2>
+                        {data.skill.map((skill: any, index: number) => (
+                          <div key={index}>
+                            <div className="">
+                              <li className="break-words">{skill.name}</li>
+                              <p className="text-2xs break-words text-gray-400 ml-4">
+                                {skill.level}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      {skill.description && (
-                        <div className="text-2xs text-gray-400 break-words mb-1">
-                          {skill.description}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                    )}
+                  {/* 興趣 */}
+                  {section === "hobby" &&
+                    data.hobby &&
+                    data.hobby !== "<p><br></p>" && (
+                      <div className="mt-6 text-xs">
+                        <h2 className="font-bold mb-1">Hobbies</h2>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: data.hobby,
+                          }}
+                        />
+                      </div>
+                    )}
+                  {/* 語言 */}
+                  {section === "language" &&
+                    data.language &&
+                    data.language.length > 0 && (
+                      <div className="mt-6 text-xs">
+                        <h2 className="font-bold mb-1">Languages</h2>
+                        {data.language.map((language: any, index: number) => (
+                          <div key={index}>
+                            <div className="">
+                              <li className="break-words">{language.name}</li>
+                              <p className="text-2xs break-words text-gray-400 ml-4">
+                                {language.proficiency}
+                              </p>
+                              <p className="text-2xs break-words text-gray-400 ml-4">
+                                {language.certificate}
+                                <span className="text-2xs break-words text-gray-400 ml-1">
+                                  {language.level}
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                 </div>
-              )}
-              <div className="mb-5"></div>
+              ))}
             </div>
           </div>
         </div>
