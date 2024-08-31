@@ -3,21 +3,14 @@ import Image from "next/image";
 import { FaUser } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
+import { ResumeData } from "@/components/types";
 
-const Template2 = forwardRef<HTMLDivElement, { data: any }>(({ data }, ref) => {
-  return (
-    <div className="w-1/2 bg-gray-500 flex justify-center overflow-auto h-full items-start">
-      <div
-        ref={ref}
-        className="bg-white mt-8 m-10 shadow-lg justify-center rounded"
-        style={{
-          width: "595px",
-          minHeight: "842px",
-          height: "auto",
-        }}
-      >
+const Template2 = forwardRef<HTMLDivElement, { data: ResumeData }>(
+  ({ data }, ref) => {
+    return (
+      <div ref={ref}>
         <div
-          className="flex flex-col items-center pt-5 pb-2 text-white rounded-t"
+          className="flex flex-col items-center pt-5 pb-2 text-white"
           style={{ backgroundColor: "#303030" }}
         >
           {/* 上方欄 */}
@@ -55,7 +48,11 @@ const Template2 = forwardRef<HTMLDivElement, { data: any }>(({ data }, ref) => {
           {data.profile && (
             <div className="text-xs">
               <h2 className="font-bold text-base mb-1">Profile</h2>
-              <p>{data.profile}</p>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: data.profile,
+                }}
+              />
             </div>
           )}
           {data.sectionOrder?.map((section: string) => (
@@ -77,7 +74,11 @@ const Template2 = forwardRef<HTMLDivElement, { data: any }>(({ data }, ref) => {
                         {(data.startDate || data.endDate) && " ~ "}
                         {data.endDate && <span>{data.endDate}</span>}
                       </p>
-                      <p>{data.description}</p>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: data.description,
+                        }}
+                      />
                     </div>
                   ))}
                 </div>
@@ -98,7 +99,11 @@ const Template2 = forwardRef<HTMLDivElement, { data: any }>(({ data }, ref) => {
                         {(data.startDate || data.endDate) && " ~ "}
                         {data.endDate && <span>{data.endDate}</span>}
                       </p>
-                      <p>{data.description}</p>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: data.description,
+                        }}
+                      />
                     </div>
                   ))}
                 </div>
@@ -125,9 +130,9 @@ const Template2 = forwardRef<HTMLDivElement, { data: any }>(({ data }, ref) => {
           ))}
         </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 Template2.displayName = "Template2";
 

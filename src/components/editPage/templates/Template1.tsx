@@ -5,17 +5,10 @@ import { ResumeData } from "@/components/types";
 const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
   ({ data }, ref) => {
     console.log(data);
+
     return (
-      <div className="w-1/2 bg-gray-500 flex justify-center overflow-auto h-full items-start">
-        <div
-          ref={ref}
-          className="bg-white mt-8 m-10 p-7 shadow-lg justify-center rounded"
-          style={{
-            width: "595px",
-            minHeight: "842px",
-            height: "auto",
-          }}
-        >
+      <div ref={ref}>
+        <div className="p-7">
           <div className="flex items-center space-x-4 mb-3">
             {data.photoURL && (
               <div className="w-14 h-14">
@@ -196,6 +189,27 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                             </div>
                           </div>
                         ))}
+                      </div>
+                    )}
+                  {section === "certification" &&
+                    data.certification &&
+                    data.certification.length > 0 && (
+                      <div className="mt-6 text-xs">
+                        <h2 className="font-bold mb-1">Certifications</h2>
+                        {data.certification.map(
+                          (certification: any, index: number) => (
+                            <div key={index}>
+                              <div className="">
+                                <p className="break-words">
+                                  {certification.name}
+                                </p>
+                                <p className="text-2xs break-words text-gray-400">
+                                  {certification.date}
+                                </p>
+                              </div>
+                            </div>
+                          )
+                        )}
                       </div>
                     )}
                 </div>

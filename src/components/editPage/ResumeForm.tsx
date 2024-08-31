@@ -13,6 +13,7 @@ import AwardSection from "./form/Award/AwardSection";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { ResumeData } from "@/components/types";
 import QuillEditor from "@/utils/QuillEditor";
+import { MdEdit } from "react-icons/md";
 
 interface ResumeFormProps {
   onChange: (data: ResumeData) => void;
@@ -22,6 +23,7 @@ interface ResumeFormProps {
 export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   // 解構賦值來取用 Props 中資料: setResume(data)
   const [formData, setFormData] = useState<ResumeData>({
+    resumeName: "",
     name: "",
     birthDate: "",
     email: "",
@@ -123,10 +125,30 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     onChange({ ...formData, profile: value });
   };
 
+  // 點擊 icon 全選履歷名字
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleIconClick = () => {
+    inputRef.current?.select();
+  };
+
   return (
-    <div className="bg-white w-1/2 outline-none h-full overflow-auto py-6 px-4">
+    <div className="bg-white w-1/2 outline-none h-full overflow-auto py-8 px-4">
       <form>
         <div className="px-7">
+          <div className="flex justify-center mb-4 items-center">
+            <input
+              type="text"
+              name="resumeName"
+              value={formData.resumeName}
+              ref={inputRef}
+              onChange={handleChange}
+              className="font-bold border-b-2 focus:outline-none focus:border-blue-500 text-center text-lg"
+            />
+            <MdEdit
+              onClick={handleIconClick}
+              className="ml-2 cursor-pointer text-gray-400 hover:text-blue-500"
+            />
+          </div>
           <div className="flex space-x-6">
             <label className="flex-1">
               Name

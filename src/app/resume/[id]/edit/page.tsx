@@ -7,10 +7,8 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import ResumeForm from "@/components/editPage/ResumeForm";
 import ResumeTemplate from "@/components/editPage/ResumeTemplate";
-import Sidebar from "@/components/editPage/Sidebar"; // 导入新的 Sidebar 组件
 import { FiArrowLeft } from "react-icons/fi";
 import { RiFileDownloadLine } from "react-icons/ri";
-import { FaEdit } from "react-icons/fa";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useAppSelector } from "@/lib/hooks";
@@ -49,16 +47,6 @@ export default function EditResume() {
   // 更改履歷內容
   const handleFormChange = (data: any) => {
     setResumeData(data);
-  };
-
-  // 更改履歷名字
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setResumeData({ ...resumeData, resumeName: e.target.value });
-  };
-  // 點擊 icon 全選履歷名字
-  const inputRef = useRef<HTMLInputElement>(null);
-  const handleIconClick = () => {
-    inputRef.current?.select();
   };
 
   // 儲存履歷
@@ -143,17 +131,6 @@ export default function EditResume() {
               Back
             </button>
           </Link>
-          <input
-            type="text"
-            value={resumeData.resumeName}
-            ref={inputRef}
-            onChange={handleNameChange}
-            className="font-bold border-b-2 focus:outline-none focus:border-blue-500 "
-          />
-          <FaEdit
-            onClick={handleIconClick}
-            className="ml-2 cursor-pointer text-gray-400 hover:text-blue-500"
-          />
           <button
             className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded ml-auto h-10"
             onClick={handleSave}
@@ -169,9 +146,12 @@ export default function EditResume() {
           </button>
         </div>
         <div className="flex flex-1 h-full relative overflow-hidden outline-none flex-row left-0 right-0 ">
-          <Sidebar onChange={handleTemplateChange} />
           <ResumeForm onChange={handleFormChange} initialData={resumeData} />
-          <ResumeTemplate ref={resumeRef} data={resumeData} />
+          <ResumeTemplate
+            ref={resumeRef}
+            data={resumeData}
+            onTemplateChange={handleTemplateChange}
+          />
         </div>
       </div>
     </>
