@@ -7,8 +7,8 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
     console.log(data);
 
     return (
-      <div ref={ref}>
-        <div className="p-7">
+      <>
+        <div className="p-7 bg-white">
           <div className="flex items-center space-x-4 mb-3">
             {data.photoURL && (
               <div className="w-14 h-14">
@@ -217,7 +217,7 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 );

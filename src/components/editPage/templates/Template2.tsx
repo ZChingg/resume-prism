@@ -8,7 +8,7 @@ import { ResumeData } from "@/components/types";
 const Template2 = forwardRef<HTMLDivElement, { data: ResumeData }>(
   ({ data }, ref) => {
     return (
-      <div ref={ref}>
+      <>
         <div
           className="flex flex-col items-center pt-5 pb-2 text-white"
           style={{ backgroundColor: "#303030" }}
@@ -43,7 +43,7 @@ const Template2 = forwardRef<HTMLDivElement, { data: ResumeData }>(
           </div>
         </div>
         {/* 主內容 */}
-        <div className="px-10 py-6">
+        <div className="px-10 py-6 bg-white">
           {/* 簡歷 */}
           {data.profile && (
             <div className="text-xs">
@@ -129,7 +129,7 @@ const Template2 = forwardRef<HTMLDivElement, { data: ResumeData }>(
             </div>
           ))}
         </div>
-      </div>
+      </>
     );
   }
 );

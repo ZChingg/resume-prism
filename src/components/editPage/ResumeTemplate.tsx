@@ -1,4 +1,10 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+} from "react";
 import Template1 from "./templates/Template1";
 import Template2 from "./templates/Template2";
 import { ResumeData } from "@/components/types";
@@ -16,6 +22,9 @@ const ResumeTemplate = forwardRef<HTMLDivElement, ResumeTemplateProps>(
     const containerRef = useRef<HTMLDivElement>(null);
     const [isZoomed, setIsZoomed] = useState(false);
     const [buttonLeft, setButtonLeft] = useState(1200);
+
+    // 使 ref 可在父组件中使用，使用非空斷言操作符（!）
+    useImperativeHandle(ref, () => containerRef.current!);
 
     // 根據螢幕寬度調整履歷大小
     useEffect(() => {
@@ -67,17 +76,11 @@ const ResumeTemplate = forwardRef<HTMLDivElement, ResumeTemplateProps>(
               transform: "scale(1)",
               transformOrigin: "left top",
             }}
-            ref={containerRef}
+            ref={containerRef} // 使用 containerRef 和 forwardRef
           >
-            <div ref={ref}>
-              {/* 根據 selectedTemplate 渲染不同模板 */}
-              {data.selectedTemplate === "template1" && (
-                <Template1 data={data} />
-              )}
-              {data.selectedTemplate === "template2" && (
-                <Template2 data={data} />
-              )}
-            </div>
+            {/* 根據 selectedTemplate 渲染不同模板 */}
+            {data.selectedTemplate === "template1" && <Template1 data={data} />}
+            {data.selectedTemplate === "template2" && <Template2 data={data} />}
           </div>
         </div>
         <Sidebar onChange={onTemplateChange} />
