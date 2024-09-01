@@ -317,7 +317,7 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
           </Droppable>
         </DragDropContext>
       </form>
-      <AddSection onAddBlock={handleAddBlock} />
+      <AddSection data={formData} onAddBlock={handleAddBlock} />
     </div>
   );
 }
