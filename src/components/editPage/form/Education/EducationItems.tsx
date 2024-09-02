@@ -116,11 +116,11 @@ export default function EducationSection({
                   name="degree"
                   value={education.degree}
                   onChange={handleChange}
-                  className="input-resume"
+                  className={`input-resume mb-0 ${
+                    education.degree ? "text-black" : "text-gray-400"
+                  }`}
                 >
-                  <option value="" disabled hidden>
-                    Select
-                  </option>
+                  <option value="">Select</option>
                   <option>Elementary/Middle School</option>
                   <option>High school/Vocational School</option>
                   <option>Junior College</option>

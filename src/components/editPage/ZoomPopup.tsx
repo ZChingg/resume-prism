@@ -36,6 +36,7 @@ export default function ZoomPopup({ data, onClose }: ZoomPopupProps) {
           style={{
             width: "595px",
             transform: "scale(1.4)",
+            minHeight: "842px",
             transformOrigin: "left top",
           }}
           onClick={(e) => e.stopPropagation()}

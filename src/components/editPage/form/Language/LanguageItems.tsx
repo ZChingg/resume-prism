@@ -36,7 +36,7 @@ export default function LanguageItems({
   };
 
   // 判斷所有欄位是否為空
-  const isEmpty = !language.name && !language.level;
+  const isEmpty = !language.name && !language.proficiency;
 
   return (
     <div className="border rounded mb-3 bg-white hover:border-gray-800 relative group/item">
@@ -99,11 +99,11 @@ export default function LanguageItems({
                   name="proficiency"
                   value={language.proficiency || ""}
                   onChange={handleChange}
-                  className="input-resume"
+                  className={`input-resume ${
+                    language.proficiency ? "text-black" : "text-gray-400"
+                  }`}
                 >
-                  <option value="" disabled hidden>
-                    Select
-                  </option>
+                  <option value="">Select</option>
                   <option>Beginner</option>
                   <option>Basic</option>
                   <option>Professional proficiency</option>

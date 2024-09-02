@@ -93,13 +93,15 @@ export default function SkillItems({
                   name="level"
                   value={skill.level}
                   onChange={handleChange}
-                  className="input-resume mb-0"
+                  className={`input-resume mb-0 ${
+                    skill.level ? "text-black" : "text-gray-400"
+                  }`}
                 >
-                  <option value="" disabled hidden>
-                    Select
-                  </option>
+                  <option value="">Select</option>
+                  <option>Novice</option>
                   <option>Beginner</option>
-                  <option>Intermediate</option>
+                  <option>Skillful</option>
+                  <option>Experienced</option>
                   <option>Expert</option>
                 </select>
               </label>
