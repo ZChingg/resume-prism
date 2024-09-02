@@ -5,19 +5,19 @@ import {
   useState,
   useImperativeHandle,
 } from "react";
-import Template1 from "./templates/Template1";
-import Template2 from "./templates/Template2";
+import Template1 from "./preview/templates/Template1";
+import Template2 from "./preview/templates/Template2";
 import { ResumeData } from "@/components/types";
-import Sidebar from "@/components/editPage/Sidebar";
-import ZoomPopup from "./ZoomPopup";
+import Sidebar from "@/components/editPage/preview/Sidebar";
+import ZoomPopup from "./preview/ZoomPopup";
 import { FaSearchPlus } from "react-icons/fa";
 
-interface ResumeTemplateProps {
+interface ResumePreviewProps {
   data: ResumeData;
   onTemplateChange: (templateId: string) => void;
 }
 
-const ResumeTemplate = forwardRef<HTMLDivElement, ResumeTemplateProps>(
+const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data, onTemplateChange }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isZoomed, setIsZoomed] = useState(false);
@@ -97,6 +97,6 @@ const ResumeTemplate = forwardRef<HTMLDivElement, ResumeTemplateProps>(
   }
 );
 
-ResumeTemplate.displayName = "ResumeTemplate";
+ResumePreview.displayName = "ResumeTemplate";
 
-export default ResumeTemplate;
+export default ResumePreview;

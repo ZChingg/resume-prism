@@ -6,7 +6,8 @@ import Link from "next/link";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import ResumeForm from "@/components/editPage/ResumeForm";
-import ResumeTemplate from "@/components/editPage/ResumeTemplate";
+import ResumePreview from "@/components/editPage/ResumePreview";
+import DownloadPDF from "@/components/editPage/DownloadPDF";
 import { FiArrowLeft } from "react-icons/fi";
 import { RiFileDownloadLine } from "react-icons/ri";
 import html2canvas from "html2canvas";
@@ -147,11 +148,11 @@ export default function EditResume() {
         </div>
         <div className="flex flex-1 h-full relative overflow-hidden outline-none flex-row left-0 right-0 ">
           <ResumeForm onChange={handleFormChange} initialData={resumeData} />
-          <ResumeTemplate
-            ref={resumeRef}
+          <ResumePreview
             data={resumeData}
             onTemplateChange={handleTemplateChange}
           />
+          <DownloadPDF ref={resumeRef} data={resumeData} />
         </div>
       </div>
     </>
