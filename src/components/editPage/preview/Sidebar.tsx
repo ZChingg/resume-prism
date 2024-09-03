@@ -1,13 +1,11 @@
-import { useState } from "react";
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import Image from "next/image";
 
 interface SidebarProps {
   onChange: (templateId: string) => void;
+  isOpen: boolean;
 }
 
-export default function Sidebar({ onChange }: SidebarProps) {
-  const [isOpen, setIsOpen] = useState(true);
+export default function Sidebar({ onChange, isOpen }: SidebarProps) {
   const templates = ["template1", "template2"];
 
   return (
@@ -35,16 +33,6 @@ export default function Sidebar({ onChange }: SidebarProps) {
           ))}
         </div>
       )}
-      <button
-        className="absolute left-[-30px] top-16 bg-gray-200 p-2 rounded-l h-12 w-10 z-10"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {isOpen ? (
-          <FaChevronRight className="text-gray-600" />
-        ) : (
-          <FaChevronLeft className="text-gray-600" />
-        )}
-      </button>
     </div>
   );
 }

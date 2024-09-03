@@ -14,6 +14,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { ResumeData } from "@/components/types";
 import QuillEditor from "@/utils/QuillEditor";
 import { MdEdit } from "react-icons/md";
+import { IoDocumentTextSharp } from "react-icons/io5";
+import ZoomPopup from "./preview/ZoomPopup";
 
 interface ResumeFormProps {
   onChange: (data: ResumeData) => void;
@@ -35,6 +37,8 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     photoURL: "",
     sectionOrder: ["education", "job", "skill"],
   });
+
+  const [isZoomed, setIsZoomed] = useState(false);
 
   // 在組件初始化時檢查是否有 initialData
   useEffect(() => {
@@ -131,8 +135,13 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
     inputRef.current?.select();
   };
 
+  // 放大鏡功能開關
+  const toggleZoom = () => {
+    setIsZoomed(!isZoomed);
+  };
+
   return (
-    <div className="bg-white w-1/2 outline-none h-full overflow-auto py-8 px-4">
+    <div className="bg-white w-full md:w-1/2 outline-none h-full overflow-auto py-8 px-4">
       <form>
         <div className="px-7">
           <div className="flex justify-center mb-4 items-center">
@@ -318,6 +327,16 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
         </DragDropContext>
       </form>
       <AddSection data={formData} onAddBlock={handleAddBlock} />
+      <div
+        onClick={toggleZoom}
+        className="absolute bottom-5 right-8 flex flex-col items-center cursor-pointer"
+      >
+        <button className=" bg-blue-500 p-3 rounded-full">
+          <IoDocumentTextSharp className="text-white h-6 w-6" />
+        </button>
+        <p className="text-blue-500 text-sm">Preview</p>
+      </div>
+      {isZoomed && <ZoomPopup data={formData} onClose={toggleZoom} />}
     </div>
   );
 }

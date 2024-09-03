@@ -134,7 +134,7 @@ export default function ResumePage() {
         }
       `}</style>
       <Navigation />
-      <div className="p-10 m-auto" style={{ width: "1200px" }}>
+      <div className="p-10 m-auto xl:w-[1200px]">
         <div className="flex items-center justify-between mt-5">
           <h1 className="text-2xl font-bold">My Resumes</h1>
           <button
@@ -150,7 +150,7 @@ export default function ResumePage() {
           <div className="border border-gray-100 bg-white shadow-md shadow-gray-200 p-4 rounded flex flex-col items-center justify-center">
             <RiSparkling2Line className="h-4 w-4 text-blue-600 opacity-30" />
             <SiGoogledocs className="h-7 w-7 text-blue-600 opacity-30" />
-            <p className="mt-1">You don’t have a resume yet.</p>
+            <p className="mt-1 text-center">You don’t have a resume yet.</p>
             <p className="text-sm text-gray-500 text-center mt-1">
               Custom-built, amazing resumes.
               <br />
@@ -165,7 +165,7 @@ export default function ResumePage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 mb-5">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-5 mb-5">
             {resumes.map((resume) => (
               <div key={resume.id}>
                 <div className="h-40 border border-gray-100 bg-white shadow-md shadow-gray-200 p-4 rounded flex flex-col justify-between">

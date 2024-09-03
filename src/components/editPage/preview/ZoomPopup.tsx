@@ -11,6 +11,7 @@ interface ZoomPopupProps {
 
 export default function ZoomPopup({ data, onClose }: ZoomPopupProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [scale, setScale] = useState(1.2);
 
   useEffect(() => {
     // 設置初始延遲以避免動畫閃爍
@@ -18,7 +19,24 @@ export default function ZoomPopup({ data, onClose }: ZoomPopupProps) {
       setIsVisible(true);
     }, 10); // 確保組件已加載後再觸發動畫
 
-    return () => clearTimeout(timer); // 清除計時器
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 767) {
+        // 如果螢幕寬度小於等於 768px，根據螢幕寬度調整縮放比例
+        setScale(screenWidth / 650);
+      } else {
+        setScale(1.2); // 保持最大縮放比例為 1.25
+      }
+    };
+
+    // 初始化和螢幕寬度更新時缩放比例
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
@@ -31,11 +49,14 @@ export default function ZoomPopup({ data, onClose }: ZoomPopupProps) {
       <button onClick={onClose}>
         <IoCloseCircle className="absolute right-5 top-5 h-9 w-9 text-gray-200 hover:text-gray-300 cursor-pointer" />
       </button>
-      <div className="relative mt-16 mx-auto w-[833px]">
+      <div
+        className="relative mt-16 mx-auto"
+        style={{ width: `${595 * scale}px` }}
+      >
         <div
           style={{
             width: "595px",
-            transform: "scale(1.4)",
+            transform: `scale(${scale})`,
             minHeight: "842px",
             transformOrigin: "left top",
           }}

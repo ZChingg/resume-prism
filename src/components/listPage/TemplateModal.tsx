@@ -24,7 +24,7 @@ export default function TemplateModal({
       <button onClick={onClose}>
         <IoCloseCircle className="absolute right-5 top-5 h-9 w-9 text-gray-600 hover:text-gray-500 cursor-pointer" />
       </button>
-      <div className="p-10 flex flex-col items-center">
+      <div className="pt-20 p-10 flex flex-col items-center xl:w-[1200px]">
         <h2 className="text-2xl mb-2 text-center">
           Build Your Resume in Minutes
         </h2>

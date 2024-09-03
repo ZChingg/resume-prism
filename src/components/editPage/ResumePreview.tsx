@@ -11,6 +11,7 @@ import { ResumeData } from "@/components/types";
 import Sidebar from "@/components/editPage/preview/Sidebar";
 import ZoomPopup from "./preview/ZoomPopup";
 import { FaSearchPlus } from "react-icons/fa";
+import { LuLayout } from "react-icons/lu";
 
 interface ResumePreviewProps {
   data: ResumeData;
@@ -20,7 +21,9 @@ interface ResumePreviewProps {
 const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data, onTemplateChange }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const sidebarRef = useRef<HTMLDivElement>(null);
     const [isZoomed, setIsZoomed] = useState(false);
+    const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
     const [buttonLeft, setButtonLeft] = useState(1200);
 
     // 使 ref 可在父组件中使用，使用非空斷言操作符（!）
@@ -49,9 +52,9 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
           containerRef.current.style.minHeight = "842px"; // 設置最小高度
           containerRef.current.style.height = "auto"; // 保持自動高度
 
-          const buttonLeftPosition = screenWidth / 4 + resumeWidth / 2 + 6;
-
-          setButtonLeft(buttonLeftPosition);
+          if (screenWidth <= 768) {
+            setSidebarIsOpen(false);
+          }
         }
       };
 
@@ -66,9 +69,28 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
       setIsZoomed(!isZoomed);
     };
 
+    // 樣式功能關閉
+    const sidebarOpen = () => {
+      setSidebarIsOpen(!sidebarIsOpen);
+    };
+
     return (
-      <div className="w-1/2 relative outline-none">
+      <div className="w-0 md:w-1/2 relative outline-none">
         <div className="relative h-full overflow-auto overflow-x-hidden bg-gray-500 py-5 px-[60px]">
+          <div className="max-w-[595px] mx-auto flex items-center mb-2 space-x-2">
+            <button
+              className="bg-white p-2 rounded shadow hover:bg-gray-200 "
+              onClick={toggleZoom}
+            >
+              <FaSearchPlus className="text-gray-600 h-3 w-3" />
+            </button>
+            <button
+              className="bg-white p-1 rounded shadow hover:bg-gray-200 h-7 w-7 items-center justify-center flex"
+              onClick={sidebarOpen}
+            >
+              <LuLayout className="text-gray-600 h-4 w-4 " />
+            </button>
+          </div>
           <div
             className="mx-auto bg-white shadow-lg rounded overflow-hidden"
             style={{
@@ -83,14 +105,7 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             {data.selectedTemplate === "template2" && <Template2 data={data} />}
           </div>
         </div>
-        <Sidebar onChange={onTemplateChange} />
-        <button
-          className="absolute top-5 bg-white p-2 rounded shadow hover:bg-gray-200 "
-          style={{ left: `${buttonLeft}px` }}
-          onClick={toggleZoom}
-        >
-          <FaSearchPlus className="text-gray-600 h-3 w-3" />
-        </button>
+        <Sidebar onChange={onTemplateChange} isOpen={sidebarIsOpen} />
         {isZoomed && <ZoomPopup data={data} onClose={toggleZoom} />}
       </div>
     );

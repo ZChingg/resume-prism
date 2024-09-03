@@ -75,6 +75,8 @@ export default function EditResume() {
     const input = resumeRef.current;
 
     if (input) {
+      await document.fonts.ready;
+
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "pt",
@@ -89,6 +91,7 @@ export default function EditResume() {
         scale: 2,
         backgroundColor: null,
         useCORS: true,
+        logging: true,
       });
 
       const imgData = canvas.toDataURL("image/png");
@@ -100,13 +103,13 @@ export default function EditResume() {
       let heightLeft = imgHeight;
       let position = 0;
 
-      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight); // 移除 'null' 参数
+      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
       heightLeft -= pdfHeight;
 
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight); // 移除 'null' 参数
+        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
         heightLeft -= pdfHeight;
       }
 

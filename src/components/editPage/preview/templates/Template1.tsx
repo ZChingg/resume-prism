@@ -23,7 +23,7 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
 
     return (
       <div
-        className="bg-white"
+        className="bg-white template1"
         style={{
           width: "595px",
           minHeight: "842px",

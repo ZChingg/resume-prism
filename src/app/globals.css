@@ -22,7 +22,7 @@ body {
 
 @layer components {
   .navigation{
-    @apply flex sticky h-16	bg-white shadow-md items-center px-16 z-50 top-0 justify-end;
+    @apply flex sticky h-16	bg-white shadow-md items-center px-10 z-50 top-0 justify-end;
   }
   .input-resume {
     @apply block w-full p-3 bg-gray-100 rounded mb-6 mt-1 appearance-none outline-none focus:ring-1 focus:ring-sky-500; /* TODO: outline 寬度設置 */
@@ -30,14 +30,35 @@ body {
   .title{
     @apply text-lg font-semibold mb-3 cursor-default;
   }
-  ul{
-    @apply list-disc pl-6
+
+  .template1 ul {
+    @apply list-none p-0;
   }
-  ol{
-    @apply list-decimal	pl-6
+
+  .template1 ul li {
+    @apply relative pl-6;
+  }
+
+  .template1 ul li::before {
+    @apply absolute left-2;
+    content: '•';
+  }
+
+  .template1 ol {
+    @apply list-none p-0;
+    counter-reset: list-counter;
+  }
+
+  .template1 ol li {
+    @apply relative pl-6;
+    counter-increment: list-counter;
+  }
+
+  .template1 ol li::before {
+    @apply absolute left-2;
+    content: counter(list-counter) '.';
   }
 }  
-
 
 .quill {
   position: relative;
