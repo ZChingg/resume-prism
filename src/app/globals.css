@@ -29,8 +29,9 @@ body {
   }
   .title{
     @apply text-lg font-semibold mb-3 cursor-default;
-  }
 
+  }
+/* 列表 */
   .template1 ul {
     @apply list-none p-0;
   }
@@ -60,6 +61,7 @@ body {
   }
 }  
 
+/* 富文本編輯器 */
 .quill {
   position: relative;
 }

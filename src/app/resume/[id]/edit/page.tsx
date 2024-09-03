@@ -64,9 +64,19 @@ export default function EditResume() {
     }
   };
 
-  // 更換模板
-  const handleTemplateChange = (templateId: string) => {
-    setResumeData({ ...resumeData, selectedTemplate: templateId });
+  // 更換模板與顏色
+  const handleTemplateChange = (change: {
+    templateId?: string;
+    color?: string;
+  }) => {
+    const updatedData = { ...resumeData };
+    if (change.templateId) {
+      updatedData.selectedTemplate = change.templateId;
+    }
+    if (change.color) {
+      updatedData.selectedColor = change.color;
+    }
+    setResumeData(updatedData);
   };
 
   // 匯出 PDF // html2canvas 將 HTML 轉為圖像，jspdf 導出為 pdf 檔

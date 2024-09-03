@@ -181,9 +181,10 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                           {skill.level && (
                             <div className="w-full bg-gray-200 rounded h-0.5 mb-2">
                               <div
-                                className="bg-blue-600 h-0.5 rounded"
+                                className="h-0.5 rounded"
                                 style={{
                                   width: `${skillLevels[skill.level]}%`,
+                                  backgroundColor: data.selectedColor,
                                 }}
                               ></div>
                             </div>

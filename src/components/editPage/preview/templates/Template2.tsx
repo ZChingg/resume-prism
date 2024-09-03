@@ -11,7 +11,7 @@ const Template2 = forwardRef<HTMLDivElement, { data: ResumeData }>(
       <>
         <div
           className="flex flex-col items-center pt-5 pb-2 text-white"
-          style={{ backgroundColor: "#303030" }}
+          style={{ backgroundColor: data.selectedColor }}
         >
           {/* 上方欄 */}
           {data.photoURL && (

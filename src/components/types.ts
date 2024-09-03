@@ -3,6 +3,7 @@ export interface ResumeData {
   createAt?: string;
   lastEdited?: string;
   selectedTemplate?: string;
+  selectedColor?: string;
   
   name: string;
   birthDate: string;

@@ -90,6 +90,7 @@ export default function ResumePage() {
             skill: [],
             sectionOrder: ["education", "job", "skill"],
             selectedTemplate: templateId,
+            selectedColor: "#000000",
           }
         );
         router.push(`/resume/${docRef.id}/edit/`);

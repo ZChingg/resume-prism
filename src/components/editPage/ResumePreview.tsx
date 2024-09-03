@@ -15,16 +15,14 @@ import { LuLayout } from "react-icons/lu";
 
 interface ResumePreviewProps {
   data: ResumeData;
-  onTemplateChange: (templateId: string) => void;
+  onTemplateChange: (change: { templateId?: string; color?: string }) => void;
 }
 
 const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data, onTemplateChange }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const sidebarRef = useRef<HTMLDivElement>(null);
     const [isZoomed, setIsZoomed] = useState(false);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-    const [buttonLeft, setButtonLeft] = useState(1200);
 
     // 使 ref 可在父组件中使用，使用非空斷言操作符（!）
     useImperativeHandle(ref, () => containerRef.current!);
@@ -105,7 +103,12 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             {data.selectedTemplate === "template2" && <Template2 data={data} />}
           </div>
         </div>
-        <Sidebar onChange={onTemplateChange} isOpen={sidebarIsOpen} />
+        <Sidebar
+          onChange={(templateId) => onTemplateChange({ templateId })}
+          onColorChange={(color) => onTemplateChange({ color })}
+          data={data}
+          isOpen={sidebarIsOpen}
+        />
         {isZoomed && <ZoomPopup data={data} onClose={toggleZoom} />}
       </div>
     );
