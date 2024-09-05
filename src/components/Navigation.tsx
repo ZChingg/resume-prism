@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/hooks";
+import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/Redux/hooks";
 import { auth } from "@/lib/firebase";
 import Link from "next/link";
 import Image from "next/image";
-import { setLogout } from "@/lib/features/userSlice";
+import { setLogout } from "@/lib/Redux/features/userSlice";
 import { FaChevronDown } from "react-icons/fa";
 import { IoPrism } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";

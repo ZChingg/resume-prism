@@ -1,7 +1,7 @@
 "use client";
 
 import Navigation from "@/components/Navigation";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/Redux/hooks";
 import Image from "next/image";
 
 export default function Home() {

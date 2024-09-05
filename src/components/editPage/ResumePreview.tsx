@@ -93,6 +93,7 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             className="mx-auto bg-white shadow-lg rounded overflow-hidden"
             style={{
               width: "595px",
+              height: "842px",
               transform: "scale(1)",
               transformOrigin: "left top",
             }}

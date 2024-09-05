@@ -11,13 +11,17 @@ import {
   doc,
 } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
-import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import { storage } from "@/lib/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
+import { useAppSelector, useAppDispatch } from "@/lib/Redux/hooks";
 import Navigation from "@/components/Navigation";
 import TemplateModal from "@/components/listPage/TemplateModal";
 import { GoPlus } from "react-icons/go";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 import { SiGoogledocs } from "react-icons/si";
 import { RiSparkling2Line } from "react-icons/ri";
+import { HiDownload } from "react-icons/hi";
 
 export default function ResumePage() {
   const [resumes, setResumes] = useState<any[]>([]);
@@ -37,12 +41,17 @@ export default function ResumePage() {
             const querySnapshot = await getDocs(
               collection(db, "users", user.uid, "resumes")
             );
-            console.log(querySnapshot.docs);
-            let resumesData: any[] = querySnapshot.docs.map((doc) => ({
-              // FIXME: 不該使用 any
-              id: doc.id,
-              ...doc.data(),
-            }));
+            let resumesData: any[] = await Promise.all(
+              querySnapshot.docs.map(async (doc) => {
+                const data = doc.data();
+                const pdfExists = await checkPDFExists(user.uid, doc.id);
+                return {
+                  id: doc.id,
+                  ...data,
+                  pdfExists,
+                };
+              })
+            );
 
             resumesData = resumesData.sort((a, b) => {
               return (
@@ -80,6 +89,7 @@ export default function ResumePage() {
           {
             resumeName: "My Resume",
             createAt: new Date().toISOString(),
+            lastEdited: new Date().toISOString(),
             name: "",
             birthDate: "",
             email: "",
@@ -90,7 +100,7 @@ export default function ResumePage() {
             skill: [],
             sectionOrder: ["education", "job", "skill"],
             selectedTemplate: templateId,
-            selectedColor: "#000000",
+            selectedColor: "#303030",
           }
         );
         router.push(`/resume/${docRef.id}/edit/`);
@@ -110,6 +120,49 @@ export default function ResumePage() {
       }
     } catch (error) {
       console.error("Error deleting resume:", error);
+    }
+  };
+
+  // 檢查是否有已存檔的履歷檔案
+  const checkPDFExists = async (userId: string, resumeId: string) => {
+    const pdfRef = ref(storage, `${userId}/${resumeId}/resumePDF.pdf`);
+
+    try {
+      await getDownloadURL(pdfRef);
+      return true;
+    } catch (error: any) {
+      if (error.code === "storage/object-not-found") {
+        return false;
+      } else {
+        throw error;
+      }
+    }
+  };
+
+  // 下載履歷檔案
+  const downloadPDF = async (
+    userId: string,
+    resumeId: string,
+    resumeName: string
+  ) => {
+    const pdfRef = ref(storage, `${userId}/${resumeId}/resumePDF.pdf`);
+    try {
+      const url = await getDownloadURL(pdfRef);
+
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `${resumeName}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
     }
   };
 
@@ -173,30 +226,38 @@ export default function ResumePage() {
                   <div>
                     <p className="font-bold">{resume.resumeName}</p>
                     <p className="text-sm text-gray-500">
-                      {resume.lastEdited ? (
-                        <>
-                          Last edited at&ensp;
-                          {formatDate(resume.lastEdited)}
-                        </>
-                      ) : (
-                        <>
-                          Last edited at&ensp;
-                          {formatDate(resume.createAt)}
-                        </>
-                      )}
+                      Last edited at&ensp;
+                      {formatDate(resume.lastEdited)}
                       ・Create on&ensp;
                       {formatDate(resume.createAt)}
                     </p>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Link href={`/resume/${resume.id}/edit`}>
-                      <button className="flex items-center py-1 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded space-x-1">
-                        <FaEdit />
-                        <p>Edit</p>
-                      </button>
-                    </Link>
+                  <div className="flex items-center justify-between">
+                    <div className="flex space-x-1">
+                      <Link href={`/resume/${resume.id}/edit`}>
+                        <button className="flex items-center py-1 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded space-x-1">
+                          <MdEdit />
+                          <p>Edit</p>
+                        </button>
+                      </Link>
+                      {resume.pdfExists && (
+                        <button
+                          className="flex items-center py-1 px-4 bg-gray-200 hover:bg-gray-300 rounded"
+                          onClick={() =>
+                            downloadPDF(
+                              auth.currentUser?.uid ?? "",
+                              resume.id,
+                              resume.resumeName
+                            )
+                          }
+                        >
+                          <HiDownload />
+                          <p>PDF</p>
+                        </button>
+                      )}
+                    </div>
                     <button
-                      className="p-2 bg-gray-200 hover:bg-gray-300 rounded"
+                      className="p-2 hover:bg-gray-100 rounded"
                       onClick={() => handleDelete(resume.id)}
                     >
                       <FaTrashAlt />

@@ -9,8 +9,8 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
-import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/hooks";
-import { setLogin } from "@/lib/features/userSlice";
+import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/Redux/hooks";
+import { setLogin } from "@/lib/Redux/features/userSlice";
 import { FcGoogle } from "react-icons/fc";
 
 interface LoginProps {

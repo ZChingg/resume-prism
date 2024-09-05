@@ -23,13 +23,13 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
 
     return (
       <div
-        className="bg-white template1"
+        className="bg-white template1 p-7"
         style={{
           width: "595px",
-          minHeight: "842px",
+          height: "842px",
         }}
       >
-        <div className="p-7">
+        <div className="h-full overflow-hidden">
           <div className="flex items-center space-x-4 mb-3">
             {data.photoURL && (
               <div className="w-14 h-14">

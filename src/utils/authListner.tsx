@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAppDispatch } from "@/lib/hooks";
-import { setLogin } from "@/lib/features/userSlice";
+import { useAppDispatch } from "@/lib/Redux/hooks";
+import { setLogin } from "@/lib/Redux/features/userSlice";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";

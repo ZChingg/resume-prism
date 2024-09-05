@@ -4,15 +4,15 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db, auth } from "@/lib/firebase";
+import { db, auth, storage } from "@/lib/firebase";
+import { ref, uploadBytes, uploadString } from "firebase/storage";
 import ResumeForm from "@/components/editPage/ResumeForm";
 import ResumePreview from "@/components/editPage/ResumePreview";
 import DownloadPDF from "@/components/editPage/DownloadPDF";
 import { FiArrowLeft } from "react-icons/fi";
 import { RiFileDownloadLine } from "react-icons/ri";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/Redux/hooks";
+import { generatePDF } from "@/lib/pdf";
 
 export default function EditResume() {
   const router = useRouter();
@@ -55,11 +55,36 @@ export default function EditResume() {
     if (id) {
       const user = auth.currentUser;
       if (user) {
-        await setDoc(doc(db, "users", user.uid, "resumes", id as string), {
-          ...resumeData,
-          lastEdited: new Date().toISOString(),
-        });
-        router.push("/resume");
+        try {
+          // 將履歷檔案上傳至 storage
+          const input = resumeRef.current;
+          const result = await generatePDF(input);
+
+          if (result) {
+            const { pdf, imgData } = result;
+            const pdfBlob = pdf.output("blob");
+
+            const storageRef = ref(storage, `${user.uid}/${id}/resumePDF.pdf`);
+            const metadata = {
+              contentType: "application/pdf",
+              contentDisposition: `attachment; filename="resumePDF.pdf"`,
+            };
+            const imageRef = ref(storage, `${user.uid}/${id}/resumeImage.png`);
+
+            await uploadBytes(storageRef, pdfBlob, metadata);
+            await uploadString(imageRef, imgData.split(",")[1], "base64");
+
+            // 更新資料至 firestore
+            await setDoc(doc(db, "users", user.uid, "resumes", id as string), {
+              ...resumeData,
+              lastEdited: new Date().toISOString(),
+            });
+
+            router.push("/resume");
+          }
+        } catch (error) {
+          console.error("Error saving resume and uploading files:", error);
+        }
       }
     }
   };
@@ -79,50 +104,14 @@ export default function EditResume() {
     setResumeData(updatedData);
   };
 
-  // 匯出 PDF // html2canvas 將 HTML 轉為圖像，jspdf 導出為 pdf 檔
+  // 下載 PDF
   const resumeRef = useRef<HTMLDivElement>(null);
   const exportPDF = async () => {
     const input = resumeRef.current;
+    const result = await generatePDF(input);
 
-    if (input) {
-      await document.fonts.ready;
-
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "pt",
-        format: "a4",
-        compress: false,
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-
-      const canvas = await html2canvas(input, {
-        scale: 2,
-        backgroundColor: null,
-        useCORS: true,
-        logging: true,
-      });
-
-      const imgData = canvas.toDataURL("image/png");
-      const imgProps = pdf.getImageProperties(imgData);
-      const imgHeight = (imgProps.height * pdfWidth) / imgProps.width - 1;
-      console.log(imgHeight); // 842....
-      console.log(imgProps.height); //1684
-
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
-      heightLeft -= pdfHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
-        heightLeft -= pdfHeight;
-      }
-
+    if (result) {
+      const { pdf } = result;
       pdf.save(`${resumeData.resumeName}.pdf`);
     }
   };
@@ -149,7 +138,7 @@ export default function EditResume() {
             className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded ml-auto h-10"
             onClick={handleSave}
           >
-            Finish
+            Save
           </button>
           <button
             className="text-gray-400 hover:text-blue-500 rounded ml-4"
