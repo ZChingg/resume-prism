@@ -21,6 +21,7 @@ interface ResumePreviewProps {
 const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data, onTemplateChange }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const sidebarRef = useRef<HTMLDivElement>(null);
     const [isZoomed, setIsZoomed] = useState(false);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
 
@@ -62,6 +63,28 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    // 關閉 sidebar
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          sidebarRef.current &&
+          !sidebarRef.current.contains(event.target as Node)
+        ) {
+          setSidebarIsOpen(false);
+        }
+      };
+
+      if (sidebarIsOpen) {
+        document.addEventListener("mousedown", handleClickOutside);
+      } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [sidebarIsOpen]);
+
     // 放大鏡功能開關
     const toggleZoom = () => {
       setIsZoomed(!isZoomed);
@@ -69,7 +92,7 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
 
     // 樣式功能關閉
     const sidebarOpen = () => {
-      setSidebarIsOpen(!sidebarIsOpen);
+      setSidebarIsOpen((prev) => !prev);
     };
 
     return (
@@ -84,7 +107,7 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             </button>
             <button
               className="bg-white p-1 rounded shadow hover:bg-gray-200 h-7 w-7 items-center justify-center flex"
-              onClick={sidebarOpen}
+              onMouseDown={sidebarOpen}
             >
               <LuLayout className="text-gray-600 h-4 w-4 " />
             </button>
@@ -104,12 +127,14 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             {data.selectedTemplate === "template2" && <Template2 data={data} />}
           </div>
         </div>
-        <Sidebar
-          onChange={(templateId) => onTemplateChange({ templateId })}
-          onColorChange={(color) => onTemplateChange({ color })}
-          data={data}
-          isOpen={sidebarIsOpen}
-        />
+        <div ref={sidebarRef}>
+          <Sidebar
+            onChange={(templateId) => onTemplateChange({ templateId })}
+            onColorChange={(color) => onTemplateChange({ color })}
+            data={data}
+            isOpen={sidebarIsOpen}
+          />
+        </div>
         {isZoomed && <ZoomPopup data={data} onClose={toggleZoom} />}
       </div>
     );

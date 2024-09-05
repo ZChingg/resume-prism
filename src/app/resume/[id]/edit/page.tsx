@@ -9,6 +9,7 @@ import { ref, uploadBytes, uploadString } from "firebase/storage";
 import ResumeForm from "@/components/editPage/ResumeForm";
 import ResumePreview from "@/components/editPage/ResumePreview";
 import DownloadPDF from "@/components/editPage/DownloadPDF";
+import Navigation from "@/components/Navigation";
 import { FiArrowLeft } from "react-icons/fi";
 import { RiFileDownloadLine } from "react-icons/ri";
 import { useAppSelector } from "@/lib/Redux/hooks";
@@ -127,27 +128,7 @@ export default function EditResume() {
         }
       `}</style>
       <div className="flex flex-col z-50 inset-0 fixed">
-        <div className="relative flex h-16	bg-white shadow-md items-center px-16 z-10 top-0 justify-end;">
-          <Link href="/resume">
-            <button className="hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10 flex items-center mr-1">
-              <FiArrowLeft className="h-5 w-5 mr-1" />
-              Back
-            </button>
-          </Link>
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded ml-auto h-10"
-            onClick={handleSave}
-          >
-            Save
-          </button>
-          <button
-            className="text-gray-400 hover:text-blue-500 rounded ml-4"
-            onClick={exportPDF}
-          >
-            <RiFileDownloadLine className="h-5 w-5" />
-            <p className="font-medium text-xs">PDF</p>
-          </button>
-        </div>
+        <Navigation handleSave={handleSave} exportPDF={exportPDF} id={id} />
         <div className="flex flex-1 h-full relative overflow-hidden outline-none flex-row left-0 right-0 ">
           <ResumeForm onChange={handleFormChange} initialData={resumeData} />
           <ResumePreview
