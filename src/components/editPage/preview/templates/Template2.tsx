@@ -18,7 +18,7 @@ const Template2 = forwardRef<HTMLDivElement, { data: ResumeData }>(
       >
         <div className="overflow-hidden h-full">
           <div
-            className="flex flex-col items-center pt-5 pb-2 text-white"
+            className="flex flex-col items-center pt-5 pb-3 text-white"
             style={{ backgroundColor: data.selectedColor }}
           >
             {/* 上方欄 */}
@@ -35,11 +35,11 @@ const Template2 = forwardRef<HTMLDivElement, { data: ResumeData }>(
             )}
             <p className="font-bold text-xl">{data.name}</p>
             <hr className="w-full mt-4 mb-2 border-white opacity-20" />
-            <ul className="flex space-x-8 text-3xs">
-              <li>{data.birthDate}</li>
-              <li>{data.phone}</li>
-              <li>{data.email}</li>
-            </ul>
+            <div className="flex space-x-8 text-3xs">
+              <p>{data.birthDate}</p>
+              <p>{data.phone}</p>
+              <p>{data.email}</p>
+            </div>
           </div>
           {/* 主內容 */}
           <div className="px-8 pt-6 bg-white space-y-4">

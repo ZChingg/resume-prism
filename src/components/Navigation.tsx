@@ -197,7 +197,7 @@ export default function Navigation({
   };
 
   return (
-    <div className="flex sticky h-16	bg-white shadow-md items-center px-10 z-50 top-0 justify-end">
+    <div className="flex sticky h-16 border-b border-gray-100	bg-white items-center px-10 z-50 top-0 justify-end">
       {/* 左側 */}
       {BackToButton()}
       {/* 右側 */}
