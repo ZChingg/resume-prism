@@ -1,10 +1,10 @@
 import { forwardRef } from "react";
 import Image from "next/image";
 import { ResumeData } from "@/components/types";
+import { poppins } from "@/app/font";
 
 const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
   ({ data }, ref) => {
-    console.log(data);
     const languageLevels: Record<string, number> = {
       Beginner: 30,
       Basic: 70,
@@ -23,7 +23,7 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
 
     return (
       <div
-        className="bg-white template1 p-7"
+        className={`bg-white template p-7 text-2xs ${poppins.className}`}
         style={{
           width: "595px",
           height: "842px",
@@ -42,15 +42,15 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                 />
               </div>
             )}
-            <p className="font-bold text-2xl">{data.name}</p>
+            <p className="font-bold text-xl">{data.name}</p>
           </div>
           <div className="flex">
             {/* 主內容 */}
-            <div className="w-3/4">
+            <div className="w-3/4 space-y-5 mt-2">
               {/* 簡歷 */}
               {data.profile && data.profile !== "<p><br></p>" && (
-                <div className="mt-2 text-xs">
-                  <h2 className="font-bold text-base mb-1">Profile</h2>
+                <div>
+                  <h2 className="font-bold text-sm mb-1">Profile</h2>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: data.profile,
@@ -62,17 +62,17 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
               {data.sectionOrder?.map((section: string) => {
                 if (section === "education" && data.education.length > 0) {
                   return (
-                    <div key={section} className="mt-4 text-xs">
-                      <h2 className="font-bold text-base mb-1">Education</h2>
+                    <div key={section}>
+                      <h2 className="font-bold text-sm">Education</h2>
                       {data.education.map((edu: any, index: number) => (
                         <div key={index} className="mt-1">
                           <h3 className="font-bold">
                             {edu.school}
                             {(edu.major || edu.degree) && ","}
-                            <span className="ml-5 mr-3">{edu.major}</span>
+                            <span className="mx-3">{edu.major}</span>
                             <span>{edu.degree}</span>
                           </h3>
-                          <p className="text-2xs text-gray-400 font-bold">
+                          <p className="text-gray-400 text-3xs">
                             {edu.startDate && <span>{edu.startDate}</span>}
                             {(edu.startDate || edu.endDate) && " ~ "}
                             {edu.endDate && <span>{edu.endDate}</span>}
@@ -90,16 +90,16 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
 
                 if (section === "job" && data.job.length > 0) {
                   return (
-                    <div key={section} className="mt-4 text-xs">
-                      <h2 className="font-bold text-base mb-1">Job History</h2>
+                    <div key={section}>
+                      <h2 className="font-bold text-sm">Job History</h2>
                       {data.job.map((job: any, index: number) => (
                         <div key={index} className="mt-1">
                           <h3 className="font-bold">
                             {job.position}
                             {job.company && ","}
-                            <span className="ml-5">{job.company}</span>
+                            <span className="ml-3">{job.company}</span>
                           </h3>
-                          <p className="text-2xs text-gray-400 font-bold">
+                          <p className="text-gray-400 text-3xs">
                             {job.startDate && <span>{job.startDate}</span>}
                             {(job.startDate || job.endDate) && " ~ "}
                             {job.endDate && <span>{job.endDate}</span>}
@@ -121,17 +121,12 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                   data.award.length > 0
                 ) {
                   return (
-                    <div key={section} className="mt-4 text-xs">
-                      <h2 className="font-bold text-base mb-1">Awards</h2>
+                    <div key={section}>
+                      <h2 className="font-bold text-sm">Awards</h2>
                       {data.award.map((awd: any, index: number) => (
                         <div key={index} className="mt-1">
-                          <h3 className="font-bold">
-                            {awd.name}
-                            <span className="ml-5">{awd.company}</span>
-                          </h3>
-                          <p className="text-2xs text-gray-400 font-bold">
-                            {awd.date}
-                          </p>
+                          <h3 className="font-bold">{awd.name}</h3>
+                          <p className="text-gray-400 text-3xs">{awd.date}</p>
                           <div
                             dangerouslySetInnerHTML={{
                               __html: awd.description,
@@ -147,13 +142,13 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
               })}
             </div>
             {/* 側邊欄 */}
-            <div className="w-1/4 pl-5 mt-9 space-y-6 text-xs">
+            <div className="w-1/4 pl-5 mt-8 space-y-5">
               <div>
                 <p>{data.birthDate}</p>
                 <p>{data.phone}</p>
                 <p className="break-words">{data.email}</p>
               </div>
-              {/*<p className="text-xs break-words">
+              {/*<p className="break-words">
                 <a
                   href={data.websiteLink}
                   target="_blank"
@@ -179,14 +174,16 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                         <div key={index} className="mb-1">
                           <p className="break-words">{skill.name}</p>
                           {skill.level && (
-                            <div className="w-full bg-gray-200 rounded h-0.5 mb-2">
-                              <div
-                                className="h-0.5 rounded"
-                                style={{
-                                  width: `${skillLevels[skill.level]}%`,
-                                  backgroundColor: data.selectedColor,
-                                }}
-                              ></div>
+                            <div className="h-3 flex items-center">
+                              <div className="w-full bg-gray-200 rounded h-0.5">
+                                <div
+                                  className="h-0.5 rounded"
+                                  style={{
+                                    width: `${skillLevels[skill.level]}%`,
+                                    backgroundColor: data.selectedColor,
+                                  }}
+                                ></div>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -225,21 +222,24 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                         <div key={index} className="mb-1">
                           <p className="break-words">{language.name}</p>
                           {(language.certificate || language.level) && (
-                            <p className="text-2xs break-words text-gray-400 space-x-1">
+                            <p className="break-words text-gray-400 space-x-1">
                               <span>{language.certificate}</span>
                               <span>{language.level}</span>
                             </p>
                           )}
                           {language.proficiency && (
-                            <div className="w-full bg-gray-200 rounded h-0.5 mt-0.5">
-                              <div
-                                className="bg-blue-600 h-0.5 rounded"
-                                style={{
-                                  width: `${
-                                    languageLevels[language.proficiency]
-                                  }%`,
-                                }}
-                              ></div>
+                            <div className="h-3 flex items-center">
+                              <div className="w-full bg-gray-200 rounded h-0.5 mt-0.5">
+                                <div
+                                  className="h-0.5 rounded"
+                                  style={{
+                                    width: `${
+                                      languageLevels[language.proficiency]
+                                    }%`,
+                                    backgroundColor: data.selectedColor,
+                                  }}
+                                ></div>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -260,7 +260,7 @@ const Template1 = forwardRef<HTMLDivElement, { data: ResumeData }>(
                         (certification: any, index: number) => (
                           <div key={index} className="mb-1">
                             <p className="break-words">{certification.name}</p>
-                            <p className="text-2xs break-words text-gray-400">
+                            <p className="break-words text-gray-400 text-3xs">
                               {certification.date}
                             </p>
                           </div>

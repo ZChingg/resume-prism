@@ -43,48 +43,54 @@ export default function JobItems({
 
   return (
     <div className="border rounded mb-3 bg-white hover:border-gray-800 relative group/item">
-      <div className="absolute left-[-27px] top-[16px]" {...dragHandleProps}>
+      <div className="absolute left-[-27px] top-[21px]" {...dragHandleProps}>
         <RiDraggable
           className={`h-7 w-7 p-1 ${
-            isDragging ? "text-gray-800" : "text-white"
-          } group-hover/item:text-gray-800`}
+            isDragging ? "text-gray-400" : "text-white"
+          } group-hover/item:text-gray-400`}
         />
       </div>
-      <button onClick={onDelete} className="absolute right-[-38px] top-[10px]">
+      <button
+        onClick={onDelete}
+        type="button"
+        className="absolute right-[-38px] top-[15px]"
+      >
         <FaTrashAlt
-          className={`m-3 ${
-            isDragging ? "text-gray-800" : "text-white"
-          } group-hover/item:text-gray-800`}
+          className={`m-3 text-gray-400 hover:text-gray-800 opacity-0${
+            isDragging ? "opacity-100" : ""
+          } group-hover/item:opacity-100`}
         />
       </button>
       <div
-        className="flex justify-between items-center p-4 border-gray-100 cursor-pointer"
+        className="flex px-5 py-4 border-gray-100 cursor-pointer h-[70px] justify-between"
         onClick={handleToggleExpand}
       >
-        <div className="flex items-center space-x-3">
-          {isEmpty ? (
-            <p className="text-gray-400 text-sm">Incomplete</p>
-          ) : (
-            <>
-              <h3 className="text-lg font-semibold">{job.position}</h3>
-              <p className="text-sm">{job.company}</p>
-            </>
-          )}
-        </div>
-        <div className="flex items-center space-x-3">
-          <p className="text-gray-400 text-sm">
+        <div className="flex flex-col justify-center">
+          <div className="flex items-center space-x-3">
+            {isEmpty ? (
+              <p className="text-gray-400 text-sm">Incomplete</p>
+            ) : (
+              <>
+                <h3 className="font-semibold text-sm">{job.position}</h3>
+                <p className="text-xs">{job.company}</p>
+              </>
+            )}
+          </div>
+          <p className="text-gray-400 text-xs">
             {job.startDate && <span>{job.startDate}</span>}
             {(job.startDate || job.endDate) && " ~ "}
             {job.endDate && <span>{job.endDate}</span>}
           </p>
+        </div>
+        <div className="flex items-center space-x-3 text-gray-400">
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
         </div>
       </div>
       {isExpanded && (
         <>
           <hr className="mx-4" />
-          <div className="p-4">
-            <div className="flex space-x-4">
+          <div className="p-5">
+            <div className="flex space-x-6">
               <label className="flex-1">
                 Title
                 <input
@@ -93,6 +99,7 @@ export default function JobItems({
                   value={job.position}
                   onChange={handleChange}
                   className="input-resume"
+                  placeholder="Enter"
                 />
               </label>
               <label className="flex-1">
@@ -103,10 +110,11 @@ export default function JobItems({
                   value={job.company}
                   onChange={handleChange}
                   className="input-resume"
+                  placeholder="Enter"
                 />
               </label>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex space-x-6">
               <label className="flex-1">
                 Start
                 <input

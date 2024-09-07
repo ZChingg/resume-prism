@@ -25,37 +25,47 @@ body {
     @apply flex sticky h-16	bg-white shadow-md items-center px-10 z-50 top-0 justify-end;
   }
   .input-resume {
-    @apply block w-full p-3 bg-gray-100 rounded mb-6 mt-1 appearance-none outline-none focus:ring-1 focus:ring-sky-500; /* TODO: outline 寬度設置 */
+    @apply block w-full p-3 rounded mb-6 mt-1 appearance-none outline-none focus:ring-1 focus:ring-indigo-500;
+    background-color: #EFF2F9;
   }
   .title{
     @apply text-lg font-semibold mb-3 cursor-default;
+  }
+  .purple-button{
+    @apply bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-600 text-white rounded px-3 py-2;
 
   }
+  .gray-button{
+    @apply bg-gray-200 hover:bg-gray-300 active:bg-gray-400 rounded px-3 py-2; 
+  }
+  .white-button{
+    @apply bg-white hover:bg-gray-100 active:bg-gray-200 rounded px-3 py-2;
+  }
 /* 列表 */
-  .template1 ul {
+  .template ul {
     @apply list-none p-0;
   }
 
-  .template1 ul li {
+  .template ul li {
     @apply relative pl-6;
   }
 
-  .template1 ul li::before {
+  .template ul li::before {
     @apply absolute left-2;
     content: '•';
   }
 
-  .template1 ol {
+  .template ol {
     @apply list-none p-0;
     counter-reset: list-counter;
   }
 
-  .template1 ol li {
+  .template ol li {
     @apply relative pl-6;
     counter-increment: list-counter;
   }
 
-  .template1 ol li::before {
+  .template ol li::before {
     @apply absolute left-2;
     content: counter(list-counter) '.';
   }
@@ -66,12 +76,15 @@ body {
   position: relative;
 }
 .quill > * {
-  background-color: rgb(243 244 246);
+  background-color: #EFF2F9;
 }
 .quill > .ql-toolbar.ql-snow {
   border-style: none;
   border-radius: 4px 4px 0 0;
   padding: 8px 8px 0 8px;
+}
+.quill > .ql-container {
+  font-family: "__Poppins_7a42f1";
 }
 .quill > .ql-container.ql-snow {
   border-style: none;
@@ -98,6 +111,6 @@ body {
   padding: 0;
 }
 .quill:focus-within {
-  box-shadow: 0 0 0 1px rgb(14 165 233);
+  box-shadow: 0 0 0 1px #6366f1;
   border-radius: 4px;
 }

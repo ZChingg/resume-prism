@@ -54,16 +54,14 @@ export default function SkillSection({
   };
 
   return (
-    <div className="px-7 py-3 relative">
-      <h2 className="title peer">
-        Skills
-      </h2>
+    <div className="px-7 relative">
+      <h2 className="title peer">Skills</h2>
       <div
-        className="absolute top-3 left-[2px] text-white peer-hover:text-gray-800 hover:text-gray-800"
+        className="absolute top-0 left-[2px] text-white peer-hover:text-gray-400 hover:text-gray-400"
         {...dragHandleProps}
       >
         <RiDraggable
-          className={`h-7 w-7 p-1 ${isDragging ? "text-gray-800" : ""}`}
+          className={`h-7 w-7 p-1 ${isDragging ? "text-gray-400" : ""}`}
         />
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -107,7 +105,7 @@ export default function SkillSection({
       <button
         type="button"
         onClick={() => handleAddItem(initialSkill)}
-        className="text-blue-600 hover:text-blue-700 font-semibold"
+        className="text-indigo-500 font-semibold hover:bg-indigo-50 w-full text-start px-5 py-1.5 rounded text-sm"
       >
         + Skill
       </button>

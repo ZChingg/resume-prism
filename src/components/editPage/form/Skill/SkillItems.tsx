@@ -40,22 +40,26 @@ export default function SkillItems({
 
   return (
     <div className="border rounded mb-3 bg-white hover:border-gray-800 relative group/item">
-      <div className="absolute left-[-27px] top-[16px]" {...dragHandleProps}>
+      <div className="absolute left-[-27px] top-[21px]" {...dragHandleProps}>
         <RiDraggable
           className={`h-7 w-7 p-1 ${
-            isDragging ? "text-gray-800" : "text-white"
-          } group-hover/item:text-gray-800`}
+            isDragging ? "text-gray-400" : "text-white"
+          } group-hover/item:text-gray-400`}
         />
       </div>
-      <button onClick={onDelete} className="absolute right-[-38px] top-[10px]">
+      <button
+        onClick={onDelete}
+        type="button"
+        className="absolute right-[-38px] top-[15px]"
+      >
         <FaTrashAlt
-          className={`m-3 ${
-            isDragging ? "text-gray-800" : "text-white"
-          } group-hover/item:text-gray-800`}
+          className={`m-3 text-gray-400 hover:text-gray-800 opacity-0${
+            isDragging ? "opacity-100" : ""
+          } group-hover/item:opacity-100`}
         />
       </button>
       <div
-        className="flex justify-between items-center p-4 border-gray-100 cursor-pointer"
+        className="flex px-5 py-4 justify-between items-center border-gray-100 cursor-pointer h-[70px]"
         onClick={handleToggleExpand}
       >
         <div className="flex items-center space-x-3">
@@ -63,20 +67,20 @@ export default function SkillItems({
             <p className="text-gray-400 text-sm">Incomplete</p>
           ) : (
             <>
-              <h3 className="text-lg font-semibold">{skill.name}</h3>
-              <p className="text-sm">{skill.level}</p>
+              <h3 className="font-semibold text-sm">{skill.name}</h3>
+              <p className="text-xs">{skill.level}</p>
             </>
           )}
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 text-gray-400">
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
         </div>
       </div>
       {isExpanded && (
         <>
           <hr className="mx-4" />
-          <div className="p-4">
-            <div className="flex space-x-4">
+          <div className="p-5">
+            <div className="flex space-x-6">
               <label className="flex-1">
                 Skill
                 <input
@@ -85,6 +89,7 @@ export default function SkillItems({
                   value={skill.name}
                   onChange={handleChange}
                   className="input-resume mb-0"
+                  placeholder="Enter"
                 />
               </label>
               <label className="flex-1">

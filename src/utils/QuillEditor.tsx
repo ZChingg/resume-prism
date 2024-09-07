@@ -20,19 +20,10 @@ export default function QuillEditor({
     toolbar: [
       ["bold", "italic", "underline", "strike"],
       [{ list: "ordered" }, { list: "bullet" }],
-      ["link"],
     ],
   };
 
-  const formats = [
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "list",
-    "bullet",
-    "link",
-  ];
+  const formats = ["bold", "italic", "underline", "strike", "list", "bullet"];
 
   return (
     <ReactQuill

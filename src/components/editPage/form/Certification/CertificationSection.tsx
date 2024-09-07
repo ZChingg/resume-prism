@@ -57,21 +57,21 @@ export default function CertificationSection({
   };
 
   return (
-    <div className="px-7 py-3 relative">
+    <div className="px-7 relative">
       <div className="group">
         <h2 className="title">Certifications</h2>
         <div
-          className="absolute top-3 left-[2px] text-white group-hover:text-gray-800 hover:text-gray-800"
+          className="absolute top-0 left-[2px] text-white group-hover:text-gray-400 hover:text-gray-400"
           {...dragHandleProps}
         >
           <RiDraggable
-            className={`h-7 w-7 p-1 ${isDragging ? "text-gray-800" : ""}`}
+            className={`h-7 w-7 p-1 ${isDragging ? "text-gray-400" : ""}`}
           />
         </div>
-        <div className="absolute top-[18px] left-[155px] text-white cursor-pointer group-hover:text-gray-800 hover:text-gray-800">
+        <div className="absolute top-[5px] left-[158px] text-gray-400 hover:text-gray-800 opacity-0 cursor-pointer group-hover:opacity-100">
           <FaTrashAlt
             onClick={onDelete}
-            className={`${isDragging ? "text-gray-800" : ""}`}
+            className={`${isDragging ? "opacity-100" : ""}`}
           />
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function CertificationSection({
       <button
         type="button"
         onClick={() => handleAddItem(initialCertification)}
-        className="text-blue-600 hover:text-blue-700 font-semibold"
+        className="text-indigo-500 font-semibold hover:bg-indigo-50 w-full text-start px-5 py-1.5 rounded text-sm"
       >
         + Certification
       </button>

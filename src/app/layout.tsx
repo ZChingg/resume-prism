@@ -1,15 +1,10 @@
 // TODO: onAuthStateChanged 位置，是否初載入即需偵測登入狀態
 
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { poppins } from "./font";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import AuthListener from "@/utils/authListner";
-
-const poppins = Poppins({
-  weight: ["400", "500", "600", "700", "800"],
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "ResumePrism",

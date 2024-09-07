@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
-import Link from "next/link";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth, storage } from "@/lib/firebase";
 import { ref, uploadBytes, uploadString } from "firebase/storage";
@@ -10,8 +9,6 @@ import ResumeForm from "@/components/editPage/ResumeForm";
 import ResumePreview from "@/components/editPage/ResumePreview";
 import DownloadPDF from "@/components/editPage/DownloadPDF";
 import Navigation from "@/components/Navigation";
-import { FiArrowLeft } from "react-icons/fi";
-import { RiFileDownloadLine } from "react-icons/ri";
 import { useAppSelector } from "@/lib/Redux/hooks";
 import { generatePDF } from "@/lib/pdf";
 

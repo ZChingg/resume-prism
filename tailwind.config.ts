@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      backgroundColor: {
+        "input": "#EFF2F9",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -15,9 +18,11 @@ const config: Config = {
       },
       fontSize: {
         "2xs": "0.625rem", // 10px
+        "3xs": "0.5625rem", // 9px
       },
       lineHeight: {
         "2xs": "0.75rem",
+        "3xs": "0.625rem",
       },
     },
   },

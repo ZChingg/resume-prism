@@ -82,9 +82,7 @@ export default function Navigation({
         return (
           <>
             <Link href="/resume">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded h-10">
-                My Resumes
-              </button>
+              <button className="purple-button">My Resumes</button>
             </Link>
           </>
         );
@@ -93,13 +91,13 @@ export default function Navigation({
           <>
             <button
               onClick={() => togglePopup("login")}
-              className="hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10"
+              className="white-button text-indigo-700 w-[84.28px]"
             >
               Log In
             </button>
             <button
               onClick={() => togglePopup("signup")}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded h-10 ml-3"
+              className="purple-button ml-3"
             >
               Sign Up
             </button>
@@ -111,16 +109,13 @@ export default function Navigation({
       return (
         <div className="flex items-center mr-3">
           {handleSave && (
-            <button
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded ml-auto h-10"
-              onClick={handleSave}
-            >
+            <button className="purple-button ml-auto" onClick={handleSave}>
               Save
             </button>
           )}
           {exportPDF && (
             <button
-              className="text-gray-400 hover:text-blue-500 rounded ml-3"
+              className="text-gray-400 hover:text-indigo-500 ml-3"
               onClick={exportPDF}
             >
               <RiFileDownloadLine className="h-5 w-5" />
@@ -138,7 +133,7 @@ export default function Navigation({
     if (pathname === `/resume/${id}/edit`) {
       return (
         <Link href="/resume">
-          <button className="hover:bg-gray-100 text-blue-700 py-2 px-4 rounded h-10 flex items-center mr-1">
+          <button className="white-button text-indigo-500 flex items-center mr-1">
             <FiArrowLeft className="h-5 w-5 mr-1" />
             Back
           </button>

@@ -40,22 +40,26 @@ export default function LanguageItems({
 
   return (
     <div className="border rounded mb-3 bg-white hover:border-gray-800 relative group/item">
-      <div className="absolute left-[-27px] top-[16px]" {...dragHandleProps}>
+      <div className="absolute left-[-27px] top-[21px]" {...dragHandleProps}>
         <RiDraggable
           className={`h-7 w-7 p-1 ${
-            isDragging ? "text-gray-800" : "text-white"
-          } group-hover/item:text-gray-800`}
+            isDragging ? "text-gray-400" : "text-white"
+          } group-hover/item:text-gray-400`}
         />
       </div>
-      <button onClick={onDelete} className="absolute right-[-38px] top-[10px]">
+      <button
+        onClick={onDelete}
+        type="button"
+        className="absolute right-[-38px] top-[15px]"
+      >
         <FaTrashAlt
-          className={`m-3 ${
-            isDragging ? "text-gray-800" : "text-white"
-          } group-hover/item:text-gray-800`}
+          className={`m-3 text-gray-400 hover:text-gray-800 opacity-0${
+            isDragging ? "opacity-100" : ""
+          } group-hover/item:opacity-100`}
         />
       </button>
       <div
-        className="flex justify-between items-center p-4 border-gray-100 cursor-pointer"
+        className="flex px-5 py-4 justify-between items-center border-gray-100 cursor-pointer h-[70px]"
         onClick={handleToggleExpand}
       >
         <div>
@@ -64,25 +68,25 @@ export default function LanguageItems({
           ) : (
             <>
               <div className="flex items-center space-x-3">
-                <h3 className="text-lg font-semibold">{language.name}</h3>
-                <p className="text-sm">{language.proficiency}</p>
+                <h3 className="font-semibold text-sm">{language.name}</h3>
+                <p className="text-xs">{language.proficiency}</p>
               </div>
-              <div className="text-sm flex items-center space-x-1 text-gray-400">
+              <div className="text-xs flex items-center space-x-1 text-gray-400">
                 <p>{language.certificate}</p>
                 <p>{language.level}</p>
               </div>
             </>
           )}
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 text-gray-400">
           {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
         </div>
       </div>
       {isExpanded && (
         <>
           <hr className="mx-4" />
-          <div className="p-4">
-            <div className="flex space-x-4">
+          <div className="p-5">
+            <div className="flex space-x-6">
               <label className="flex-1">
                 Language
                 <input
@@ -91,6 +95,7 @@ export default function LanguageItems({
                   value={language.name || ""}
                   onChange={handleChange}
                   className="input-resume"
+                  placeholder="Enter"
                 />
               </label>
               <label className="flex-1">
@@ -112,7 +117,7 @@ export default function LanguageItems({
                 </select>
               </label>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex space-x-6">
               <label className="flex-1">
                 Certificate
                 <input
@@ -121,6 +126,7 @@ export default function LanguageItems({
                   value={language.certificate || ""}
                   onChange={handleChange}
                   className="input-resume mb-0"
+                  placeholder="Enter"
                 />
               </label>
               <label className="flex-1">
@@ -131,6 +137,7 @@ export default function LanguageItems({
                   value={language.level || ""}
                   onChange={handleChange}
                   className="input-resume mb-0"
+                  placeholder="Enter"
                 />
               </label>
             </div>

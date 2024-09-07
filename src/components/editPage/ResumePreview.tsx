@@ -97,23 +97,20 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
 
     return (
       <div className="w-0 md:w-1/2 relative outline-none">
-        <div className="relative h-full overflow-auto overflow-x-hidden bg-gray-500 py-5 px-[60px]">
+        <div className="relative h-full overflow-auto overflow-x-hidden bg-[#EFF2F9] py-5 px-[60px]">
           <div className="max-w-[595px] mx-auto flex items-center mb-2 space-x-2">
-            <button
-              className="bg-white p-2 rounded shadow hover:bg-gray-200 "
-              onClick={toggleZoom}
-            >
+            <button className="p-2 shadow white-button" onClick={toggleZoom}>
               <FaSearchPlus className="text-gray-600 h-3 w-3" />
             </button>
             <button
-              className="bg-white p-1 rounded shadow hover:bg-gray-200 h-7 w-7 items-center justify-center flex"
+              className="p-1 shadow white-button h-7 w-7 items-center justify-center flex"
               onMouseDown={sidebarOpen}
             >
-              <LuLayout className="text-gray-600 h-4 w-4 " />
+              <LuLayout className="text-gray-600 h-4 w-4" />
             </button>
           </div>
           <div
-            className="mx-auto bg-white shadow-lg rounded overflow-hidden"
+            className="mx-auto bg-white drop-shadow-lg rounded overflow-hidden"
             style={{
               width: "595px",
               height: "842px",

@@ -170,7 +170,7 @@ export default function ResumePage() {
   function formatDate(isoString: string) {
     const date = new Date(isoString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // 月份从0开始，所以要加1
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
@@ -184,27 +184,27 @@ export default function ResumePage() {
     <>
       <style jsx global>{`
         body {
-          background-color: #f8f8f8;
+          background-color: #fafbfd;
         }
       `}</style>
       <Navigation />
       <div className="p-10 m-auto xl:w-[1200px]">
         <div className="flex items-center justify-between mt-5">
-          <h1 className="text-2xl font-bold">My Resumes</h1>
+          <h1 className="text-2xl">My Resumes</h1>
           <button
             onClick={handleSelectTemplate}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-4 rounded flex items-center"
+            className="purple-button py-1 px-3 flex items-center"
           >
             <GoPlus className="h-5 w-5 mr-1" />
-            Create resume
+            Create New
           </button>
         </div>
         <hr className="border mt-6 mb-6"></hr>
         {resumes.length === 0 ? (
           <div className="border border-gray-100 bg-white shadow-md shadow-gray-200 p-4 rounded flex flex-col items-center justify-center">
-            <RiSparkling2Line className="h-4 w-4 text-blue-600 opacity-30" />
-            <SiGoogledocs className="h-7 w-7 text-blue-600 opacity-30" />
-            <p className="mt-1 text-center">You don’t have a resume yet.</p>
+            <RiSparkling2Line className="h-4 w-4 text-indigo-500 opacity-30" />
+            <SiGoogledocs className="h-7 w-7 text-indigo-500 opacity-30" />
+            <p className="mt-3 text-center">You don’t have a resume yet.</p>
             <p className="text-sm text-gray-500 text-center mt-1">
               Custom-built, amazing resumes.
               <br />
@@ -212,7 +212,7 @@ export default function ResumePage() {
             </p>
             <button
               onClick={handleSelectTemplate}
-              className=" hover:bg-gray-100 text-blue-600 py-1 px-4 rounded flex items-center mt-3"
+              className="white-button text-indigo-500 py-1 px-3 flex items-center mt-3"
             >
               <GoPlus className="h-5 w-5 mr-1" />
               Create resume
@@ -233,16 +233,16 @@ export default function ResumePage() {
                     </p>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="flex space-x-1">
+                    <div className="flex space-x-2">
                       <Link href={`/resume/${resume.id}/edit`}>
-                        <button className="flex items-center py-1 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded space-x-1">
+                        <button className="flex items-center py-1 px-3 purple-button space-x-1">
                           <MdEdit />
                           <p>Edit</p>
                         </button>
                       </Link>
                       {resume.pdfExists && (
                         <button
-                          className="flex items-center py-1 px-4 bg-gray-200 hover:bg-gray-300 rounded"
+                          className="flex items-center py-1 px-3 gray-button"
                           onClick={() =>
                             downloadPDF(
                               auth.currentUser?.uid ?? "",
@@ -257,7 +257,7 @@ export default function ResumePage() {
                       )}
                     </div>
                     <button
-                      className="p-2 hover:bg-gray-100 rounded"
+                      className="p-2 white-button"
                       onClick={() => handleDelete(resume.id)}
                     >
                       <FaTrashAlt />

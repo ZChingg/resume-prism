@@ -111,9 +111,9 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
       >
         <IoClose
           onClick={onClose}
-          className="absolute top-4 right-4 h-7 w-7 p-1  text-gray-600 rounded cursor-pointer hover:bg-gray-100"
+          className="absolute top-4 right-4 h-7 w-7 p-1  text-gray-600 cursor-pointer white-button"
         />
-        <h2 className="text-lg font-bold mb-4 text-center">Welcome</h2>
+        <h2 className="text-lg font-semibold mb-4 text-center">Welcome</h2>
         <button
           className="w-full p-2 rounded text-sm text-gray-500 border border-gray-300 flex items-center justify-center relative  hover:bg-gray-50"
           onClick={onGoogleSignUp}
@@ -132,7 +132,7 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
               type="text"
               placeholder="Your Name"
               value={name}
-              className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-blue-600"
+              className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -141,7 +141,7 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
               type="email"
               placeholder="Email"
               value={email}
-              className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-blue-600"
+              className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -149,15 +149,12 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
             <input
               type="password"
               placeholder="Password"
-              className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-blue-600"
+              className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-indigo-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-          >
+          <button type="submit" className="w-full purple-button">
             Sign Up
           </button>
         </form>
@@ -165,7 +162,7 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
           Already have an account?{" "}
           <span
             onClick={onLoginClick}
-            className="text-blue-600 hover:underline hover:cursor-pointer"
+            className="text-indigo-500 hover:underline hover:cursor-pointer"
           >
             Log In
           </span>

@@ -77,7 +77,7 @@ export default function PhotoUpload({ photoURL, onChange }: PhotoUploadProps) {
               <p className="text-gray-400">Uploading....</p>
             ) : (
               <>
-                <label className="text-blue-500  hover:text-blue-800 cursor-pointer flex items-center">
+                <label className="text-indigo-500  hover:text-indigo-800 cursor-pointer flex items-center">
                   <MdEdit className="mr-1" />
                   Edit photo
                   <input
@@ -90,7 +90,7 @@ export default function PhotoUpload({ photoURL, onChange }: PhotoUploadProps) {
                 <button
                   type="button"
                   onClick={handlePhotoDelete}
-                  className="text-gray-400 hover:text-black cursor-pointer text-left flex items-center"
+                  className="text-gray-400 hover:text-gray-700 cursor-pointer text-left flex items-center"
                 >
                   <FaTrashAlt className="mr-1" />
                   Delete
@@ -103,7 +103,7 @@ export default function PhotoUpload({ photoURL, onChange }: PhotoUploadProps) {
         <>
           {uploading ? (
             <>
-              <div className=" bg-gray-100 h-16 w-16 p-5 rounded">
+              <div className="h-16 w-16 p-5 rounded bg-input">
                 <div className="animate-spin text-gray-300 h-6 w-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -139,10 +139,10 @@ export default function PhotoUpload({ photoURL, onChange }: PhotoUploadProps) {
                   disabled={uploading}
                 />
                 <FaUser
-                  className="text-gray-300 bg-gray-100 h-16 w-16 p-5 rounded 
-                hover:text-blue-500 hover:bg-sky-100 group-hover:text-blue-500 group-hover:bg-sky-100"
+                  className="text-gray-300 h-16 w-16 p-5 rounded bg-input
+                hover:text-indigo-500 hover:bg-indigo-100 group-hover:text-indigo-500 group-hover:bg-indigo-100"
                 />
-                <span className="ml-4 text-blue-500 hover:text-blue-800 group-hover:text-blue-800">
+                <span className="ml-4 text-indigo-500 hover:text-indigo-800 group-hover:text-indigo-800">
                   Upload photo
                 </span>
               </label>

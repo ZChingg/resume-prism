@@ -141,200 +141,211 @@ export default function ResumeForm({ onChange, initialData }: ResumeFormProps) {
   };
 
   return (
-    <div className="bg-white w-full md:w-1/2 outline-none h-full overflow-auto py-8 px-4">
-      <form>
-        <div className="px-7">
-          <div className="flex justify-center mb-4 items-center">
-            <input
-              type="text"
-              name="resumeName"
-              value={formData.resumeName}
-              ref={inputRef}
-              onChange={handleChange}
-              className="font-bold border-b-2 focus:outline-none focus:border-blue-500 text-center text-lg"
-            />
-            <MdEdit
-              onClick={handleIconClick}
-              className="ml-2 cursor-pointer text-gray-400 hover:text-blue-500"
-            />
-          </div>
-          <div className="flex space-x-6">
-            <label className="flex-1">
-              Name
+    <div className="bg-white w-full md:w-1/2 outline-none h-full overflow-auto pt-8 pb-16 px-3">
+      <div className="m-auto" style={{ maxWidth: "860px" }}>
+        <form>
+          <div className="px-7 pb-10">
+            <div className="flex justify-center mb-6 items-center">
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="resumeName"
+                value={formData.resumeName}
+                ref={inputRef}
                 onChange={handleChange}
-                className="input-resume"
+                className="font-semibold border-b-2 focus:outline-none focus:border-indigo-500 text-center text-lg"
               />
-            </label>
-            <PhotoUpload
-              photoURL={formData.photoURL}
-              onChange={handlePhotoUpload}
-            />
-          </div>
-          <label>
-            Date of birth
-            <input
-              type="date"
-              name="birthDate"
-              value={formData.birthDate}
-              onChange={handleChange}
-              className="input-resume"
-              placeholder="YYYY/MM/DD"
-            />
-          </label>
-          <div className="flex space-x-6">
-            <label className="flex-1">
-              Phone
+              <MdEdit
+                onClick={handleIconClick}
+                className="ml-2 cursor-pointer text-gray-400 hover:text-indigo-500"
+              />
+            </div>
+            <div className="flex space-x-6">
+              <label className="flex-1">
+                Name
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="input-resume"
+                  placeholder="Enter"
+                />
+              </label>
+              <PhotoUpload
+                photoURL={formData.photoURL}
+                onChange={handlePhotoUpload}
+              />
+            </div>
+            <label>
+              Date of birth
               <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
+                type="date"
+                name="birthDate"
+                value={formData.birthDate}
                 onChange={handleChange}
                 className="input-resume"
+                placeholder="YYYY/MM/DD"
               />
             </label>
-            <label className="flex-1">
-              Email
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="input-resume"
+            <div className="flex space-x-6">
+              <label className="flex-1">
+                Phone
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="input-resume"
+                  placeholder="Enter"
+                />
+              </label>
+              <label className="flex-1">
+                Email
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="input-resume"
+                  placeholder="Enter"
+                />
+              </label>
+            </div>
+            <div className="mt-4">
+              <h2 className="title">Professional Summary</h2>
+              <QuillEditor
+                value={profileRef.current}
+                onChange={handleDescriptionChangeT}
+                placeholder="Summarize your Personal Traits, Experience, Skills, and Career Goals"
               />
-            </label>
+            </div>
           </div>
-          <div className="mb-5">
-            <h2 className="title">Professional Summary</h2>
-            <QuillEditor
-              value={profileRef.current}
-              onChange={handleDescriptionChangeT}
-              placeholder="Summarize your Personal Traits, Experience, Skills, and Career Goals"
-            />
-          </div>
-        </div>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="resumeSections">
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                {formData.sectionOrder &&
-                  formData.sectionOrder.map((section, index) => (
-                    <Draggable
-                      key={section}
-                      draggableId={section}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          className={`bg-white mb-2 ${
-                            snapshot.isDragging
-                              ? "opacity-60	drop-shadow-lg"
-                              : ""
-                          }`}
-                        >
-                          {section === "job" && (
-                            <JobSection
-                              job={formData.job}
-                              onChange={(updatedJob) =>
-                                handleItemChange("job", updatedJob)
-                              }
-                              isDragging={snapshot.isDragging}
-                              dragHandleProps={provided.dragHandleProps}
-                            />
-                          )}
-                          {section === "education" && (
-                            <EducationSection
-                              education={formData.education}
-                              onChange={(updatedEducation) =>
-                                handleItemChange("education", updatedEducation)
-                              }
-                              isDragging={snapshot.isDragging}
-                              dragHandleProps={provided.dragHandleProps}
-                            />
-                          )}
-                          {section === "skill" && (
-                            <SkillSection
-                              skill={formData.skill}
-                              onChange={(updatedSkill) =>
-                                handleItemChange("skill", updatedSkill)
-                              }
-                              isDragging={snapshot.isDragging}
-                              dragHandleProps={provided.dragHandleProps}
-                            />
-                          )}
-                          {section === "language" && (
-                            <LanguageSection
-                              language={formData.language || []}
-                              onChange={(updatedLanguage) =>
-                                handleItemChange("language", updatedLanguage)
-                              }
-                              onDelete={() => handleDeleteSection("language")}
-                              isDragging={snapshot.isDragging}
-                              dragHandleProps={provided.dragHandleProps}
-                            />
-                          )}
-                          {section === "certification" && (
-                            <CertificationSection
-                              certification={formData.certification || []}
-                              onChange={(updatedCertification) =>
-                                handleItemChange(
-                                  "certification",
-                                  updatedCertification
-                                )
-                              }
-                              onDelete={() =>
-                                handleDeleteSection("certification")
-                              }
-                              isDragging={snapshot.isDragging}
-                              dragHandleProps={provided.dragHandleProps}
-                            />
-                          )}
-                          {section === "hobby" && (
-                            <HobbySection
-                              hobby={formData.hobby || []}
-                              onChange={(updatedHobby) =>
-                                handleItemChange("hobby", updatedHobby)
-                              }
-                              onDelete={() => handleDeleteSection("hobby")}
-                              isDragging={snapshot.isDragging}
-                              dragHandleProps={provided.dragHandleProps}
-                            />
-                          )}
-                          {section === "award" && (
-                            <AwardSection
-                              award={formData.award || []}
-                              onChange={(updatedAward) =>
-                                handleItemChange("award", updatedAward)
-                              }
-                              onDelete={() => handleDeleteSection("award")}
-                              isDragging={snapshot.isDragging}
-                              dragHandleProps={provided.dragHandleProps}
-                            />
-                          )}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </form>
-      <AddSection data={formData} onAddBlock={handleAddBlock} />
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="resumeSections">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {formData.sectionOrder &&
+                    formData.sectionOrder.map((section, index) => (
+                      <Draggable
+                        key={section}
+                        draggableId={section}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            className={`bg-white mb-10 relative ${
+                              snapshot.isDragging
+                                ? "opacity-60	drop-shadow-lg"
+                                : ""
+                            }`}
+                          >
+                            {snapshot.isDragging && (
+                              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"></div>
+                            )}
+                            {section === "job" && (
+                              <JobSection
+                                job={formData.job}
+                                onChange={(updatedJob) =>
+                                  handleItemChange("job", updatedJob)
+                                }
+                                isDragging={snapshot.isDragging}
+                                dragHandleProps={provided.dragHandleProps}
+                              />
+                            )}
+                            {section === "education" && (
+                              <EducationSection
+                                education={formData.education}
+                                onChange={(updatedEducation) =>
+                                  handleItemChange(
+                                    "education",
+                                    updatedEducation
+                                  )
+                                }
+                                isDragging={snapshot.isDragging}
+                                dragHandleProps={provided.dragHandleProps}
+                              />
+                            )}
+                            {section === "skill" && (
+                              <SkillSection
+                                skill={formData.skill}
+                                onChange={(updatedSkill) =>
+                                  handleItemChange("skill", updatedSkill)
+                                }
+                                isDragging={snapshot.isDragging}
+                                dragHandleProps={provided.dragHandleProps}
+                              />
+                            )}
+                            {section === "language" && (
+                              <LanguageSection
+                                language={formData.language || []}
+                                onChange={(updatedLanguage) =>
+                                  handleItemChange("language", updatedLanguage)
+                                }
+                                onDelete={() => handleDeleteSection("language")}
+                                isDragging={snapshot.isDragging}
+                                dragHandleProps={provided.dragHandleProps}
+                              />
+                            )}
+                            {section === "certification" && (
+                              <CertificationSection
+                                certification={formData.certification || []}
+                                onChange={(updatedCertification) =>
+                                  handleItemChange(
+                                    "certification",
+                                    updatedCertification
+                                  )
+                                }
+                                onDelete={() =>
+                                  handleDeleteSection("certification")
+                                }
+                                isDragging={snapshot.isDragging}
+                                dragHandleProps={provided.dragHandleProps}
+                              />
+                            )}
+                            {section === "hobby" && (
+                              <HobbySection
+                                hobby={formData.hobby || []}
+                                onChange={(updatedHobby) =>
+                                  handleItemChange("hobby", updatedHobby)
+                                }
+                                onDelete={() => handleDeleteSection("hobby")}
+                                isDragging={snapshot.isDragging}
+                                dragHandleProps={provided.dragHandleProps}
+                              />
+                            )}
+                            {section === "award" && (
+                              <AwardSection
+                                award={formData.award || []}
+                                onChange={(updatedAward) =>
+                                  handleItemChange("award", updatedAward)
+                                }
+                                onDelete={() => handleDeleteSection("award")}
+                                isDragging={snapshot.isDragging}
+                                dragHandleProps={provided.dragHandleProps}
+                              />
+                            )}
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </form>
+        <AddSection data={formData} onAddBlock={handleAddBlock} />
+      </div>
       <div
         onClick={toggleZoom}
         className="absolute bottom-5 right-8 flex flex-col items-center cursor-pointer"
       >
-        <button className=" bg-blue-500 p-3 rounded-full">
+        <button className=" bg-indigo-500 p-3 rounded-full">
           <IoDocumentTextSharp className="text-white h-6 w-6" />
         </button>
-        <p className="text-blue-500 text-sm">Preview</p>
+        <p className="text-indigo-500 text-sm">Preview</p>
       </div>
       {isZoomed && <ZoomPopup data={formData} onClose={toggleZoom} />}
     </div>

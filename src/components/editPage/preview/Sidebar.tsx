@@ -33,13 +33,17 @@ export default function Sidebar({
 
   return (
     <div
-      className={`fixed right-0 top-16 bottom-0 z-10 bg-gray-200 shadow-lg transform duration-300 ease-in-out ${
+      style={{ backgroundColor: "#dbe0eb" }}
+      className={`fixed right-0 top-16 bottom-0 z-10 shadow-lg transform duration-300 ease-in-out ${
         isOpen ? "translate-x-0 w-48" : "translate-x-full w-0"
       }`}
     >
       {isOpen && (
         <div className="pt-0 p-5 overflow-y-auto h-full">
-          <div className="grid grid-cols-5 gap-2 p-5 h-16 w-full fixed mx-[-20px] bg-gray-200">
+          <div
+            style={{ backgroundColor: "#dbe0eb" }}
+            className="grid grid-cols-5 gap-2 p-5 h-16 w-full fixed mx-[-20px]"
+          >
             {colors.map((color) => (
               <button
                 key={color}
