@@ -84,7 +84,7 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white p-8 rounded shadow-lg w-[400px]"
+        className="relative bg-white p-8 rounded shadow-lg w-[400px] mx-2"
       >
         <IoClose
           onClick={() => onClose(false)}

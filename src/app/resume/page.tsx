@@ -16,6 +16,7 @@ import { ref, getDownloadURL } from "firebase/storage";
 import { useAppSelector, useAppDispatch } from "@/lib/Redux/hooks";
 import Navigation from "@/components/Navigation";
 import TemplateModal from "@/components/listPage/TemplateModal";
+import LoadingCircle from "@/components/LoadingCircle";
 import { GoPlus } from "react-icons/go";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
@@ -27,6 +28,7 @@ export default function ResumePage() {
   const [resumes, setResumes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [downloading, setDownloading] = useState<string | null>(null);
   const router = useRouter();
   const state = useAppSelector((state) => state.user);
 
@@ -147,6 +149,7 @@ export default function ResumePage() {
   ) => {
     const pdfRef = ref(storage, `${userId}/${resumeId}/resumePDF.pdf`);
     try {
+      setDownloading(resumeId);
       const url = await getDownloadURL(pdfRef);
 
       const response = await fetch(url);
@@ -163,6 +166,8 @@ export default function ResumePage() {
       URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error("Error downloading PDF:", error);
+    } finally {
+      setDownloading(null);
     }
   };
 
@@ -177,7 +182,11 @@ export default function ResumePage() {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-[#fafbfd]">
+        <LoadingCircle size={48} />
+      </div>
+    );
   }
 
   return (
@@ -242,7 +251,7 @@ export default function ResumePage() {
                       </Link>
                       {resume.pdfExists && (
                         <button
-                          className="flex items-center py-1 px-3 gray-button"
+                          className="flex items-center justify-center py-1 px-3 gray-button w-[72.8px]"
                           onClick={() =>
                             downloadPDF(
                               auth.currentUser?.uid ?? "",
@@ -250,9 +259,16 @@ export default function ResumePage() {
                               resume.resumeName
                             )
                           }
+                          disabled={downloading === resume.id}
                         >
-                          <HiDownload />
-                          <p>PDF</p>
+                          {downloading === resume.id ? (
+                            <LoadingCircle size={20} color="gray-500" />
+                          ) : (
+                            <>
+                              <HiDownload />
+                              <p>PDF</p>
+                            </>
+                          )}
                         </button>
                       )}
                     </div>

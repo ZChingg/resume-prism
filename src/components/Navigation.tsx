@@ -11,6 +11,7 @@ import { FaChevronDown, FaUserCircle } from "react-icons/fa";
 import { IoPrism } from "react-icons/io5";
 import { FiArrowLeft } from "react-icons/fi";
 import { RiFileDownloadLine } from "react-icons/ri";
+import LoadingCircle from "@/components/LoadingCircle";
 
 import SignupPopup from "@/components/SignupPopup";
 import LoginPopup from "@/components/LoginPopup";
@@ -32,6 +33,25 @@ export default function Navigation({
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleSaveClick = async () => {
+    if (handleSave) {
+      setIsSaving(true);
+      await handleSave();
+      setIsSaving(false);
+    }
+  };
+
+  const handleDownloadClick = async () => {
+    if (exportPDF) {
+      setIsDownloading(true);
+      await exportPDF();
+      setIsDownloading(false);
+    }
+  };
+
   // 控制註冊與登入popup狀態
   const [activePopup, setActivePopup] = useState<"login" | "signup" | null>(
     null
@@ -47,10 +67,7 @@ export default function Navigation({
       if (type === "login") {
         toastNotification("success", "Login successful.");
       } else if (type === "signup") {
-        toastNotification(
-          "success",
-          "Signup successful. Login automatically."
-        );
+        toastNotification("success", "Signup successful. Login automatically.");
       }
     }
   };
@@ -113,7 +130,7 @@ export default function Navigation({
             </button>
             <button
               onClick={() => togglePopup("signup")}
-              className="purple-button ml-3"
+              className="purple-button ml-3 w-[84.28px]"
             >
               Sign Up
             </button>
@@ -125,17 +142,28 @@ export default function Navigation({
       return (
         <div className="flex items-center mr-3">
           {handleSave && (
-            <button className="purple-button ml-auto" onClick={handleSave}>
-              Save
+            <button
+              className="purple-button ml-auto"
+              onClick={handleSaveClick}
+              disabled={isSaving}
+            >
+              {isSaving ? "Saving..." : "Save"}
             </button>
           )}
           {exportPDF && (
             <button
               className="text-gray-400 hover:text-indigo-500 ml-3"
-              onClick={exportPDF}
+              onClick={handleDownloadClick}
+              disabled={isDownloading}
             >
-              <RiFileDownloadLine className="h-5 w-5" />
-              <p className="font-medium text-xs">PDF</p>
+              {isDownloading ? (
+                <LoadingCircle size={21.83} color="gray-400" />
+              ) : (
+                <>
+                  <RiFileDownloadLine className="h-5 w-5" />
+                  <p className="font-medium text-xs">PDF</p>
+                </>
+              )}
             </button>
           )}
         </div>
@@ -159,11 +187,18 @@ export default function Navigation({
       return (
         <Link href="/" className="flex items-center space-x-2">
           <Image
+            src="/logo.png"
+            alt="logo"
+            width={500}
+            height={500}
+            className="w-10 h-10 block md:hidden"
+          />
+          <Image
             src="/logo-full.png"
             alt="logo"
             width={200}
             height={62.5}
-            className="h-[60%] w-[60%]"
+            className="h-[60%] w-[60%] hidden md:block"
           />
         </Link>
       );
@@ -218,7 +253,7 @@ export default function Navigation({
   };
 
   return (
-    <div className="flex sticky h-16 border-b border-gray-100	bg-white items-center px-10 z-50 top-0 justify-end">
+    <div className="flex sticky h-16 border-b border-gray-100	bg-white items-center px-5 *:md:px-10 z-50 top-0 justify-end">
       {/* 左側 */}
       {BackToButton()}
       {/* 右側 */}
