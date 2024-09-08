@@ -3,26 +3,23 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { auth, db } from "@/lib/firebase";
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/Redux/hooks";
 import { setLogin } from "@/lib/Redux/features/userSlice";
-import { FcGoogle } from "react-icons/fc";
+import Image from "next/image";
 
 interface SignupProps {
   onLoginClick: () => void;
-  onClose: () => void;
+  onClose: (success?: boolean, type?: "login" | "signup") => void;
 }
 
 export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useAppDispatch();
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -60,49 +57,29 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
         photoURL: null,
         createdAt: Timestamp.now(),
       });
-      onClose();
+      onClose(true, "signup");
     } catch (error) {
-      console.error("Signup failed", error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            setErrorMessage("This email is already registered.");
+            break;
+          case "auth/weak-password":
+            setErrorMessage("Password should be at least 6 characters long.");
+            break;
+          default:
+            setErrorMessage("Registration failed, please try again later.");
+            break;
+        }
+      } else {
+        setErrorMessage("Registration failed, please try again later.");
+      }
     }
   };
 
-  // Google 註冊
-  async function onGoogleSignUp() {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log(user.photoURL);
-
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-
-      if (!docSnap.exists()) {
-        await setDoc(docRef, {
-          name: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          photoURL: user.photoURL,
-          createdAt: Timestamp.now(),
-        });
-      }
-      onClose();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error("Error during Google sign up:", error.message);
-      } else {
-        // 沒有辦法印出 error.message (unknown)
-        console.error(
-          "An unknown error occurred during Google sign up:",
-          error
-        );
-      }
-    }
-  }
-
   return (
     <div
-      onClick={onClose}
+      onClick={() => onClose(false)}
       className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 size-full"
     >
       <div
@@ -110,22 +87,19 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
         className="relative bg-white p-8 rounded shadow-lg w-[400px]"
       >
         <IoClose
-          onClick={onClose}
+          onClick={() => onClose(false)}
           className="absolute top-4 right-4 h-7 w-7 p-1  text-gray-600 cursor-pointer white-button"
         />
-        <h2 className="text-lg font-semibold mb-4 text-center">Welcome</h2>
-        <button
-          className="w-full p-2 rounded text-sm text-gray-500 border border-gray-300 flex items-center justify-center relative  hover:bg-gray-50"
-          onClick={onGoogleSignUp}
-        >
-          <FcGoogle className="absolute left-2 h-5 w-5" />
-          <p>Sign up with Google</p>
-        </button>
-        <div className="flex items-center my-5">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="mx-4 text-gray-500 text-sm">or</span>
-          <div className="flex-grow border-t border-gray-300"></div>
+        <div className="flex items-center justify-center">
+          <Image
+            src="/logo.png"
+            alt="logo"
+            width={500}
+            height={500}
+            className="h-[15%] w-[15%]"
+          />
         </div>
+        <h2 className="font-semibold my-6 text-center">Welcome</h2>
         <form onSubmit={handleSignup}>
           <div className="mb-4">
             <input
@@ -134,6 +108,7 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
               value={name}
               className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </div>
           <div className="mb-4">
@@ -143,6 +118,7 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
               value={email}
               className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="mb-4">
@@ -152,8 +128,14 @@ export default function SignupPopup({ onLoginClick, onClose }: SignupProps) {
               className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-indigo-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
+          {errorMessage && (
+            <p className="text-red-700 text-center text-sm mb-4">
+              {errorMessage}
+            </p>
+          )}
           <button type="submit" className="w-full purple-button">
             Sign Up
           </button>

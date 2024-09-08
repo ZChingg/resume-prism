@@ -69,6 +69,13 @@ body {
     @apply absolute left-2;
     content: counter(list-counter) '.';
   }
+
+  .Toastify__progress-bar {
+    @apply bg-indigo-500
+  }
+  .Toastify__toast--success .Toastify__toast-icon svg {
+    @apply fill-indigo-500
+  }
 }  
 
 /* 富文本編輯器 */
@@ -113,4 +120,18 @@ body {
 .quill:focus-within {
   box-shadow: 0 0 0 1px #6366f1;
   border-radius: 4px;
+}
+
+/* 提示訊息 */
+.Toastify__toast-body {
+  font-family: "__Poppins_7a42f1";
+}
+.Toastify__progress-bar--success{
+  background-color: #6366f1 !important;
+}
+.Toastify__progress-bar {
+  background-color: #4f46e5 !important;
+}
+.Toastify__toast--success .Toastify__toast-icon svg {
+  fill: #6366f1 !important;
 }

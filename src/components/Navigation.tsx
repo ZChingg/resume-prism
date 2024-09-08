@@ -14,6 +14,7 @@ import { RiFileDownloadLine } from "react-icons/ri";
 
 import SignupPopup from "@/components/SignupPopup";
 import LoginPopup from "@/components/LoginPopup";
+import toastNotification from "@/components/ToastNotification";
 
 interface NavigationProps {
   handleSave?: () => void;
@@ -37,6 +38,21 @@ export default function Navigation({
   );
   const togglePopup = (popup: "login" | "signup" | null) => {
     setActivePopup(popup);
+  };
+
+  // 登入與註冊成功提示訊息
+  const handleClose = (success?: boolean, type?: "login" | "signup") => {
+    setActivePopup(null);
+    if (success) {
+      if (type === "login") {
+        toastNotification("success", "Login successful.");
+      } else if (type === "signup") {
+        toastNotification(
+          "success",
+          "Signup successful. Login automatically."
+        );
+      }
+    }
   };
 
   // 控制收合會員表單狀態
@@ -142,8 +158,13 @@ export default function Navigation({
     } else {
       return (
         <Link href="/" className="flex items-center space-x-2">
-          <IoPrism className="h-8 w-8" />
-          <span className="text-lg font-bold">ResumePrism</span>
+          <Image
+            src="/logo-full.png"
+            alt="logo"
+            width={200}
+            height={62.5}
+            className="h-[60%] w-[60%]"
+          />
         </Link>
       );
     }
@@ -208,13 +229,13 @@ export default function Navigation({
       {activePopup === "login" && (
         <LoginPopup
           onSignupClick={() => togglePopup("signup")}
-          onClose={() => togglePopup(null)}
+          onClose={handleClose}
         />
       )}
       {activePopup === "signup" && (
         <SignupPopup
           onLoginClick={() => togglePopup("login")}
-          onClose={() => togglePopup(null)}
+          onClose={handleClose}
         />
       )}
     </div>

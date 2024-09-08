@@ -5,6 +5,8 @@ import { poppins } from "./font";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import AuthListener from "@/utils/authListner";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "ResumePrism",
@@ -22,6 +24,7 @@ export default function RootLayout({
       <body className={poppins.className}>
         <StoreProvider>
           <AuthListener />
+          <ToastContainer />
           <main>{children}</main>
         </StoreProvider>
       </body>

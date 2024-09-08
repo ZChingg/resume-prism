@@ -8,19 +8,22 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { useAppSelector, useAppDispatch, useAppStore } from "@/lib/Redux/hooks";
 import { setLogin } from "@/lib/Redux/features/userSlice";
 import { FcGoogle } from "react-icons/fc";
+import Image from "next/image";
 
 interface LoginProps {
   onSignupClick: () => void;
-  onClose: () => void;
+  onClose: (success?: boolean, type?: "login" | "signup") => void;
 }
 
 export default function LoginPopup({ onSignupClick, onClose }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useAppDispatch(); // 使用在 redux 定義的 function
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -41,9 +44,23 @@ export default function LoginPopup({ onSignupClick, onClose }: LoginProps) {
           login: true,
         })
       );
-      onClose();
+      onClose(true, "login");
     } catch (error) {
-      console.error("Login failed", error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/user-not-found":
+            setErrorMessage("No account found with this email.");
+            break;
+          case "auth/invalid-credential":
+            setErrorMessage("Incorrect email or password.");
+            break;
+          default:
+            setErrorMessage("Login failed, please try again later.");
+            break;
+        }
+      } else {
+        setErrorMessage("Login failed, please try again later.");
+      }
     }
   };
 
@@ -66,12 +83,13 @@ export default function LoginPopup({ onSignupClick, onClose }: LoginProps) {
           createdAt: Timestamp.now(),
         });
       }
-      onClose();
+      onClose(true, "login");
     } catch (error) {
       if (error instanceof Error) {
+        setErrorMessage("Login failed, please try again later.");
         console.error("Error during Google sign up:", error.message);
       } else {
-        // 沒有辦法印出 error.message (unknown)
+        setErrorMessage("Login failed, please try again later.");
         console.error(
           "An unknown error occurred during Google sign up:",
           error
@@ -82,7 +100,7 @@ export default function LoginPopup({ onSignupClick, onClose }: LoginProps) {
 
   return (
     <div
-      onClick={onClose}
+      onClick={() => onClose(false)}
       className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 size-full"
     >
       <div
@@ -90,10 +108,19 @@ export default function LoginPopup({ onSignupClick, onClose }: LoginProps) {
         className="relative bg-white p-8 rounded shadow-lg w-[400px]"
       >
         <IoClose
-          onClick={onClose}
+          onClick={() => onClose(false)}
           className="absolute top-4 right-4 h-7 w-7 p-1 text-gray-600 cursor-pointer white-button"
         />
-        <h2 className="text-lg font-semibold mb-4 text-center">
+        <div className="flex items-center justify-center">
+          <Image
+            src="/logo.png"
+            alt="logo"
+            width={500}
+            height={500}
+            className="h-[15%] w-[15%]"
+          />
+        </div>
+        <h2 className="font-semibold my-6 text-center">
           We are happy to see you back!
         </h2>
         <button
@@ -116,6 +143,7 @@ export default function LoginPopup({ onSignupClick, onClose }: LoginProps) {
               className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-indigo-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="mb-4">
@@ -125,8 +153,14 @@ export default function LoginPopup({ onSignupClick, onClose }: LoginProps) {
               className="w-full p-2 border:none ring-1 ring-gray-300 rounded focus:outline-none hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-indigo-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
+          {errorMessage && (
+            <p className="text-red-700 text-center text-sm mb-4">
+              {errorMessage}
+            </p>
+          )}
           <button type="submit" className="w-full purple-button">
             Log In
           </button>
