@@ -3,6 +3,7 @@
 import Navigation from "@/components/Navigation";
 import { useAppSelector } from "@/lib/Redux/hooks";
 import Image from "next/image";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const state = useAppSelector((state) => state.user); // 取得在 redux 定義的 state
@@ -65,6 +66,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 }

@@ -17,6 +17,7 @@ import { useAppSelector, useAppDispatch } from "@/lib/Redux/hooks";
 import Navigation from "@/components/Navigation";
 import TemplateModal from "@/components/listPage/TemplateModal";
 import LoadingCircle from "@/components/LoadingCircle";
+import Footer from "@/components/Footer";
 import { GoPlus } from "react-icons/go";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
@@ -190,14 +191,14 @@ export default function ResumePage() {
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <style jsx global>{`
         body {
           background-color: #fafbfd;
         }
       `}</style>
       <Navigation />
-      <div className="p-10 m-auto xl:w-[1200px]">
+      <div className="flex-grow p-10 m-auto w-full xl:w-[1200px]">
         <div className="flex items-center justify-between mt-5">
           <h1 className="text-2xl">My Resumes</h1>
           <button
@@ -290,6 +291,7 @@ export default function ResumePage() {
         onClose={() => setIsModalOpen(false)}
         onSelectTemplate={handleCreateResume}
       />
-    </>
+      <Footer />
+    </div>
   );
 }

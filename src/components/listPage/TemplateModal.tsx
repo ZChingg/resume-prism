@@ -26,21 +26,28 @@ export default function TemplateModal({
     >
       <button onClick={onClose}>
         <IoCloseCircle
-          className="absolute right-5 top-5 h-9 w-9
+          className="absolute right-5 top-5 h-9 w-9 z-10
          text-gray-600 hover:text-gray-500 active:text-gray-700 cursor-pointer"
         />
       </button>
-      <div className="pt-20 p-10 flex flex-col items-center xl:w-[1200px]">
+      <div className="absolute z-0 h-full w-full">
+        <Image
+          src="/templatemodal.svg"
+          width={500}
+          height={500}
+          alt="Resume sample"
+          className="absolute w-auto h-auto inset-0 m-auto object-center object-contain pb-[16%]"
+        ></Image>
+      </div>
+      <div className="pt-20 p-10 flex flex-col items-center xl:w-[1200px] z-10">
         <h2 className="text-2xl mb-4 text-center font-bold">
           Build Your Resume in Minutes
         </h2>
         <p className="mb-10 text-center text-gray-800 text-sm">
-          The selected resume template will automatically update with your real
-          profile details, including the language set in your profile. Please
-          ensure your profile information is complete and accurate to see the
-          resume in your preferred language.
+          Choose your desired template and start crafting your resume. <br />
+          Every detail is designed to perfection for a flawless finish.
         </p>
-        <div className="grid grid-cols-2 gap-6" style={{ maxWidth: "1200px" }}>
+        <div className="grid grid-cols-2 gap-8" style={{ maxWidth: "1200px" }}>
           {templates.map((template) => (
             <div key={template.id} className="relative group">
               <div className="p-5 hover:bg-[#e7ecf5] rounded">
