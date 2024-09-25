@@ -21,8 +21,8 @@ interface LoginProps {
 }
 
 export default function LoginPopup({ onSignupClick, onClose }: LoginProps) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@test.com");
+  const [password, setPassword] = useState("test123");
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useAppDispatch(); // 使用在 redux 定義的 function
 

@@ -57,7 +57,7 @@ export default function Home() {
           </p>
           <div className="relative m-auto max-w-[72rem] max-h-[46.5rem]">
             <Image
-              src="/editpage.png"
+              src="/editPage.png"
               width={4800}
               height={3100}
               alt="Resume sample"
