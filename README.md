@@ -38,11 +38,11 @@ ResumePrism is a resume website designed specifically for job seekers, enabling 
 
 ## Main Features
 - Log in with email or Google account via Firebase Authentication
-- Preview your resume in real-time to ensure it looks just right
+- Preview resume in real-time to ensure it looks just right
 - Use the rich text editor to make resume content clearer and organized
-- Easily rearrange your resume layout using drag-and-drop
+- Easily rearrange resume layout using drag-and-drop
 - Customize templates and colors to create a standout resume that reflects your style
-- Export your resume as a PDF file
+- Export resume as a PDF file
 
 ## Technique
 
