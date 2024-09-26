@@ -44,7 +44,7 @@ export default function TemplateModal({
       </button>
       <div className="absolute z-0 h-full w-full">
         <Image
-          src="/templateModal.svg"
+          src="/templatemodal.svg"
           width={500}
           height={500}
           alt="Resume sample"
